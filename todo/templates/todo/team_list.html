@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_heading %}{% endblock %}
+{% block title %}{% endblock %}
+{% block content %}
+
+<div class="card-deck pb-5">
+	<div class="card shadow-sm p-0">
+		<div class="card-body">
+			<div class="card-title">
+				<h4>Project Team</h4>
+			</div>
+			<div class="card-text text-sm">
+				<table class="table table-hover" id="persontable">
+					<thead>
+						<tr class="d-flex">
+							<th scope="col" class="col-2">Role</th>
+							<th scope="col" class="col-2 text-left">First Name</th>
+							<th scope="col" class="col-2 text-left">Last Name</th>
+							<th scope="col" class="col-5 text-left">Email</th>
+							<th scope="col" class="col-1 text-center">Remove</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for person in persons %}
+						{%if person.is_team_member%}
+						<tr class="d-flex">
+							<td class="col-2">
+								{{person.role}}
+							</td>
+							<td class="col-2">
+
+								{{person.first_name}}
+							</td>
+							<td class="col-2">
+								{{person.last_name}}
+
+							</td>
+							<td class="col-5">
+								{{person.Email}}
+
+							</td>
+							<td class="col-1 text-center">
+								<form action="{% url 'todo:person_delete' project_id project_slug person.id %}"
+									method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="_method" value="delete">
+									<button class="ui clear button"> <i class="times circle outline red icon"
+											type="submit" value="submit">
+										</i> </button>
+								</form>
+							</td>
+						</tr>
+						{% endif %}
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="card-title">
+				<h4>Stakeholders</h4>
+			</div>
+			<div class="card-text text-sm">
+				<table class="table table-hover" id="persontable">
+					<thead>
+						<tr class="d-flex">
+							<th scope="col" class="col-2">Department</th>
+							<th scope="col" class="col-2 text-left">First Name</th>
+							<th scope="col" class="col-2 text-left">Last Name</th>
+							<th scope="col" class="col-5 text-left">Email</th>
+							<th scope="col" class="col-1 text-center">Remove</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for person in persons %}
+						{%if person.is_stakeholder%}
+						<tr class="d-flex">
+							<td class="col-2">
+								{{person.role}}
+							</td>
+							<td class="col-2">
+
+								{{person.first_name}}
+							</td>
+							<td class="col-2">
+								{{person.last_name}}
+
+							</td>
+							<td class="col-5">
+								{{person.Email}}
+
+							</td>
+							<td class="col-1 text-center">
+								<form action="{% url 'todo:person_delete' project_id project_slug person.id %}"
+									method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="_method" value="delete">
+									<button class="ui clear button"> <i class="times circle outline red icon"
+											type="submit" value="submit">
+										</i> </button>
+
+								</form>
+							</td>
+						</tr>
+						{% endif %}
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card-footer-fixed d-flex justify-content-end">
+			<div class="pb-2 pr-2">
+				<button type="button" class="ui button" id="AddPersonButton"
+					data-toggle="modal" data-target="#EditPerson">
+					Add Person
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{%endblock%}

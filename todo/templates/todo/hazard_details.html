@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Hazard:{{ hazard.description }}{% endblock %}
+
+
+{% block content %}
+<div class="card-deck">
+  <div class="card col-sm-8 p-0">
+    <div class="card-header">
+      {{ hazard.description }}
+    </div>
+    <div class="card-body">
+      <div class="card-title"></div>
+
+      <div class="card-text">
+        {% if hazard.note %}
+        {{ hazard.note|safe|urlize|linebreaks }}
+      </div>
+      {% endif %}
+    </div>
+    <div id="HazardEdit" class="collapse">
+      {% include 'todo/include/hazard_edit.html' %}
+    </div>
+  </div>
+
+  <div class="card col-sm-4 p-0">
+    <div class="ui segment" style="border: 0px; box-shadow: 0 0 0 0;">
+      <div class="ui segments d-flex justify-content-between" style="box-shadow: 0 0 0 0;">
+        <div class="ui segment  d-flex justify-content-between">
+          <strong>Project Number:</strong>
+          <a href="{% url 'todo:project_details' project_id project_slug %}">
+            {{ hazard.project }}
+          </a>
+        </div>
+        <div class="ui segment  d-flex justify-content-between">
+          <span><strong>Risk Level:</strong></span>
+          <span class="ui {{hazard.risk_level.color}} label">
+            {{ hazard.risk_level }}</span>
+        </div>
+      </div>
+      <div class="ui right floated buttons" role="group" aria-label="ProjectButtons">
+        <button class="ui button" id="EditProjectButton" type="button"
+          data-toggle="collapse" data-target="#EditProject">
+          Edit
+        </button>
+        <div class="or"></div>
+
+        <button class="ui button" id="DeleteProjectButton" type="button"
+          data-toggle="modal" data-target="#DeleteProject">
+          Delete Hazard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck pt-4">
+  <div class="card col-sm-8 p-0">
+    <div class="card-header">
+      <strong>Control Details</strong> </div>
+    <div class="card-body">
+      <div class="card-text">
+        {{ hazard.details }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card col-sm-4 p-0">
+    <div class="ui segment" style="border: 0px; box-shadow: 0 0 0 0;">
+      <div class="ui segments d-flex justify-content-between" style="box-shadow: 0 0 0 0;">
+        <div class="ui segment  d-flex justify-content-between">
+          <strong>Control Measure:</strong>
+          <span>{{ hazard.control_measure }}</span>
+        </div>
+        <div class="ui segment  d-flex justify-content-between">
+          <span><strong>Result Risk:</strong></span>
+          <span class="ui {{hazard.color}} label">
+            {{ hazard.res_level }}</span>
+        </div>
+
+        <div class="ui segment  d-flex justify-content-between">
+          <strong>Assigned to:</strong>
+          {% if hazard.assigned_to %} {{ hazard.assigned_to }} {% else %} Anyone
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck pt-4" style="border: 0px; box-shadow: 0 0 0 0;">
+  <div class="card p-0">
+
+    <div class="card-header">
+      <div class="row">
+        <div class="col-3 text-left">
+          <h4>Date</h4>
+        </div>
+        <div class="col">
+          <h4>Notes/Updates</h4>
+        </div>
+        <div class="col-2">
+          <h4>Update by</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if comment_list %}
+      {% for comment in comment_list %}
+      <div class="row">
+        <div class="col-sm-3">
+          {{ comment.date|date:"F d, Y" }}
+        </div>
+        <div class="col-sm">
+          {{ comment.body|safe|urlize|linebreaks }}
+        </div>
+        <div class="col-sm-2">
+          {{ comment.author_text }}
+
+        </div>
+
+      </div>
+      <div class="dropdown-divider">
+
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="card-footer">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <textarea class="form-control" name="comment-body" rows="3" id="comment" required></textarea>
+        </div>
+        <input class="ui right floated button" type="submit" name="addcomment"
+          value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
+{% if attachments_enabled %}
+<div class="card-deck pt-4 pb-4" style="border: 0px; box-shadow: 0 0 0 0;">
+  <div class="card col-sm-6 p-0">
+
+    <div class="card-header">
+      <div class="row">
+        <div class="col text-left">
+          <h4>File</h4>
+        </div>
+        <div class="col">
+          <h4>Uploaded</h4>
+        </div>
+        <div class="col-2 text-center">
+          <h4>Remove</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if hazard.attachment_set.count %}
+      {% for attachment in attachments %}
+      <div class="row">
+        <div class="col-sm">
+          <a href="{{ attachment.file.url }}">{{ attachment.filename }}</a>
+        </div>
+        <div class="col-sm">
+          {{ attachment.timestamp }}
+        </div>
+        <div class="col-sm-2 text-center">
+          <form action="{% url 'todo:remove_attachment' project_id project_slug hazard_id attachment.id %}"
+            method="POST">
+            {% csrf_token %}
+            <input hidden type="submit"
+              name="_method"
+              value="delete">
+            <button class="ui clear button"> <i class="times circle outline red icon" type="submit" value="submit">
+              </i> </button>
+
+          </form>
+        </div>
+
+      </div>
+      <div class="dropdown-divider">
+
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="card-footer">
+      <form method="POST"
+        action="{% url 'todo:hazard_details' project_id project_slug hazard_id %}"
+        enctype="multipart/form-data" style="width:100%;">
+        {% csrf_token %}
+        <div class="input-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="attachment_file_input"
+              name="attachment_file_input">
+            <label class="custom-file-label" for="attachment_file_input">Choose
+              file</label>
+          </div>
+          <div class="input-group-append">
+            <button class="right attached ui button" type="submit" value="submit"
+              name="attachment_file_input">Upload</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {%endif%}
+
+  <div class="card col-sm-6 p-0">
+
+    <div class="card-header">
+      <div class="row">
+        <div class="col-3 text-left">
+          <h4>Date/Time</h4>
+        </div>
+        <div class="col">
+          <h4>Changes</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% for new_record in records%}
+      {%if new_record.history_id > 1 %}
+      {%if new_record.history_change_reason != None%}
+      {%if new_record.history_change_reason != "" %}
+      <div class="row">
+        <div class="col-sm-3">
+          {{new_record.history_date}}
+        </div>
+        <div class="col-sm">
+          {{new_record.history_change_reason}}
+        </div>
+
+      </div>
+      <div class="dropdown-divider">
+
+      </div>
+      {%endif%}
+      {%endif%}
+      {%endif%}
+      {%endfor%}
+    </div>
+    <div class="card-footer">
+      <h4>
+        Change Log
+      </h4>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="DeleteHazard" tabindex="-1" role="dialog" aria-labelledby="deletehazard"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{hazard_id}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="collapse.show">
+          {% include 'todo/include/hazard_delete.html' %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary-sm"
+          data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+
+{% block extra_js %}
+{# Support file attachment uploader #}
+<script>
+  $('#attachment_file_input').on('change', function () {
+    // Get the file name and remove browser-added " fakepath." // Then replace the "Choose a file"
+    console.log($(this).val());
+    var fileName = $(this).val().replace('C:\\fakepath\\', " ");
+    $(this).next('.custom-file-label').html(fileName);
+  })
+
+</script> {% endblock extra_js %}

@@ -1,0 +1,68 @@
+{# form used by both Add Task and Edit Task views #}
+
+<form action="" name="add_project" method="post">
+    {% csrf_token %}
+    <input type="hidden" name='action' value='edit_project'>
+
+    <div class="mt-3 bg-light">
+        <div class="form-group">
+            <label for="id_number" name="number">Project Number</label>
+            <input type="text" class="form-control" id="id_number" name="number"
+                {% if form.number.value != None %}value="{{ form.number.value }}"
+                {% endif %}>
+            <small id="inputNameHelp" class="form-text text-muted">SAP project
+                number.</small>
+        </div>
+        <div class="form-group">
+            <label for="id_title" name="title">Project Title</label>
+            <input type="text" class="form-control" id="id_title" name="title"
+                {% if form.title.value != None %}value="{{ form.title.value }}"
+                {% endif %}>
+            <small id="inputNameHelp" class="form-text text-muted">SAP project
+                number.</small>
+        </div>
+        <div class="form-group">
+            <label for="id_project_scope">Project Scope</label>
+            <textarea class="form-control" id="id_project_scope"
+                name="project_scope" rows="5"
+                aria-describedby="inputNoteHelp">{% if form.project_scope.value %}{{ form.project_scope.value }}{% endif %}</textarea>
+            <small id="inputNameHelp" class="form-text text-muted">Summary of
+                the project scope.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="id_location">Location</label>
+            <input type="text" class="form-control" id="id_location"
+                name="location"
+                value="{% if form.location.value %}{{ form.location.value }}{% endif %}">
+        </div>
+
+        <div class="form-group">
+            <label for="id_stage">Stage</label>
+            <input type="text" class="form-control" id="id_stage" name="stage"
+                value="{% if form.stage.value %}{{ form.stage.value }}{% endif %}">
+        </div>
+
+        <div class="form-group">
+            <label for="id_in_service_date">Date</label>
+            <input type="date" class="form-control" id="id_in_service_date"
+                name="in_service_date"
+                value="{% if form.in_service_date.value %}{{ form.in_service_date.value|date:'Y-m-d' }}{% endif %}">
+        </div>
+        <div class="form-group">
+            <label for="id_POR">Engineer:</label>
+            {{form.POR}}
+        </div>
+        <div class="form-group">
+            <label for="id_group">Group:</label>
+            {{form.group}}
+        </div>
+
+
+
+    </div>
+    <p>
+        <input type="submit" name="{{form.pro}}" value="Submit"
+            class="btn btn-primary btn-sm">
+    </p>
+</form>

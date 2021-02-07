@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="iApp" ng-controller="frameController as fc">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{o.label_1}} {{o.label_2}}</title>
+    <meta name="description" content="{{o.label_1}} {{o.label_2}} - WeatherWidget.io">
+    <meta name="viewport" content="width=device-width">
+    <meta name="robots" content="noindex, follow">
+    <base href="https://weatherwidget.io/w/" target="_parent">
+    <link rel="stylesheet" href="css/if_w.css">
+    <link rel="stylesheet" ng-href="{{o.iconSet.animated ? o.iconSet.animated : ''}}">
+
+    <style ww-index-style></style>
+
+  </head>
+
+  <body>
+
+    <div id="weatherWidget" class="ng-cloak" lang="{{o.language.code}}">
+      <span id="openWeather" ng-include="'//weatherwidget.io/w/img/ui/open.svg'"></span>
+      <div id="weatherWidgetInner"
+        ng-class="[o.language.dir, o.widgetMode.class, o.forecastDaysNum.class, {noLabel: !(o.label_1 || o.label_2), yesLabel: o.label_1 || o.label_2}]">
+        <a class="weatherInfo"
+          href="//forecast7.com/{{o.language.code}}/{{o.location.url}}/{{o.unit.code == 'us' ? '?unit=us' : ''}}"
+          target="_blank" onmouseenter="more(1)" onmouseleave="more(0)" mg-show="o.weather">
+          <div class="currentWeather" mg-show="!(!o.widgetMode.current && !(o.label_1 || o.label_2))">
+            <h1 class="locationName" mg-show="o.label_1 || o.label_2">{{o.label_1}}<span> {{o.label_2}}</span></h1>
+
+            <div class="currentWeatherIcon" ng-repeat="hacky in o.weather.forecast | limitTo:1"
+              mg-show="o.widgetMode.current">
+
+              <div id="icon" ng-include="'//weatherwidget.io/w/img/icons/'+o.iconSet.url+currentIcon()+'.html'"
+                title="{{o.weather.current.summary}}"></div>
+
+            </div>
+
+            <div class="currentConditions" mg-show="o.widgetMode.current">
+              <div class="currentTemp">{{o.weather.current.temp | temp: o.unit.code:o.language.code}}</div>
+              <div class="currentDesc">{{o.weather.current.summary}}</div>
+            </div>
+
+          </div>
+
+          <div class="weatherForecast" mg-show="o.widgetMode.forecast">
+            <div class="day" ng-repeat="day in o.weather.forecast | limitTo:7">
+              <div class="dayName"><span class="fullDayName">{{day.day}}</span><span
+                  class="abrDayName">{{day.dayShort}}</span></div>
+              <div class="dayIcon" id="icon{{$index}}"
+                ng-include="'//weatherwidget.io/w/img/icons/'+o.iconSet.url+day.icon+'.html'"
+                title="{{day.summary | weatherText: o.unit.code}}"></div>
+              <div class="temps">
+                <div class="dayTempMax">{{day.maxTemp | temp: o.unit.code:o.language.code}}</div>
+                <div class="dayTempMin">{{day.minTemp | temp: o.unit.code:o.language.code}}</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      function more(over) {
+        if (over) {
+          document.getElementById("openWeather").className = "highlight";
+
+        } else {
+          document.getElementById("openWeather").className = "";
+
+        }
+      }
+
+    </script>
+
+    <!-- Angular https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js -->
+    <script src="/w/js/angular-1.5.8.min.js"></script>
+
+    <!-- Weather Widget Frame app -->
+    <script src="/w/js/iApp.min.js"></script>
+
+
+  </body>
+
+</html>

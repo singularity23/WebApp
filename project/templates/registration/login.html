@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Log in page{% endblock %}
+
+{% block content %}
+
+<form method="post">
+  {% csrf_token %}
+  <div class="card mx-auto d-block mb-1 shadow-sm" style="width: 24rem;">
+    <img class="card-img-top rounded mx-auto d-block rounded-circle mt-4"
+      src="\static\assets\img\brand\bchicon.svg" style="width:30%; height:30%" alt="Card image cap">
+    <div class="card-body">
+      <div class="card-text">
+        <div class="form-group">
+          <p>
+            <label for="id_username" class=" font-weight-bold">Username:</label>
+            <input class="form-control" type="text" name="username" autofocus="" maxlength="254"
+              required="" id="id_username" placeholder="Username" autocomplete="username">
+          </p>
+        </div>
+        <div class="form-group">
+          <p>
+            <label for="id_password" class="font-weight-bold">Password:</label>
+            <input class="form-control" type="password" name="password" required="" id="id_password"
+              placeholder="Password" autocomplete="current-password">
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between h-100 align-items-center">
+      <div class="col-sm-5">
+        <input type="submit" name="login" value="Login" class="ui button">
+      </div>
+      <div class="col-sm-7">
+        <div class="password-reset-link inline">
+          <a href="{{ password_reset_url }}"> Problems with login?
+          </a>
+          <div class="registration-link">
+            <a href="/sign_up"> Have not registered?
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

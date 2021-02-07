@@ -1,0 +1,51 @@
+{# Form used by both Add Task and Edit Task views #}
+
+<form action="" name="add_hazard" method="post">
+    {% csrf_token %}
+    <input type="hidden" name='action' value='edit_hazard'>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="id_description" name="description">Hazard</label>
+            <input type="text" class="form-control" id="id_description" name="description" required
+                placeholder=""
+                value="{% if form1.description.value %}{{ form1.description.value }}{% endif %}">
+        </div>
+        <div class="form-group" hidden>
+            <label for="id_index" name="index">Index</label>
+            <input type="text" class="form-control" id="id_index" name="index" required
+                placeholder="" value="{% if form1.index.value %}{{ form1.index.value }}{% endif %}">
+        </div>
+        <div class="form-group">
+            <label for="id_note">Note</label>
+            <textarea class="form-control" id="id_note" name="note" rows="5"
+                aria-describedby="inputNoteHelp">{% if form1.note.value %}{{ form1.note.value }}{% endif %}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_risk_level">Risk Level</label>
+            {{form1.risk_level}}
+        </div>
+        <div class="form-group">
+            <label for="id_control_measuire">Control Measure</label>
+            {{form1.control_measure}}
+        </div>
+        <div class="form-group">
+            <label for="id_details">Control Details</label>
+            <textarea class="form-control" id="id_details" name="details" rows="5"
+                aria-describedby="inputNoteHelp">{% if form1.details.value %}{{ form1.details.value }}{% endif %}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="id_assigned_to">Assigned to</label>
+            {{form1.assigned_to}}
+        </div>
+        <div hidden class="form-group">
+            <label for="id_residual">Result</label>
+            {{form1.residual}}
+        </div>
+
+        <p>
+            <input type="submit" name="edit_hazard" value="submit" class="ui button">
+        </p>
+
+    </div>
+</form>

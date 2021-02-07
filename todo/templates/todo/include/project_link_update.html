@@ -1,0 +1,52 @@
+<form action='' id="project_link_form" name="edit_link" method="post">
+    {% csrf_token %}
+
+    <div class="mt-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"
+                    id="inputGroup-sizing-default">Planning Folder</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default" id="id_SPOT_link"
+                name="SPOT_link"
+                value="{% if form3.SPOT_link.value != None %}{{ form3.SPOT_link.value }}{% endif %}">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"
+                    id="inputGroup-sizing-default">EGBC Folder</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default" id="id_EGBC_link"
+                name="EGBC_link"
+                value="{% if  form3.EGBC_link.value != None %}{{ form3.EGBC_link.value }}{% endif %}">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"
+                    id="inputGroup-sizing-default">SBD Folder</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default" id="id_SBD_link"
+                name="SBD_link"
+                value="{% if form3.SBD_link.value != None %}{{ form3.SBD_link.value }}{% endif %}">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"
+                    id="inputGroup-sizing-default">PPM Site</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default" id="id_PPM_link"
+                name="PPM_link"
+                value="{% if form3.PPM_link.value != None %}{{ form3.PPM_link.value }}{% endif %}">
+        </div>
+
+        <p>
+            <input type="submit" name="edit_link" value="Submit"
+                class="btn btn-primary btn-sm">
+        </p>
+
+    </div>
+</form>

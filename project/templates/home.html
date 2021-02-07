@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %}django-todo{% endblock %}
+
+{% block content %}
+
+<h1>DISTRIBUTION ENGINEERING SOCIETY</h1>
+
+<div class="card mt-4 shadow-sm">
+  <div class="card-header">
+    <strong>
+      ENGINEER LOGINS
+    </strong>
+  </div>
+  <div class="card-body">
+    <p>
+      You have to log in to use the functions.
+    </p>
+
+    <p>
+      {% if user.is_authenticated %}
+      You are already logged in.
+      {% else %}
+      <a class="ui button" type="button" href="login/" id="loginlink">Log
+        in</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="modal" id="userlogin" tabindex="-1" role="dialog" aria-labelledby="login"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold" id="modaltitle">USER
+          LOGIN
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4 bg-light">
+        <div class="collapse show">
+          {% include 'registration/login_page.html' %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button hidden type="button" class="btn btn-secondary btn-sm"
+          data-dismiss="modal">Close</button>
+        <button hidden type="button" class="ui button" id="submitlogin" value="Submit">
+          Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

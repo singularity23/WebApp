@@ -1,0 +1,371 @@
+{% extends "filemanager/filemanager_base.html" %}
+
+{% load i18n static %}
+
+{% block content %}
+
+{#<!-- {% url 'filemanager:browser' %}{% if popup %}&amp;popup=1{% endif %} -->#}
+
+
+<div class="card-deck mb-3">
+  <div class="card shadow-sm p-0">
+
+    <div class="card-body">
+      <div class="card-title">
+        File Manager
+      </div>
+      <p class="card-text">
+        <div class="row d-flex">
+          <div class="col-sm-6">
+            {% include "filemanager/filemanager_get_root.html" %}
+
+          </div>
+          <div class="col-sm-6">
+            {% comment %}
+            <!--     <button id="create-directory-btn"
+      data-href="{% url 'filemanager:create-directory' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}"
+      class="btn btn-primary">Create Directory</button> -->{% endcomment %}
+            <div class="btn-group" role="group" aria-label="directory-actions">
+
+              <button class="btn btn-outline-secondary-sm" id="create-directory-btn" type="button"
+                data-href="{% url 'filemanager:create-directory' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}"
+                data-toggle="modal" data-target="#create-directory">
+                Create Directory </button>
+              <button class="btn btn-outline-secondary-sm" id="upload-file-btn" type="button"
+                data-href="{% url 'filemanager:upload' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}"
+                data-toggle="modal" data-target="#upload-file">
+                Upload </button>
+              <button class="btn btn-outline-primary-sm" id="rename-file-btn" type="button"
+                data-href="{% url 'filemanager:rename' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}"
+                data-toggle="modal" data-target="#rename-file">
+                Rename </button>
+              <button class="btn btn-outline-warning-sm" id="delete-file-btn" type="button"
+                data-href="{% url 'filemanager:delete' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}"
+                data-toggle="modal" data-target="#filedetails">
+                Delete </button>
+              <form class="form-inline" id="searchform" action="" method="get"
+                accept-charset="utf-8">
+                <div class="search-panel form-group">
+                  <button type="button" class="btn btn-outline-primary-sm dropdown-toggle"
+                    data-toggle="dropdown">
+                    <span id="search_concept">Filter by</span> <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropdown-item" href="#everywhere">Search Everywhere</a></li>
+                    <li class="divider"></li>
+                    <li><a class="dropdown-item" href="#here">Search Here</a></li>
+                  </ul>
+                </div>
+                <div class="form-group">
+                  <input type="hidden" name="search_param" id="search_param" value="everywhere">
+                  <label for="searchbox"></label><input class="search-query form-control" name="q" id="searchbox" type="text"
+                                                        placeholder="Search">
+                  <button class="btn btn-outline-warning-sm" type="submit">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck mb-5">
+  <div class="card shadow-sm p-0">
+
+    <div class="card-body">
+      <div class="card-title mb-3">
+        {% include "filemanager/filemanager_breadcrumbs.html" %}
+      </div>
+
+      <div class="card-text text-sm">
+        <table class="table table-hover" id="directory-listing">
+          <thead>
+            <tr>
+              {% if popup %}<th>{% trans "Select" %}</th>{% endif %}
+              <th class="text-left">
+                <label for="check-all"></label>
+                <input class="action-checkbox" type="checkbox"
+                    name="checkAll" id="check_all"/>
+
+              </th>
+              <th class="text-left">{% trans "Type" %}</th>
+              <th class="text-left">{% trans "Name" %}</th>
+              <th class="text-left">{% trans "Size" %}</th>
+              <th class="text-left">{% trans "Date" %}</th>
+              {% if not popup %}<th class="text-left">{% trans "Info" %}</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in files %}
+            {% if file.filetype == "Directory" %}
+            <tr data-href="?path={{file.filepath}}{% if popup %}&amp;popup=1{%endif%}">
+              <td><label for="check-dir"></label><input class="checkbox" type="checkbox" id="check-dir"
+                                                        data-url="{{file.fileurl}}{% if popup %}&amp;popup=1{% endif %}" /></td>
+              <td><span><i class="bi bi-folder text-primary"></i></span></td>
+
+              <td class="clickable-row">
+                <a
+                  href="?path={{file.filepath}}&directory={{directory}}{% if popup %}&amp;popup=1{% endif %}">
+                  {{file.filename}}
+                </a>
+              </td>
+              <td>{{file.filesize}}</td>
+              <td>{{file.filedate}}</td>
+              <td>
+                <a class="file-info-button" href="#filedetails"
+                  data-href="{% url 'filemanager:detail'%}?path={{file.filepath}}"
+                  data-toggle="modal">
+                  <span>
+                    <i class="bi bi-info-circle text-primary"></i>
+                  </span>
+                </a>
+              </td>
+            </tr>
+
+            {% else %}
+            <tr data-href="{{file.fileurl}}{% if popup %}&amp;popup=1{% endif %}">
+              {% if popup %}
+              <a href="?path={{file.filepath}}{% if popup %}&amp;popup=1{% endif %}">
+                <td><a
+                    href="javascript: Filemanager.select('{{file.filepath}}');">{% trans "Select" %}</a>
+                </td>
+                {% endif %}
+                <td><label for="check-file"></label><input class="checkbox" type="checkbox" id="check-file"
+                                                           data-url="{{file.fileurl}}{% if popup %}&amp;popup=1{% endif %}" />
+                </td>
+                <td><span><i class="bi bi-file text-primary"></i></span></td>
+                <td class="clickable-row"><a
+                    href="{{file.fileurl}}/{{file.filename}}{% if popup %}&amp;popup=1{% endif %}">
+                    {{file.filename}}
+                  </a></td>
+                <td>{{file.filesize}}</td>
+                <td>{{file.filedate}}</td>
+              </a>
+              <td>
+                <a class="file-info-button" href="#filedetails"
+                  data-href="{% url 'filemanager:detail'%}?path={{file.filepath}}"
+                  data-toggle="modal">
+                  <span><i class="bi bi-info-circle text-primary"></i>
+                  </span>
+                </a>
+              </td>
+            </tr>
+            {% endif %}
+            {% empty %}
+            <tr>
+              <td colspan="5">
+                {{ empty }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+<!-- Create Directory Modal -->
+
+
+<div class="modal" id="create-directory" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Modal Header</div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <form class="form-inline" method="post"
+            action="{% url 'filemanager:create-directory' %}?path={{path}}&directory={{directory}}{% if popup %}&amp;popup=1{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="path" value="{{path}}">
+            <div class="form-group">
+              <label for="id_directory_name">Directory name:</label>
+              <input class="form-control" type="text" name="directory_name" required
+                id="id_directory_name" />
+            </div>
+            <button type="submit" class="btn btn-outline-primary-sm">Create Directory</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal" id="upload-file" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Path</h4>
+      </div>
+      <div class="modal-body">
+        <div id="show-files">
+        </div>
+        <div>
+          <form class="form-inline" id="fileupload" data-url="{% url 'filemanager:upload-file' %}">
+            <input type="hidden" name="path" value="{{path}}">
+            <div class="form-group">
+              <label for="id_directory_name">Upload Files:</label>
+              <input class="form-control" type="file" name="files[]" multiple="">
+
+            </div>
+            <button id='upload-btn' type="button" class="btn btn-outline-primary-sm">Upload</button>
+          </form>
+        </div>
+        <br>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Rename Modal -->
+<div class="modal" id="rename-file" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Header</h4>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-inline" id='rename-form' method="post"
+          action="{% url 'filemanager:rename' %}?path={{path}}{% if popup %}&amp;popup=1{% endif %}">
+          {% csrf_token %}
+          <input type="hidden" name="path" value="{{path}}">
+          <div class="form-group">
+            <label for="id_input_name">New name:</label>
+            <input class="form-control" type="text" name="input_name" required id="id_input_name" />
+          </div>
+          <button type="submit" class="btn btn-outline-primary-sm">Rename</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+
+<div class="modal" id="delete-file" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Remove</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary-sm"
+          data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="remove-files">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Detail Modal -->
+
+
+<div class="modal" tabindex="-1" id="filedetails" role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <table id="file-info-table" class="table table-bordered">
+            <tbody>
+              <tr>
+                <td class="table-title">Filename</td>
+                <td class="modal-filename">{{file.filename}}</td>
+              </tr>
+              <tr>
+                <td class="table-title">Filesize</td>
+                <td class="modal-filesize">{{file.filesize}}</td>
+              </tr>
+              <tr>
+                <td class="table-title">Filedate</td>
+                <td class="modal-filedate">{{file.filedate}}</td>
+              </tr>
+              <tr>
+                <td class="table-title">Url</td>
+                <td class="modal-url">{{file.fileurl}}</td>
+              </tr>
+              <tr>
+                <td class="table-title">Filepath</td>
+                <td class="modal-filepath">{{file.filepath}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/filemanager.js' %}"></script>
+
+<!-- <script src="{% static 'js/other.js' %}"></script>
+<script src="{% static 'js/checkbox.js' %}"></script>
+<script src="{% static 'js/jszip-utils.js' %}"></script>
+<script src="{% static 'js/zip_down.js' %}"></script>
+<script src="{% static 'js/FileSaver.js' %}"></script>
+<script src="{% static 'js/js-search.js' %}"></script>
+
+<script src="{% static 'js/vendor/jquery.ui.widget.js' %} "></script>
+<script src="{% static 'js/jquery.iframe-transport.js' %} "></script>
+<script src="{% static 'js/jquery.fileupload.js' %} "></script> -->
+
+{% endblock %}

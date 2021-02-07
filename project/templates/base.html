@@ -1,0 +1,147 @@
+﻿{% load static %}
+<!doctype html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>EngSoc</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/assets/img/brand/favicon.png" rel="icon" type="image/png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700;1,800&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet">
+    <!-- Icons -->
+    <link href="/static/css/semantic.min.css" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link href="/static/css/semantic.min.css" rel="stylesheet">
+    <link href="/static/css/select2.min.css" rel="stylesheet">
+    <link ref="preload" href="/static/css/icons.woff2" as="style">
+    {# Additional CSS or html head data inserted by templates here. #}
+    {% block extrahead %}
+    {% endblock extrahead %}
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="ui body container">
+      <div class="ui visible left vertical menu thin sidebar">
+
+        <img class="logo" src="/static/assets/img/brand/bch.svg" style="min-height:40px">
+        <div class="text-center">
+          <h5>{% now "N d, H:i T" %}</h5>
+        </div>
+        {% include 'includes/weather widget.html' %}
+
+        {% if user.is_authenticated %}
+        <div class="item text-center">
+          <h5>Welcome, {{ user.first_name}}</h5>
+        </div>
+        {%endif%}
+
+        {% if user.is_authenticated %}
+        {% if project_id %}
+        <a href="{% url 'todo:hazard_list' project_id project_slug %}" class="item text-center">
+          Hazard List </a>
+        <a href="{% url 'todo:team_list' project_id project_slug %}" class="item text-center">
+          Team List </a>
+        {%endif%}
+        {%endif%}
+
+      </div>
+
+      <div class="ui fixed top main menu">
+        <a href="/" class="header item">
+          Home
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'todo:project_list' %}" class="item">Safety by Design</a>
+        <div class="ui simple dropdown item">
+          Dropdown <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item" href="#">Link Item</a>
+            <a class="item" href="#">Link Item</a>
+            <div class="divider"></div>
+            <div class="header">Header Item</div>
+            <div class="item">
+              <i class="dropdown icon"></i>
+              Sub Menu
+              <div class="menu">
+                <a class="item" href="#">Link Item</a>
+                <a class="item" href="#">Link Item</a>
+              </div>
+            </div>
+            <a class="item" href="#">Link Item</a>
+          </div>
+        </div>
+        <a href="{% url 'logout' %}" class="header item">
+          Log Out
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- Site content !-->
+      <div class="element">
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}
+        <div class="ui floating {{ message.tags }} {% endif %} message" id="message_container">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <p>{{ form.non_field_errors }}</p>
+
+        <!-- Begin page content -->
+        {% block content %}
+
+        {% endblock content %}
+        <!-- jQuery and Bootstrap core JS, plus Popper -->
+        <footer></footer>
+      </div>
+
+
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+      <script src="{% static 'js/semantic.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper-utils.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1/dist/umd/popper-utils.min.js"></script>
+      <script src="{% static 'js/select2.min.js' %}"></script>
+
+      <script>
+        const message_ele = document.getElementById("message_container");
+        if (message_ele != null) {
+          setTimeout(function () {
+            message_ele.style.display = "none";
+            console.log(message_ele);
+          }, 3000);
+        };
+
+      </script>
+      {% block extra_js %}
+
+      {% endblock extra_js %}
+  </body>
+
+</html>

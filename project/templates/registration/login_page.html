@@ -1,0 +1,30 @@
+<form method="post" action="todo/">
+  {% csrf_token %}
+  <div class="card mx-auto d-block mb-1" style="width: 24rem;">
+    <img class="card-img-top rounded mx-auto d-block rounded-circle mt-4"
+      src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" style="width:50%; height:50%"
+      alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <p class="card-text">
+        <div class="form-group">
+          <p>
+            <label for="id_username" class=" font-weight-bold">Username:</label>
+            <input class="form-control" type="text" name="username" autofocus="" maxlength="254"
+              required="" id="id_username" placeholder="Username">
+          </p>
+        </div>
+        <div class="form-group">
+          <p>
+            <label for="id_password" class="font-weight-bold">Password:</label>
+            <input class="form-control" type="password" name="password" required="" id="id_password"
+              placeholder="Password">
+          </p>
+        </div>
+      </p>
+    </div>
+    <div class="card-footer">
+      <input type="submit" name="login" value="Login" class="ui button">
+    </div>
+  </div>
+</form>

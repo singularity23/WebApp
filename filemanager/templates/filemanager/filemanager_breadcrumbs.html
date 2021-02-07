@@ -1,0 +1,20 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+
+    {% for breadcrumb in breadcrumbs %}
+    {% if forloop.last %}
+    <li class="breadcrumb-item active">
+      <a class="breadcrumb-item active"
+        href="{% url 'filemanager:browser' %}?path={{breadcrumb.path}}&directory={{directory}}{% if popup %}&amp;popup=1{% endif %}">{{breadcrumb.label}}
+      </a>
+    </li>
+    {%else%}
+    <li class="breadcrumb-item">
+      <a class="breadcrumb-item"
+        href="{% url 'filemanager:browser' %}?path={{breadcrumb.path}}&directory={{directory}}{% if popup %}&amp;popup=1{% endif %}">{{breadcrumb.label}}
+      </a>
+    </li>
+    {%endif%}
+    {% endfor %}
+  </ol>
+</nav>

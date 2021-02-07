@@ -1,0 +1,226 @@
+[
+    {
+        "model": "todo.hazard",
+        "pk": 1,
+        "fields": {
+            "description": "Existing Infrastructure or installation poses hazards",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "including poor condition, inadequate clearances, etc.",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 2,
+        "fields": {
+            "description": "Hazardous site conditions",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "For example, heavy traffic, avalanche path, flood plain, water crossings, rail crossings, uneven/rocky terrain, heavy vegetation, unstable slope, very soft soil, salt spray, air contamination etc.",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 3,
+        "fields": {
+            "description": "Heavy traffic area - Vehicular/ Pedestrians",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "Poses hazards to public and during construction",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 4,
+        "fields": {
+            "description": "Soft soils / High Water Table / Earthquake Prone area",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "Safety hazards during construction, potential damage to equipment",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 5,
+        "fields": {
+            "description": "Non-standard design",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "Case specific hazards analysis, requires Stake Holder engagement, Peer Review and POR signed and sealed Designs",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 6,
+        "fields": {
+            "description": "Chemical or Biohazard Contamination",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "including petrochemical spills, methane gas accumulation, needles",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 7,
+        "fields": {
+            "description": "Excavating in close proximity to structures",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "including building foundations, bridge abutments",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 8,
+        "fields": {
+            "description": "Substation Egress",
+            "risk_level": 1,
+            "control_measure": null,
+            "note": "To identify hazards with",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 9,
+        "fields": {
+            "description": "Stray Energy",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Caused due to the close proximity of substations, transmission lines, or other distribution lines.",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 10,
+        "fields": {
+            "description": "Crossing or proximity to high pressure pipelines or other UG utilities",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Hazards during construction and potential damage to equipment",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 11,
+        "fields": {
+            "description": "Congestion creating inadequate work space - ergonomic issues",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Hazards to workers",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 12,
+        "fields": {
+            "description": "Equipment installation in confined space",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Safety hazards to workers in confined space",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 13,
+        "fields": {
+            "description": "High resistivity soils, poor grounding",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Lead to electrical hazards",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 14,
+        "fields": {
+            "description": "Potential of new lines inducing voltages in nearby parallel metal structures",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Electrical hazards to public. metal structures including but not limited to other distribution lines, rails, pipe lines, metallic buildings, fences etc.",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 15,
+        "fields": {
+            "description": "Sensitive areas due to presence of archeological, environmental or cultural prospective",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Engage stakeholders",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    },
+    {
+        "model": "todo.hazard",
+        "pk": 16,
+        "fields": {
+            "description": "Birds and other wild life accidental contact of live equipment and lines",
+            "risk_level": 2,
+            "control_measure": null,
+            "note": "Hazards to equipment",
+            "details": "",
+            "res_risk_level": null,
+            "project": 26,
+            "assigned_to": null
+        }
+    }
+]

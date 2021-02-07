@@ -1,0 +1,567 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Project {{ project.number }}{% endblock %}
+
+{% block content %}
+{% if project != None %}
+<div class="card-deck pb-4">
+    <div class="card col-sm-7 p-0">
+        <div class="card-header">
+            <h3>{{ project.number }} {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}</h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title font-weight-bold">
+            </div>
+            <div class="card-subtitle mb-1 text-muted">
+                {% if project.title %}{{ project.title }}{% endif %}</div>
+            {% if project.project_scope %}
+            <div class="card-text text-sm">{{ project.project_scope|safe|urlize|linebreaks }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card col-sm-3 p-0">
+        <div class="ui segment" style="border: 0px; box-shadow: 0 0 0 0;">
+            <div class="ui segments d-flex justify-content-between" style="box-shadow: 0 0 0 0;">
+                <div class="ui segment  d-flex justify-content-between">
+                    <strong>Engineer:</strong>
+                    {% if project.POR %} {{ project.POR.get_full_name }} {% else %} TBD
+                    {% endif %}
+                </div>
+
+                <div class="ui segment  d-flex justify-content-between">
+                    <strong>Stage:</strong>
+                    {% if project.current_stage %} {{ project.current_stage }} {% else %} TBD {% endif %}
+                </div>
+                <div class="ui segment d-flex justify-content-between">
+                    <strong>Region/Location:</strong>
+                    {% if project.region %} {{ project.region }}{% endif %}/{% if project.location %}
+                    {{ project.location }} {% else %} TBD
+                    {% endif %}
+                </div>
+                <div class="ui segment  d-flex justify-content-between">
+                    <strong>In Service Date:</strong>
+                    {% if project.in_service_date %} {{ project.in_service_date }}
+                    {% else %} TBD {% endif %}
+                </div>
+            </div>
+            <div class="ui right floated buttons" role="group" aria-label="ProjectButtons">
+                <button class="ui small button" id="EditProjectButton" type="button"
+                    data-toggle="collapse" data-target="#EditProject">
+                    Edit
+                </button>
+                <div class="or"></div>
+
+                <button class="ui button" id="DeleteProjectButton" type="button"
+                    data-toggle="modal" data-target="#DeleteProject">
+                    Delete Project
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="card col-sm-2 p-0">
+        <div class="ui segment" style="border: 0px; box-shadow: 0 0 0 0;">
+            <div class=" ui segments d-flex justify-content-between" style="box-shadow: 0 0 0 0;">
+
+                <div class="ui segment  d-flex justify-content-between">
+                    <a class="font-weight-bold">Planning
+                        :</a>
+                    <a class="link" href="{% if project.SPOT_link %} {{ project.SPOT_link }}
+            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+                        title="Click to copy link to clipboard">Link</a>
+                </div>
+                <div class="ui segment  d-flex justify-content-between">
+                    <a class="font-weight-bold">EGBC:</a>
+                    <a class="link" href="{% if project.EGBC_link %} {{ project.EGBC_link }}
+            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+                        title="Click to copy link to clipboard">Link</a>
+                </div>
+                <div class="ui segment  d-flex justify-content-between">
+                    <a class="font-weight-bold">SBD:</a>
+
+                    <a class="link" href="{% if project.SBD_link %} {{ project.SBD_link }}
+            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+                        title="Click to copy link to clipboard">Link</a>
+                </div>
+                <div class="ui segment  d-flex justify-content-between">
+                    <a class="font-weight-bold">PPM:</a>
+
+                    <a class="link" href="{% if project.PPM_link %} {{ project.PPM_link }}
+            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+                        title="Click to copy link to clipboard">Link</a>
+                </div>
+            </div>
+            <button class="ui right floated button" id="EditLinkButton" type="button"
+                data-toggle="modal" data-target="#EditLink">
+                Edit Link
+            </button>
+            <input hidden class="copytext" id="copytext" type="text" value="" tabindex="-1" aria-hidden='true'>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="collapse pb-4" id="EditProject">
+    <div class="card-deck mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-text text-sm">
+                    {% include 'todo/include/project_edit.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="ui celled table" style="border-top: none">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Hazard</th>
+            <th>Risk Level</th>
+            <th>Control Measure</th>
+            <th>Residual Risk</th>
+            <th>Assigned to</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for hazard in hazards %}
+        <tr>
+            <td class="collapsing">
+                {{ hazard.index }}
+            </td>
+            <td><a
+                    href="{% url 'todo:hazard_details' project_id project_slug hazard.id %}">{{ hazard.description }}</a>
+            </td>
+            <td class="{{ hazard.risk_level.color }}">
+                <span>
+                    {% if hazard.risk_level %}{{ hazard.risk_level }}{% else %}TBD{% endif %}
+                </span>
+            </td>
+            <td>
+                {% if hazard.control_measure %}{{ hazard.control_measure }}{% else %}TBD{% endif %}
+            </td>
+            <td class="{{ hazard.color }}">
+                <span>
+                    {% if hazard.res_level %}{{ hazard.res_level }}{% else %}TBD{% endif %}
+                </span>
+            </td>
+            <td>
+                {% if hazard.assigned_to %}{{ hazard.assigned_to }}{% else %}TBD{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot class="full-width">
+        <tr>
+            <th></th>
+            <th colspan="5">
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="ui right floated buttons">
+                        <input class="ui small button" type="submit" value="Load Default"
+                            id="load_hazard"
+                            name="load_hazard">
+                        <input type="hidden" name='action' value='load_defaults'>
+
+                        <div class="or"></div>
+
+                        <button type="button" class="ui button" id="AddHazardButton"
+                            data-toggle="collapse" data-target="#AddHazard">
+                            Add Hazard
+                        </button>
+                    </div>
+                </form>
+                <span class="ui left aligned header">
+                    <h3>List of hazards </h3>
+                </span>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="collapse pb-4" id="AddHazard">
+    <div class="card-deck mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-text text-sm">
+                    {% include 'todo/include/hazard_edit.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card-deck pt-4 pb-4">
+
+    <div class="card col-sm-9 p-0">
+        <div class="card-header">
+            <h4 class="pt-0">Stakeholder Engagement</h4>
+        </div>
+        <div class="card-body">
+            {% if engagements %}
+
+            <div class="ui segments" style="box-shadow: 0 0 0 0;">
+                {% for engagement in engagements %}
+                <div class="ui segment">
+
+                    <h6><strong>{{ engagement.date|date:"F d, Y" }}</strong>- discussion with
+                        <strong>{{ engagement.stakeholders_string }}</strong></h6>
+                    <div class="ui section divider"></div>
+
+                    <p>{{ engagement.body|safe|urlize|linebreaks }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="card-footer" style="padding-bottom:13px">
+            <form action="" method="post" class="d-flex">
+                {% csrf_token %}
+                <div class="form-group col-sm-9 pl-0 mb-0">
+                    <label for="id_body">
+                        <h4>Engagement Details</h4>
+                    </label>
+                    <textarea type="text" class="form-control" name="body" id="id_body" style="min-height: 140px"
+                        required></textarea>
+
+                </div>
+                <div class="form-group col-sm-3 pl-0 pr-0 mb-0">
+                    <label for="id_stakeholders">
+                        <h4>Stakeholders</h4>
+                    </label>
+                    {{ form4.stakeholders }}
+                    <label for="id_date" class="pt-2">
+                        <h4>Date</h4>
+                    </label>
+                    <input type="date" class="form-control mb-2" id="id_date" name="date"
+                        value="{{ form4.date.value|date:'Y-m-d' }}">
+                    <div class="pt-2">
+                        <input class="ui button" type="submit" name="edit_engagement"
+                            value="Submit">
+                    </div>
+
+                </div>
+
+
+                <div class="form-group col-md-2">
+                    <label for="id_project" hidden>Project</label>
+                    <input type="project" class="form-control" id="id_project" name="project"
+                        value="{{ form4.project.value }}" hidden>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div class="card col-sm-3 p-0">
+        <div class="ui segment" style="border: 0px; box-shadow: 0 0 0 0;">
+            <!--       <div id="AddPerson" class="collapse">
+        {% include 'todo/include/person_edit.html' %}
+      </div> -->
+
+            <h4 class="pt-0">
+                Project Team
+            </h4>
+
+            <div class="ui segments" style="border: 0px; box-shadow: 0 0 0 0;">
+                {% for person in persons %}
+                {% if person.is_team_member %}
+                <a data-toggle="modal" id="initial_edit" href="#EditPerson" data-id="{{ person.id }}"
+                    data-role="{{ person.role }}" data-fname="{{ person.first_name }}"
+                    data-lname="{{ person.last_name }}" data-email="{{ person.Email }}"
+                    data-team="{{ person.is_team_member }}" data-stakeholder="{{ person.is_stakeholder }}"
+                    data-url="{% url 'todo:team_edit' project_id project_slug person.id %}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between">
+                    <strong>{{ person.role }}:</strong> {{ person.first_name }}
+                    {{ person.last_name }}
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <h4 class="pt-0">
+                Stakeholders
+            </h4>
+
+            <div class="ui segments" style="border: 0px; box-shadow: 0 0 0 0;">
+
+                {% for person in persons %}
+                {% if person.is_stakeholder %}
+
+                <a data-toggle="modal" id="initial_edit" href="#EditPerson" data-id="{{ person.id }}"
+                    data-role="{{ person.role }}" data-fname="{{ person.first_name }}"
+                    data-lname="{{ person.last_name }}" data-email="{{ person.Email }}"
+                    data-team="{{ person.is_team_member }}" data-stakeholder="{{ person.is_stakeholder }}"
+                    data-url="{% url 'todo:team_edit' project_id project_slug person.id %}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between">
+                    <strong>{{ person.role }}:</strong> {{ person.first_name }}
+                    {{ person.last_name }}
+                </a>
+
+                {% endif %}
+                {% endfor %}
+
+            </div>
+            <div class="pb-3">
+                <button type="button" class="ui right floated button" id="AddPersonButton"
+                    data-toggle="modal" data-target="#EditPerson">
+                    Add Person
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" id="EditPerson" tabindex="-1" role="dialog" aria-labelledby="editperson"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ project.number }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p=4">
+                {% include 'todo/include/person_edit.html' %}
+            </div>
+            <div class="modal-footer">
+                <button class="ui red button" id="DeletePersonButton" type="button"
+                    data-toggle="collapse" data-target="#DeletePerson">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="DeleteProject" tabindex="-1" role="dialog" aria-labelledby="deleteproject"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ project_id }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p=4">
+                <div class="collapse show">
+                    {% include 'todo/include/project_delete.html' %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="ui small button"
+                    data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="EditLink" tabindex="-1" role="dialog" aria-labelledby="deleteproject"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectlink">Links</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p=4">
+                <div class="collapse show">
+                    {% include 'todo/include/project_link_update.html' %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="ui small button"
+                    data-dismiss="modal">Close
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery.tablednd_0_5.js' %}" type="text/javascript"></script>
+
+<script>
+    $('#id_stakeholders').select2({
+        placeholder: 'Select stakeholders',
+        theme: 'classic'
+    });
+
+
+    $("#EditPerson").on("shown.bs.modal", function (event) {
+        var target = $(event.relatedTarget); // Button that triggered the modal
+        var url = target.data("url");
+        var id = target.data("id");
+        var role = target.data("role");
+        var fname = target.data("fname");
+        var lname = target.data("lname");
+        var email = target.data("email");
+        var team = target.data("team");
+        var stakeholder = target.data("stakeholder");
+        console.log(target)
+
+        var modal = $(this);
+        modal.find(".modal-title").text(fname + " " + lname);
+        modal.find("#id_role").val(role);
+        modal.find("#id_first_name").val(fname);
+        modal.find("#id_last_name").val(lname);
+        modal.find("#id_Email").val(email);
+        modal.find("#id_person_id").val(id);
+        console.log(url)
+
+        if (stakeholder == "False") {
+            modal.find("#id_is_stakeholder").prop("checked", false);
+            modal.find("#id_is_team_member").prop("checked", true);
+        } else {
+            modal.find("#id_is_stakeholder").prop("checked", true);
+            modal.find("#id_is_team_member").prop("checked", false);
+        }
+
+
+        $.ajax({
+                type: "GET",
+                url: url,
+            })
+            .done(function (data, textStatus, jqXHR) {
+                //console.log(data)
+                //modal.find(".modal-body").html(data);
+                //modal.modal("show");
+                formAjaxSubmit(modal, url, null, null);
+            })
+            .fail(function (jqXHR, testStatus, errorThrown) {
+                alert("SERVER ERROR: " + errorThrown);
+            });
+
+        function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
+            var form = modal.find("#person_form");
+            var header = $(modal).find(".modal-header");
+            // use footer save button, if available
+            var btn_save = modal.find("#UpdatePerson");
+            if (btn_save) {
+                modal.find(".modal-body form .form-submit-row").hide();
+                btn_save.off().on("click", function (event) {
+                    modal.find("#person_form").submit();
+                });
+            }
+            if (cbAfterLoad) {
+                cbAfterLoad(modal);
+            }
+            setTimeout(function () {
+                modal.find("form input:visible").first().focus();
+            }, 1000);
+            // bind to the form’s submit event
+            $(form).on("submit", function (event) {
+                // prevent the form from performing its default submit action
+                event.preventDefault();
+                header.addClass("loading");
+                //var url = $(this).attr("action") || action;
+                // serialize the form’s content and sent via an AJAX call
+                // using the form’s defined action and method
+                console.log(url)
+
+                $.ajax({
+                    type: $(this).attr("method"),
+                    url: url,
+                    data: $(this).serialize(),
+                    success: function (xhr, ajaxOptions, thrownError) {
+                        // If the server sends back a successful response,
+                        // we need to further check the HTML received
+                        // update the modal body with the new form
+                        $(modal).find(".modal-body").html(xhr);
+                        // If xhr contains any field errors,
+                        // the form did not validate successfully,
+                        // so we keep it open for further editing
+                        if ($(xhr).find(".has-error").length > 0) {
+                            formAjaxSubmit(modal, url, cbAfterLoad,
+                                cbAfterSuccess);
+                        } else {
+                            // otherwise, we've done and can close the modal
+                            $(modal).modal("hide");
+                            location.reload();
+                            if (cbAfterSuccess) {
+                                cbAfterSuccess(modal);
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {},
+                    complete: function () {
+                        header.removeClass("loading");
+                    },
+                });
+            });
+        }
+
+        function afterModalLoad(modal) {
+            console.log("modal %o loaded", modal);
+        }
+
+        function afterModalSuccess(modal) {
+            console.log("modal %o succeeded", modal);
+        }
+
+        var afterLoad = afterModalLoad(modal)
+        var afterSub = afterModalSuccess(modal)
+
+
+    });
+
+    $("#EditPerson").on("hide.bs.modal", function (event) {
+
+        location.reload();
+    });
+
+
+    $("a.link").on('click', function (e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+
+        if (url.includes('http') == true) {
+            var win = window.open(url, '_blank');
+            win.focus();
+
+        } else {
+            var copytext = document.getElementById("copytext");
+            console.log(copytext);
+            console.log(url);
+
+            copytext.value = url;
+            copytext.select();
+            copytext.setSelectionRange(0, copytext.value.length);
+            document.execCommand('copy');
+            $(this).focus();
+
+        }
+
+
+        /* console.log(copytext.value)
+        document.body.appendChild(copytext);
+        copytext.select(); */
+
+
+    });
+
+</script>
+
+
+{% endblock extra_js %}

@@ -1,0 +1,16 @@
+<!-- Footer -->
+<footer class="footer fixed-bottom" style="border-top: 10px solid #004F6C">
+  <div class="row align-items-center justify-content-sm-between">
+    <div class="col-sm-6">
+      <div class="text-center text-sm-left text-primary font-weight-bold">
+        {% if user.is_authenticated %}
+        Logged in as {{ user.get_full_name }}{% endif %}
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="text-center text-sm-right text-primary font-weight-bold">
+        Distribution Engineering @{% now "Y" %}
+      </div>
+    </div>
+  </div>
+</footer>

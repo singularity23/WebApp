@@ -1,0 +1,30 @@
+{
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "*test.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "diffEditor.codeLens": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": false,
+    "python.linting.flake8Enabled": false,
+    "python.linting.mypyEnabled": false,
+    "css.lint.propertyIgnoredDueToDisplay": "ignore",
+    "css.lint.vendorPrefix": "ignore",
+    "css.lint.fontFaceProperties": "ignore",
+    "python.linting.lintOnSave": false,
+    "python.linting.pylintUseMinimalCheckers": false,
+    "git.ignoreLimitWarning": true,
+    "search.searchEditor.reusePriorSearchConfiguration": true
+}

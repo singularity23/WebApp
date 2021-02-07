@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_heading %}{% endblock %}
+{% block title %}{% endblock %}
+{% block content %}
+
+<div class="card-deck pb-5">
+  <div class="card shadow-sm p-0">
+
+    <div class="card-body">
+      <div id="AddHazard" class="collapse">
+        {% include 'todo/include/hazard_edit.html' %}
+      </div>
+      <div class=card-title>
+        List of Hazards
+
+      </div>
+      <div class="card-text text-sm">
+        <table class="table" id="hazardtable">
+          <thead>
+            <tr class="d-flex">
+              <th scope="col" class="col-2 text-left">Hazard</th>
+              <th scope="col" class="col-3 text-left">Note</th>
+              <th scope="col" class="col-1 text-center">Risk Level</th>
+              <th scope="col" class="col-1 text-center">Control Measure</th>
+              <th scope="col" class="col-2">Control Details</th>
+              <th scope="col" class="col-1 text-center">Result Risk</th>
+              <th scope="col" class="col-1 text-center">Assigned to</th>
+              <th scope="col" class="col-1 text-center">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for hazard in hazards %}
+            <tr class="d-flex">
+              <td class="col-2">
+                <a
+                  href="{% url 'todo:hazard_details' project_id project_slug hazard.id %}">{{ hazard.description }}</a>
+              </td>
+              <td class="col-3">
+                <span class="">
+                  {% if hazard.note %}{{ hazard.note }}{% else %}TBD{% endif %}
+
+                </span>
+
+              </td>
+              <td class="col-1 text-center">
+                <span class="{{hazard.risk_level.color}}">
+                  {% if hazard.risk_level %}{{ hazard.risk_level }}{% else %}TBD{% endif %}
+
+                </span>
+
+              </td>
+              <td class="col-1 text-center">
+                {% if hazard.control_measure %}{{ hazard.control_measure }}{% else %}TBD{% endif %}
+              </td>
+              <td class="col-2">
+                {% if hazard.details %}{{ hazard.details }}{% else %}TBD{% endif %}
+              </td>
+              <td class="col-1 text-center">
+                <span class="{{hazard.color}}">
+                  {% if hazard.res_level %}{{ hazard.res_level }}{% else %}TBD{% endif %}
+
+                </span>
+              </td>
+              <td class="col-1 text-center">
+                {% if hazard.assigned_to %}{{ hazard.assigned_to }}{% else %}TBD{% endif %}
+              </td>
+              <td class="col-1 text-center">
+                <form action="{% url 'todo:hazard_delete' project_id project_slug hazard.id %}"
+                  method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="_method" value="delete">
+                  <button class="ui clear button"> <i class="times circle outline red icon" type="submit"
+                      value="submit">
+                    </i> </button>
+                </form>
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="card-footer-fixed d-flex justify-content-end">
+      <div class="btn-group pb-2 pr-2" role="group" aria-label="ProjectButtons">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name='action' value='load_defaults'>
+          <input class="ui button" type="submit" value="Load" id="load_hazard"
+            name="load_hazard">
+          <button type="button" class="ui button" id="AddHazardButton"
+            data-toggle="collapse" data-target="#AddHazard">
+            Add Hazard
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{%endblock%}
