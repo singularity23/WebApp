@@ -107,7 +107,7 @@
 <div class="collapse pb-4" id="EditProject">
     <div class="card-deck mb-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body shadow-sm">
                 <div class="card-text text-sm">
                     {% include 'todo/include/project_edit.html' %}
                 </div>
@@ -310,12 +310,13 @@
                 {% endfor %}
 
             </div>
-            <div class="pb-3">
-                <button type="button" class="ui right floated button" id="AddPersonButton"
-                    data-toggle="modal" data-target="#EditPerson">
-                    Add Person
-                </button>
-            </div>
+
+        </div>
+        <div class="pb-3">
+            <button type="button" class="ui right floated button" id="AddPersonButton"
+                data-toggle="modal" data-target="#EditPerson">
+                Add Person
+            </button>
         </div>
     </div>
 </div>

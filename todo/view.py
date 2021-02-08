@@ -247,6 +247,8 @@ class ProjectDetailView(SingleObjectMixin, View):
                 item.project = self.object
                 item.save()
                 context["form3"] = form3
+                return redirect("todo:project_details", self.project_id, self.project_slug)
+
             else:
                 print("form3 errors")
 
@@ -259,6 +261,8 @@ class ProjectDetailView(SingleObjectMixin, View):
                 item.project = self.object
                 item.save()
                 context["form2"] = form2
+                return redirect("todo:project_details", self.project_id, self.project_slug)
+
             else:
                 print("form2 errors")
 
@@ -270,6 +274,8 @@ class ProjectDetailView(SingleObjectMixin, View):
                 new_item.note = bleach.clean(form1.cleaned_data["note"], strip=True)
                 new_item.save()
                 context["form1"] = form1
+                return redirect("todo:project_details", self.project_id, self.project_slug)
+
             else:
                 print("form1 errors")
 
@@ -295,6 +301,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 item = form.save(commit=False)
                 item.project = self.object
                 item.save()
+
             else:
                 print("form errors")
 
@@ -320,6 +327,8 @@ class ProjectDetailView(SingleObjectMixin, View):
                 # print(item.date)
                 item.save()
                 context["form4"] = form4
+                return redirect("todo:project_details", self.object.id, self.object.slug)
+
             else:
                 print("form4 errors")
 
@@ -380,12 +389,14 @@ class HazardDetailView(SingleObjectMixin, View):
         hazard_id = self.object.id
         hazard_res_id = hazard.res_idex
         hazard_res_level = hazard.res_level
+        print(hazard_res_level)
         print(request.POST)
         form1 = HazardForm(request.user, request.POST, instance=hazard)
         if request.POST.get("edit_hazard") == 'submit' and form1.is_valid():
             item = form1.save(commit=False)
             item.project = self.project
-            item.res_risk_level = RiskLevel.objects.filter(id=hazard_res_id)[0]
+            item.res_risk_level = RiskLevel.objects.filter(pk=hazard_res_id)[0]
+            print(item.res_risk_level)
             item.save()
             # print(form1)
             messages.success(request, "The hazard has been edited.")

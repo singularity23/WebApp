@@ -40,10 +40,10 @@
       <div class="ui visible left vertical menu thin sidebar">
 
         <img class="logo" src="/static/assets/img/brand/bch.svg" style="min-height:40px">
-        <div class="text-center">
-          <h5>{% now "N d, H:i T" %}</h5>
+        <div class="text-center" id="datetime">
+          {% now "N d, Y, H:i, T" %}
         </div>
-        {% include 'includes/weather widget.html' %}
+        {% include 'includes/weather_widget.html' %}
 
         {% if user.is_authenticated %}
         <div class="item text-center">
@@ -60,6 +60,9 @@
         {%endif%}
         {%endif%}
 
+        <div class="ui bottom fixed menu" style="align-items: center; padding: 0 1.618rem 0 1.618rem">
+          <span style="font-size: 0.618rem">Distribution @{% now "Y" %}</span>
+        </div>
       </div>
 
       <div class="ui fixed top main menu">
@@ -130,6 +133,7 @@
       <script src="{% static 'js/select2.min.js' %}"></script>
 
       <script>
+        // hide messages after 3s
         const message_ele = document.getElementById("message_container");
         if (message_ele != null) {
           setTimeout(function () {
@@ -137,6 +141,41 @@
             console.log(message_ele);
           }, 3000);
         };
+
+
+
+        // datetime update
+
+        let options = {
+          hourCycle: 'h24',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZoneName: 'short'
+        };
+
+        function next() {
+          console.log('and then this')
+          setInterval(function () {
+            const w = new Date();
+            document.getElementById("datetime").innerHTML = w.toLocaleString("en-CA", options);
+            console.log(w.getSeconds());
+          }, 60000);
+        };
+
+        const n = new Date();
+        const sec = n.getSeconds() * 1000;
+        document.getElementById("datetime").innerHTML = n.toLocaleString("en-CA", options);
+        console.log(n.getSeconds());
+
+        setTimeout(function () {
+          const e = new Date();
+          document.getElementById("datetime").innerHTML = e.toLocaleString("en-CA", options);
+          next();
+          console.log(e.getSeconds());
+        }, (60000 - sec));
 
       </script>
       {% block extra_js %}

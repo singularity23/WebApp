@@ -57,52 +57,7 @@
   {% endblock %}
 
   {% block extra_js %}
-  <script type="text/javascript">
-    let locations_region = {};
-    locations_region['VI'] = {
-      1: 'Victoria & Saanich',
-      2: 'Western Communities',
-      3: 'Duncan & Gulf Islands',
-      4: 'Central VI',
-      5: 'Northern VI',
-    }
-    locations_region['Interior & NIA'] = {
-      6: 'Northern Interior',
-      7: 'Southern Interior',
-    }
-    locations_region['LMN'] = {
-      8: 'Vancouver',
-      9: 'Burnaby',
-      10: 'North Shore',
-    }
-    locations_region['LMS'] = {
-      11: 'Fraser Valley West',
-      12: 'Fraser Valley East',
-    }
-
-    function change_list() {
-      let regions = document.getElementById("id_region");
-      console.log(regions.options);
-      let locations = document.getElementById("id_location");
-
-      let sel_region = regions.options[regions.selectedIndex].text;
-      console.log(sel_region);
-
-      while (locations.options.length) {
-        locations.remove(0);
-      }
-
-      let regs = locations_region[sel_region];
-      console.log(regs);
-      if (regs) {
-        for (let key in regs) {
-          let value = regs[key];
-          let reg = new Option(value, key);
-          locations.options.add(reg);
-        }
-      }
-    }
-
+  <script>
     $('#project_progress_*').progress();
 
   </script>

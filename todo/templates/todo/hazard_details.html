@@ -18,9 +18,7 @@
       </div>
       {% endif %}
     </div>
-    <div id="HazardEdit" class="collapse">
-      {% include 'todo/include/hazard_edit.html' %}
-    </div>
+
   </div>
 
   <div class="card col-sm-4 p-0">
@@ -39,8 +37,8 @@
         </div>
       </div>
       <div class="ui right floated buttons" role="group" aria-label="ProjectButtons">
-        <button class="ui button" id="EditProjectButton" type="button"
-          data-toggle="collapse" data-target="#EditProject">
+        <button class="ui button" id="HazardEditButton" type="button"
+          data-toggle="collapse" data-target="#HazardEdit">
           Edit
         </button>
         <div class="or"></div>
@@ -49,6 +47,18 @@
           data-toggle="modal" data-target="#DeleteProject">
           Delete Hazard
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="collapse pt-4" id="HazardEdit">
+  <div class="card-deck mb-4">
+    <div class="card">
+      <div class="card-body shadow-sm">
+        <div class="card-text text-sm">
+          {% include 'todo/include/hazard_edit.html' %}
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,22 @@
+<div class="text-center" id="datetime">
+  <h5>{% now "N d, H:i, T" %}</h5>
+</div>
+<script>
+  var n = new Date();
+  var sec = n.getSeconds() * 1000;
+
+  let options = {
+    hourCycle: 'h24',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  };
+
+  setTimeout(function () {
+    document.getElementById("datetime").innerHTML = n.toLocaleString("en-CA", options);
+  }, (60000 - sec));
+
+</script>
