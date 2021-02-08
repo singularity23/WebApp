@@ -151,15 +151,15 @@ class HazardForm(ModelForm):
     """The picklist showing the users to which a new task can be assigned
     must find other members of the group this TaskList is attached to."""
     project = None
-
+    hazard = None
     def __init__(self, user, *args, **kwargs):
         super(HazardForm, self).__init__(*args, **kwargs)
         print(kwargs)
         # project_id = kwargs.get("project_id")
 
         if 'instance' in kwargs:
-            hazard = kwargs.get("instance")
-            self.project = hazard.project
+            self.hazard = kwargs.get("instance")
+            self.project = self.hazard.project
 
             # print("instance: " + str(project))
         elif 'initial' in kwargs:
@@ -189,7 +189,7 @@ class HazardForm(ModelForm):
         self.fields["control_measure"].queryset = ControlMeasure.objects.all()
         self.fields["control_measure"].widget.attrs = {
             "id"   : "id_control_measure",
-            "class": "custom-select custom-select-sm mb-3",
+            "class": "custom-select mb-3",
             "name" : "control_measure",
             }
         self.fields["control_measure"].required = False

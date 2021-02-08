@@ -209,7 +209,7 @@ class Project(models.Model):
 
     @property
     def counts(self):
-        return self.hazard_set.filter(res_risk_level=4).count()
+        return self.hazard_set.filter(res_risk_level=1).count() + self.hazard_set.filter(risk_level=1, control_measure=None).count()
 
 
     def slug_number(self):
@@ -321,7 +321,7 @@ class Hazard(models.Model):
     # related_name = "residual")
     res_risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
                                        blank=True, null=True,
-                                       related_name="res_risk_level")
+                                       related_name="res_risk_level", )
     project = models.ForeignKey(
         Project, blank=True, null=True, on_delete=models.CASCADE,)
 
