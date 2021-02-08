@@ -38,39 +38,47 @@
     <!-- Fixed navbar -->
     <div class="ui body container">
       <div class="ui visible left vertical menu thin sidebar">
-
-        <img class="logo" src="/static/assets/img/brand/bch.svg" style="min-height:40px">
-        <div class="text-center" id="datetime">
-          {% now "N d, Y, H:i, T" %}
+        <div class="item" style="padding-bottom: 0; padding-top: 0">
+          <img class="logo" src="/static/assets/img/brand/bch.svg" style="height:42.05px"></div>
+        <div class="text-center" style="padding-top: 1rem; padding-bottom:5px">
+          <h7 class="" id="datetime">
+            {% now "N d, Y, H:i, T" %}
+          </h7>
         </div>
         {% include 'includes/weather_widget.html' %}
 
         {% if user.is_authenticated %}
-        <div class="item text-center">
+        <div class="item text-center" style="padding-top: 5px">
           <h5>Welcome, {{ user.first_name}}</h5>
         </div>
         {%endif%}
 
         {% if user.is_authenticated %}
         {% if project_id %}
-        <a href="{% url 'todo:hazard_list' project_id project_slug %}" class="item text-center">
+        <a href="{% url 'todo:hazard_list' project_id project_slug %}"
+          class="{% if request.resolver_match.view_name == 'todo:hazard_list' %}active{% endif %} item text-center">
           Hazard List </a>
-        <a href="{% url 'todo:team_list' project_id project_slug %}" class="item text-center">
+        <a href="{% url 'todo:team_list' project_id project_slug %}"
+          class="{% if request.resolver_match.view_name == 'todo:team_list' %}active{% endif %} item text-center">
           Team List </a>
         {%endif%}
         {%endif%}
 
-        <div class="ui bottom fixed menu" style="align-items: center; padding: 0 1.618rem 0 1.618rem">
-          <span style="font-size: 0.618rem">Distribution @{% now "Y" %}</span>
+        <div class="ui bottom fixed menu"
+          style="align-items: flex-end; padding: 0 1.618rem 0 1.618rem; border-top: none">
+          <div class="" style="font-size: 0.618rem; width:100%; text-align: center">Distribution @{% now "Y" %}</div>
         </div>
       </div>
 
       <div class="ui fixed top main menu">
-        <a href="/" class="header item">
+        <a href="/" class="{% if request.resolver_match.view_name == 'home' %}active{% endif %} item header
+          item">
           Home
         </a>
         {% if user.is_authenticated %}
-        <a href="{% url 'todo:project_list' %}" class="item">Safety by Design</a>
+        <a href="{% url 'todo:project_list' %}"
+          class="{% if 'todo' in request.resolver_match.view_name %}active{% endif %} item">Safety by
+          Design</a>
         <div class="ui simple dropdown item">
           Dropdown <i class="dropdown icon"></i>
           <div class="menu">

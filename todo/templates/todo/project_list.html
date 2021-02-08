@@ -3,18 +3,17 @@
 {% block title %}Project List{% endblock %}
 {% block content %}
 
-<div class="ui dividing header d-flex justify-content-between">
-  <h2>PROJECTS</h2>
+<h2 class="ui dividing header d-flex justify-content-between mb-4">
+  PROJECTS
   <button class="ui button" type="button" data-toggle="collapse"
     data-target="#AddProject" aria-expanded="false" aria-controls="AddProject">
     Add Project
   </button>
-</div>
+</h2>
 <div id="AddProject" class="collapse">
   <div class="card card-body shadow-sm">
     {% include 'todo/include/project_edit.html' %}
   </div>
-  <p></p>
 </div>
 
 <div class="ui segments" style="box-shadow: none">
