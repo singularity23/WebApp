@@ -108,7 +108,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
             item.save()
 
         context["form2"] = form2
-
+        print(request.resolver_match.view_name)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -389,13 +389,14 @@ class HazardDetailView(SingleObjectMixin, View):
         hazard_id = self.object.id
         hazard_res_id = hazard.res_idex
         hazard_res_level = hazard.res_level
+        print(hazard_res_id)
         print(hazard_res_level)
         print(request.POST)
         form1 = HazardForm(request.user, request.POST, instance=hazard)
         if request.POST.get("edit_hazard") == 'submit' and form1.is_valid():
             item = form1.save(commit=False)
             item.project = self.project
-            item.res_risk_level = RiskLevel.objects.filter(pk=hazard_res_id)[0]
+            item.res_risk_level = RiskLevel.objects.filter(pk=self.object.res_idex)[0]
             print(item.res_risk_level)
             item.save()
             # print(form1)

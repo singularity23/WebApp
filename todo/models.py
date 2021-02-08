@@ -351,7 +351,6 @@ class Hazard(models.Model):
 
                 return mx_res[self.risk_level.id - 1][self.control_measure.id - 1]
             else:
-
                 return self.risk_level.id
 
     res_idex = property(res_risk)

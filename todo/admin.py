@@ -54,10 +54,10 @@ class AttachmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ["added_by", "hazard"]
 
 class RiskLevelAdmin(admin.ModelAdmin):
-    list_display = ("level",)
+    list_display = ("level", "id")
 
 class ControlMeasureAdmin(admin.ModelAdmin):
-    list_display = ("measure",)
+    list_display = ("measure","id")
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ("project","first_name", "last_name","Email","is_team_member", "is_stakeholder", "role")

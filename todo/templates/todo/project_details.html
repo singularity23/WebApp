@@ -197,7 +197,7 @@
 </div>
 
 
-<div class="card-deck pt-4 pb-4">
+<div class="card-deck pt-4 pb-5">
 
     <div class="card col-sm-9 p-0">
         <div class="card-header">
@@ -228,7 +228,7 @@
                     <label for="id_body">
                         <h4>Engagement Details</h4>
                     </label>
-                    <textarea type="text" class="form-control" name="body" id="id_body" style="min-height: 140px"
+                    <textarea type="text" class="form-control" name="body" id="id_body" style="min-height: 148px"
                         required></textarea>
 
                 </div>
@@ -270,7 +270,7 @@
             <h4 class="pt-0">
                 Project Team
             </h4>
-
+            {% if persons %}
             <div class="ui segments" style="border: 0px; box-shadow: 0 0 0 0;">
                 {% for person in persons %}
                 {% if person.is_team_member %}
@@ -286,11 +286,20 @@
                 {% endif %}
                 {% endfor %}
             </div>
+            {% else %}
+            <div class="ui placeholder">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            {% endif %}
 
             <h4 class="pt-0">
                 Stakeholders
             </h4>
-
+            {% if persons %}
             <div class="ui segments" style="border: 0px; box-shadow: 0 0 0 0;">
 
                 {% for person in persons %}
@@ -310,9 +319,19 @@
                 {% endfor %}
 
             </div>
+            {% else %}
+            <div class="ui placeholder">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            {% endif %}
 
         </div>
-        <div class="pb-3">
+        <div class=card-body></div>
+        <div class="card-footer">
             <button type="button" class="ui right floated button" id="AddPersonButton"
                 data-toggle="modal" data-target="#EditPerson">
                 Add Person
