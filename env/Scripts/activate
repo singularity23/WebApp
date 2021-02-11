@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Documents\Visual Studio 2019\Projects\Git\New Safety\SBD\env"
+VIRTUAL_ENV="D:\Documents\Visual Studio 2019\Projects\Git\WebApp\WebApp\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

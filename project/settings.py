@@ -48,7 +48,6 @@ SESSION_SECURITY_EXPIRE_AFTER = 12
 WSGI_APPLICATION = "project.wsgi.application"
 
 INSTALLED_APPS = (
-    'simple_history',
     "django.contrib.admin",
     "django.contrib.admindocs",
     "django.contrib.auth",
@@ -62,7 +61,9 @@ INSTALLED_APPS = (
     "dal",
     "dal_select2",
     "django_extensions",
-    'filemanager',
+    "filemanager",
+    "simple_history",
+
 )
 # Static files and uploads
 
