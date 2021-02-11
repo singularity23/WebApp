@@ -6,7 +6,34 @@
         {
             "label": "activate",
             "type": "shell",
-            "command": "D:\\Documents\\Visual Studio 2019\\Projects\\Git\\New Safety\\SBD\\env\\Scripts\\activate"
+            "command": "D:\\Documents\\Visual Studio 2019\\Projects\\Git\\WebApp\\WebApp\\env\\Scripts\\activate"
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build",
+            "platform": "python",
+            "dockerBuild": {
+                "tag": "webapp:latest",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: debug",
+            "dependsOn": [
+                "docker-build"
+            ],
+            "python": {
+                "args": [
+                    "runserver",
+                    "127.0.0.1:8000",
+                    "--nothreading",
+                    "--noreload"
+                ],
+                "file": "manage.py"
+            }
         }
     ]
 }
