@@ -1,4 +1,4 @@
-#!d:\documents\visual studio 2019\projects\git\webapp\webapp\env\scripts\python.exe
+#!D:\Documents\Visual Studio 2019\Projects\Git\WebApp\WebApp\env\Scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

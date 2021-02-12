@@ -1,0 +1,933 @@
+html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+*, :after, :before {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit
+}
+
+body {
+    margin: 0;
+    padding: 0
+}
+
+.ng-cloak, .x-ng-cloak, [data-ng-cloak], [ng-cloak], [ng\:cloak], [x-ng-cloak] {
+    display: none!important
+}
+
+svg {
+    display: inline-block;
+    shape-rendering: geometricPrecision
+}
+
+.w-icon {
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto
+}
+
+.w-icon div {
+    width: 100%;
+    height: 100%;
+    position: absolute
+}
+
+.forDays-3 .day:nth-child(1n+4), .forDays-5 .day:nth-child(1n+6) {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    left: -99rem;
+    top: -99rem
+}
+
+.rtl {
+    direction: rtl
+}
+
+#weatherWidget {
+    background: #ffffff;
+    color: #242424;
+    width: 100%;
+    min-width: 5.625rem;
+    font-size: 1rem
+}
+
+#openWeather svg {
+    fill: white;
+    stroke: black;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    opacity: 0;
+    -webkit-transition: all 0.5s 0.2s;
+    -o-transition: all 0.5s 0.2s;
+    transition: all 0.5s 0.2s
+}
+
+#openWeather.highlight svg {
+    opacity: 0.75
+}
+
+.weatherInfo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    color: inherit;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-decoration: none
+}
+
+.weatherInfo img {
+    border: 0
+}
+
+.current .weatherInfo {
+    display: block
+}
+
+.currentWeather {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 10;
+    -ms-flex-positive: 10;
+    flex-grow: 10;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 1.1em;
+    padding: 0.5em 0.45em;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    max-width: 43.75rem
+}
+
+.currentWeather .w-icon {
+    width: 5rem;
+    height: 5rem
+}
+
+.locationName {
+    width: 5.25rem;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-size: 0.8em;
+    margin: 0;
+    font-weight: 900
+}
+
+.forecast .locationName {
+    width: 100%
+}
+
+.locationName span {
+    font-weight: normal;
+    color: #3e3e3e
+}
+
+.both .locationName span, .current .locationName span {
+    display: block
+}
+
+.currentWeatherIcon {
+    text-align: center;
+    width: 5.25rem;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0
+}
+
+.noLabel .currentWeatherIcon {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1
+}
+
+.currentConditions {
+    width: 5.25rem;
+    height: 5rem;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: center
+}
+
+.currentDesc {
+    font-size: 0.7em;
+    color: #3e3e3e;
+    max-width: 12.5rem;
+    padding: 0 1px;
+    margin: 0 auto
+}
+
+.currentTemp {
+    font-size: 1.6em
+}
+
+.weatherForecast {
+    -webkit-box-flex: 12;
+    -ms-flex-positive: 12;
+    flex-grow: 12;
+    font-size: 0.8em;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between
+}
+
+.day {
+    padding: 0.6em 0.3em;
+    width: 14.2857%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+
+.day:nth-child(odd) {
+    background: #f7f7f7
+}
+
+.day .dayName .fullDayName {
+    display: none
+}
+
+.day .dayName .abrDayName {
+    display: inline
+}
+
+.day .dayIcon {
+    margin: 0.6em 0;
+    width: 2.1875rem;
+    height: 2.1875rem
+}
+
+.day .dayIcon .w-icon {
+    width: 2.1875rem;
+    height: 2.1875rem
+}
+
+.day .temps {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: right
+}
+
+.rtl .day .temps {
+    text-align: left
+}
+
+.day .dayTempMax {
+    color: #0b0b0b
+}
+
+.day .dayTempMin {
+    color: #3e3e3e
+}
+
+.forDays-5 .day {
+    width: 20%
+}
+
+.forDays-3 .day {
+    width: 33.3333%
+}
+
+.links {
+    color: rgba(1, 1, 1, 0.35);
+    font-size: 0.65em;
+    padding: 0.25rem;
+    text-align: center;
+    background: #f7f7f7;
+    background: #e6e6e6;
+    border-radius: 0 0 0 0;
+    text-shadow: none
+}
+
+.links a {
+    color: inherit;
+    text-decoration: none
+}
+
+@media only screen and (min-width:1000px) {
+    #weatherWidget .both.yesLabel .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.yesLabel .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.yesLabel .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.yesLabel .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.yesLabel .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.yesLabel .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:850px) {
+    #weatherWidget .forecast.yesLabel .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.yesLabel .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.yesLabel .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.yesLabel .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.yesLabel .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.yesLabel .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:800px) {
+    #weatherWidget .both.noLabel .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.noLabel .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.noLabel .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.noLabel .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.noLabel .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.noLabel .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:700px) {
+    #weatherWidget .forecast.noLabel .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.noLabel .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.noLabel .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.noLabel .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.noLabel .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.noLabel .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:850px) {
+    #weatherWidget .both.yesLabel.forDays-5 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:700px) {
+    #weatherWidget .forecast.yesLabel.forDays-5 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.yesLabel.forDays-5 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.yesLabel.forDays-5 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.yesLabel.forDays-5 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.yesLabel.forDays-5 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.yesLabel.forDays-5 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:650px) {
+    #weatherWidget .both.noLabel.forDays-5 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.noLabel.forDays-5 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.noLabel.forDays-5 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.noLabel.forDays-5 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.noLabel.forDays-5 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.noLabel.forDays-5 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:550px) {
+    #weatherWidget .forecast.noLabel.forDays-5 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.noLabel.forDays-5 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.noLabel.forDays-5 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.noLabel.forDays-5 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.noLabel.forDays-5 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.noLabel.forDays-5 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:650px) {
+    #weatherWidget .both.yesLabel.forDays-3 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:550px) {
+    #weatherWidget .forecast.yesLabel.forDays-3 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.yesLabel.forDays-3 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.yesLabel.forDays-3 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.yesLabel.forDays-3 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.yesLabel.forDays-3 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.yesLabel.forDays-3 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:500px) {
+    #weatherWidget .both.noLabel.forDays-3 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .both.noLabel.forDays-3 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .both.noLabel.forDays-3 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .both.noLabel.forDays-3 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .both.noLabel.forDays-3 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .both.noLabel.forDays-3 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:316px) {
+    #weatherWidget .forecast.noLabel.forDays-3 .weatherForecast {
+        -webkit-box-flex: 30;
+        -ms-flex-positive: 30;
+        flex-grow: 30
+    }
+    #weatherWidget .forecast.noLabel.forDays-3 .dayName {
+        text-transform: capitalize
+    }
+    #weatherWidget .forecast.noLabel.forDays-3 .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .forecast.noLabel.forDays-3 .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .forecast.noLabel.forDays-3 .temps {
+        width: 85%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .forecast.noLabel.forDays-3 .temps>div {
+        width: 50%;
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:700px) {
+    #weatherWidget .both.yesLabel .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.yesLabel .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:600px) {
+    #weatherWidget .both.noLabel .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.noLabel .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:500px) {
+    #weatherWidget .forecast .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .forecast .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:650px) {
+    #weatherWidget .both.yesLabel.forDays-5 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.yesLabel.forDays-5 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:550px) {
+    #weatherWidget .both.noLabel.forDays-5 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.noLabel.forDays-5 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:450px) {
+    #weatherWidget .forecast.forDays-5 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .forecast.forDays-5 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:450px) {
+    #weatherWidget .both.yesLabel.forDays-3 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.yesLabel.forDays-3 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:400px) {
+    #weatherWidget .both.noLabel.forDays-3 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .both.noLabel.forDays-3 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:316px) {
+    #weatherWidget .forecast.forDays-3 .weatherInfo {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+    #weatherWidget .forecast.forDays-3 .locationName span {
+        display: block
+    }
+}
+
+@media only screen and (min-width:700px) {
+    #weatherWidget .current .currentWeather {
+        margin: 0 auto
+    }
+}
+
+@media only screen and (max-width:315px) {
+    #weatherWidget .currentWeather {
+        display: block;
+        overflow: auto
+    }
+    #weatherWidget .locationName {
+        width: 100%
+    }
+    #weatherWidget .currentWeatherIcon {
+        float: left;
+        width: 50%
+    }
+    #weatherWidget .currentConditions {
+        float: left;
+        width: 50%;
+        text-align: center;
+        height: auto;
+        min-height: 5rem
+    }
+    #weatherWidget .weatherForecast {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column
+    }
+    #weatherWidget .day {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        padding: 0.2em 0.2em 0.2em 0.6em;
+        width: auto
+    }
+    #weatherWidget .day .dayName {
+        text-transform: capitalize;
+        width: 41%;
+        text-align: left
+    }
+    #weatherWidget .day .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .day .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .day .temps {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
+    }
+    #weatherWidget .day .temps>div {
+        width: 50%;
+        text-align: center
+    }
+    #weatherWidget .rtl .day {
+        padding: 0.2em 0.6em 0.2em 0
+    }
+    #weatherWidget .rtl .dayName {
+        text-align: right
+    }
+}
+
+@media only screen and (max-width:220px) {
+    #weatherWidget .currentWeather {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column
+    }
+    #weatherWidget .currentWeatherIcon {
+        width: 100%
+    }
+    #weatherWidget .currentConditions {
+        width: 100%;
+        height: auto;
+        min-height: auto
+    }
+    #weatherWidget .day .dayName {
+        width: 24%
+    }
+    #weatherWidget .day .dayName .fullDayName {
+        display: none
+    }
+    #weatherWidget .day .dayName .abrDayName {
+        display: inline
+    }
+}
+
+@media only screen and (max-width:160px) {
+    #weatherWidget .day {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        padding: 0.8em 0
+    }
+    #weatherWidget .day .dayName {
+        width: 100%;
+        text-align: center
+    }
+    #weatherWidget .day .dayName .fullDayName {
+        display: inline
+    }
+    #weatherWidget .day .dayName .abrDayName {
+        display: none
+    }
+    #weatherWidget .day .temps {
+        width: 100%;
+        max-width: 7.5rem
+    }
+    #weatherWidget .rtl .day {
+        padding: 0.7em 0.3em
+    }
+}
+
+.hidden {
+    display: none
+}
+
+@supports (-ms-ime-align:auto) {
+    #weatherWidget .w-icon.climacons-a {
+        -webkit-filter: none!important;
+        filter: none!important
+    }
+}

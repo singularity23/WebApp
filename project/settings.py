@@ -2,6 +2,7 @@
 import os
 
 from django.contrib.messages import constants as message_constants
+import django_on_heroku
 
 DEBUG = True
 
@@ -138,3 +139,4 @@ SIMPLE_HISTORY_HISTORY_CHANGE_REASON_USE_TEXT_FIELD = True
 # TODO_PUBLIC_SUBMIT_REDIRECT = '/'
 TODO_ALLOW_FILE_ATTACHMENTS = True
 # TODO_LIMIT_FILE_ATTACHMENTS = [".jpg", ".gif", ".png", ".csv", ".pdf"]
+django_on_heroku.settings(locals())
