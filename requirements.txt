@@ -28,7 +28,6 @@ django-dbconn-retry==0.1.5
 django-dramatiq==0.5.0
 django-extensions==2.2.7
 django-model-utils==4.1.1
-django-on-heroku==1.1.2
 django-qrcode==0.3
 django-redis==4.10.0
 django-rest-framework==0.1.0
