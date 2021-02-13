@@ -8,7 +8,7 @@ attrs==20.2.0
 autopep8==1.5.4
 backcall==0.2.0
 beautifulsoup4==4.9.3
-bleach==3.2.1
+bleach>=3.3
 certifi==2019.3.9
 cffi==1.14.4
 chardet==3.0.4
@@ -97,7 +97,6 @@ python-decouple==3.3
 python-jsonrpc-server==0.4.0
 python-language-server==0.36.2
 pytz==2019.3
-pywinpty==0.5.7
 pyzmq==20.0.0
 qrcode==6.1
 raven==6.10.0
@@ -117,7 +116,7 @@ tornado==6.1
 traitlets==5.0.5
 ujson==4.0.1
 Unipath==1.1
-urllib3==1.24.1
+urllib3>=1.24.1
 virtualenv==20.4.2
 virtualenv-clone==0.5.4
 wcwidth==0.2.5
