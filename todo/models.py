@@ -420,58 +420,7 @@ class Engagement(models.Model):
     class Meta:
         ordering =['date']
 
-# class ResidualRisk(models.Model):
-#    res_level = models.CharField(max_length=60)
-#    risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE)
-#    control_measure = models.ForeignKey(ControlMeasure,
-#    on_delete=models.CASCADE)
 
-#    def get_residual(self):
-#        return self.res_level
-
-
-#    risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
-#    null=True)
-#    control_measure = models.ForeignKey(ControlMeasure,
-#    on_delete=models.CASCADE, null=True)
-
-#    note = models.TextField(blank=True, null=True)
-#    priority = models.PositiveIntegerField(blank=True, null=True)
-
-#    # Has due date for an instance of this object passed?
-#    def overdue_status(self):
-#        "Returns whether the Tasks's due date has passed or not."
-#        if self.due_date and datetime.date.today() > self.due_date:
-#            return True
-
-#    def __str__(self):
-#        return self.title
-
-#    def get_absolute_url(self):
-#        return reverse("todo:task_detail", kwargs={"task_id": self.id})
-
-#    # Auto-set the Task creation / completed date
-#    def save(self, **kwargs):
-#        # If Task is being marked complete, set the completed_date
-#        if self.completed:
-#            self.completed_date = datetime.datetime.now()
-#        super(Task, self).save()
-
-#    def merge_into(self, merge_target):
-#        if merge_target.pk == self.pk:
-#            raise ValueError("can't merge a task with self")
-
-#        # lock the comments to avoid concurrent additions of comments after
-#        the
-#        # update request.  these comments would be irremediably lost because
-#        of
-#        # the cascade clause
-#        with LockedAtomicTransaction(Comment):
-#            Comment.objects.filter(task=self).update(task=merge_target)
-#            self.delete()
-
-#    class Meta:
-#        ordering = ["priority", "created_date"]
 
 class Comment(models.Model):
     """

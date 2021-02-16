@@ -63,24 +63,7 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].queryset = Stage.objects.all()
         self.fields['current_stage'].required = False
 
-        #self.fields['location'].queryset = Location.objects.none()
-
-        #if 'location' in self.data:
-            #try:
-            #    region_id = int(self.data.get('region'))
-            #    self.fields['location'].queryset = Location.objects.filter(region_id=region_id).order_by('name')
-          #  except (ValueError, TypeError):
-         #       pass  # invalid input from the client; ignore and fallback to empty City queryset
-
-      #  elif self.instance.pk:
-     #       self.fields['location'].queryset = self.instance.region.locations.order_by('name')
-
-
         region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
-
-        #for obj in self.fields['region'].queryset:
-            #if region == obj:
-                #location = forms.ModelChoiceField(queryset=self.region.locations.all(), label=u'Location')
 
         location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
 
