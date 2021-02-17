@@ -21,20 +21,11 @@ urlpatterns = [
 
     path("<int:project_id>/<str:project_slug>/person/<int:person_id>/Delete", views.delete_person,
          name="person_delete"),
+     path("<int:project_id>/<str:project_slug>/edit/<int:person_id>", views.team_list, name="team_edit"),
 
     path("<int:project_id>/<str:project_slug>/hazard/<int:hazard_id>/attachment/remove/<int:attachment_id>/",
          views.remove_attachment, name="remove_attachment"
     ),
-
-    path(
-        "<int:project_id>/<str:project_slug>/completed/",
-        views.project_details,
-        {"view_completed": True},
-        name="project_details_completed",
-    ),
-    path("<int:project_id>/<str:project_slug>/edit/<int:person_id>", views.team_list, name="team_edit"),
-    path("<int:project_id>/<str:project_slug>/delete/", views.del_project, name="del_project"),
-
     path("<int:project_id>/<str:project_slug>/team/", TeamListView.as_view(), name="team_list"),
     path('ajax/load-locations/', view.load_locations, name='ajax_load_locations'),# AJAX
 ]
