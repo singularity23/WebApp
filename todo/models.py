@@ -320,13 +320,13 @@ class Project(models.Model):
 
 
     def SBD_folder(self):
-        SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects\"
+        SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
 
         if self.region and self.location and self.number:
-        SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
-        if not os.path.exists(SBD_path):
-            os.makedirs(SBD_path)
-        return SBD_path
+            SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
+            if not os.path.exists(SBD_path):
+                os.makedirs(SBD_path)
+            return SBD_path
 
     SBD_path = property(SBD_folder)
 
