@@ -295,40 +295,43 @@ class Project(models.Model):
         verbose_name_plural = "Projects"
 
     def EGBC_folder(self):
-        EGBC_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
-        #EGBC_BASE = r"D:\documents"
+        EGBC_base = r"bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
+        #EGBC_base = r"D:\documents"
         if self.region and self.location and self.number:
-            EGBC_path = os.path.join(EGBC_BASE, str(self.region), str(self.location), self.number)
-            if not os.path.exists(EGBC_path):
-                os.makedirs(EGBC_path)
-            return EGBC_path
-
-    EGBC_path = property(EGBC_folder)
-
+            EGBC_path = os.path.join(EGBC_base, str(self.region), str(self.location), self.number)
+            print(EGBC_path)
+            try:
+                if not os.path.exists(EGBC_path):
+                    os.makedirs(EGBC_path)
+                return 'file:\\'+EGBC_path
+            except FileNotFoundError:
+                print("folder not created")
 
     def SPOT_folder(self):
 
-        SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
+        SPOT_base = r"bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
         #SPOT_base = r"D:\documents"
         if self.number:
             SPOT_path = os.path.join(SPOT_base, self.number)
-            if not os.path.exists(SPOT_path):
-                os.makedirs(SPOT_path)
-            return SPOT_path
-
-    SPOT_path = property(SPOT_folder)
+            try:
+                if not os.path.exists(SPOT_path):
+                    os.makedirs(SPOT_path)
+                return 'file:\\'+SPOT_path
+            except FileNotFoundError:
+                print("folder not created")
 
 
     def SBD_folder(self):
-        SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
+        SBD_base = r"bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
 
         if self.region and self.location and self.number:
             SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
-            if not os.path.exists(SBD_path):
-                os.makedirs(SBD_path)
-            return SBD_path
-
-    SBD_path = property(SBD_folder)
+            try:
+                if not os.path.exists(SBD_path):
+                    os.makedirs(SBD_path)
+                return 'file:\\'+SBD_path
+            except FileNotFoundError:
+                print("folder not created")
 
     def PPM_folder(self):
         PPM_base = r"https://ppm.bchydro.bc.ca/projects/"
@@ -337,12 +340,10 @@ class Project(models.Model):
 
             return PPM_path
 
-    PPM_path = property(PPM_folder)
-
-    SPOT_link = SPOT_path
-    EGBC_link = EGBC_path
-    SBD_link = SBD_path
-    PPM_link = PPM_path
+    SPOT_link = SPOT_folder
+    EGBC_link = EGBC_folder
+    SBD_link = SBD_folder
+    PPM_link = PPM_folder
 
 class Person(models.Model):
     project = models.ForeignKey(

@@ -65,9 +65,11 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].queryset = Stage.objects.all()
         self.fields['current_stage'].required = False
 
+
         region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 
         location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
+
 
         # print("group:" + str(self.fields["group"].initial))
 
@@ -81,13 +83,14 @@ class ProjectForm(ModelForm):
         widget=forms.DateInput(attrs={"type": "date"}), required=False)
 
     SPOT_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
+        widget=forms.widgets.TextInput(), required=False, )
     PPM_link = forms.CharField(
         widget=forms.widgets.TextInput(), required=False)
     EGBC_link = forms.CharField(
         widget=forms.widgets.TextInput(), required=False)
     SBD_link = forms.CharField(
         widget=forms.widgets.TextInput(), required=False)
+
 
     def clean(self):
         cleaned_data = super(ProjectForm, self).clean()
@@ -119,13 +122,14 @@ class ProjectLinkForm(ModelForm):
         super(ProjectLinkForm, self).__init__(*args, **kwargs)
 
     SPOT_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
+        widget=forms.widgets.TextInput(), required=False, )
     PPM_link = forms.CharField(
         widget=forms.widgets.TextInput(), required=False)
-
-    EGBC_link = forms.CharField(widget=forms.widgets.TextInput(), required=False)
+    EGBC_link = forms.CharField(
+        widget=forms.widgets.TextInput(), required=False)
     SBD_link = forms.CharField(
         widget=forms.widgets.TextInput(), required=False)
+
 
     class Meta:
         model = Project
