@@ -295,8 +295,8 @@ class Project(models.Model):
         verbose_name_plural = "Projects"
 
     def EGBC_folder(self):
-        #EGBC_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
-        EGBC_BASE = r"D:\documents"
+        EGBC_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
+        #EGBC_BASE = r"D:\documents"
         if self.region and self.location and self.number:
             EGBC_path = os.path.join(EGBC_BASE, str(self.region), str(self.location), self.number)
             if not os.path.exists(EGBC_path):
@@ -308,8 +308,8 @@ class Project(models.Model):
 
     def SPOT_folder(self):
 
-        #SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
-        SPOT_base = r"D:\documents"
+        SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
+        #SPOT_base = r"D:\documents"
         if self.number:
             SPOT_path = os.path.join(SPOT_base, self.number)
             if not os.path.exists(SPOT_path):
@@ -320,12 +320,13 @@ class Project(models.Model):
 
 
     def SBD_folder(self):
-        SBD_base = r"D:\documents"
+        SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects\"
+
         if self.region and self.location and self.number:
-            SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
-            if not os.path.exists(SBD_path):
-                os.makedirs(SBD_path)
-            return SBD_path
+        SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
+        if not os.path.exists(SBD_path):
+            os.makedirs(SBD_path)
+        return SBD_path
 
     SBD_path = property(SBD_folder)
 

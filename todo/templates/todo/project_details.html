@@ -441,7 +441,7 @@
         var team = target.data("team");
         var stakeholder = target.data("stakeholder");
         console.log(target)
-
+        console.log(fname)
         var modal = $(this);
         modal.find(".modal-title").text(fname + " " + lname);
         modal.find("#id_role").val(role);
@@ -457,6 +457,13 @@
         } else {
             modal.find("#id_is_stakeholder").prop("checked", true);
             modal.find("#id_is_team_member").prop("checked", false);
+        }
+
+        if (fname==undefined) {
+            modal.find(".modal-title").text("Add a new team member or shakeholder");
+            document.getElementById("DeletePersonButton").style.visibility = "hidden";
+            console.log(document.getElementById("DeletePersonButton"))
+
         }
 
 
