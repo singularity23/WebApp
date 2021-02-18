@@ -20,6 +20,13 @@
  *
  */
 
+ input.copytext{
+    position: absolute;
+    top: -9999px;
+    left: -9999px
+
+ }
+
  .shadow-sm {
      box-shadow: 0 0 .618rem #cce2ff!important;
  }

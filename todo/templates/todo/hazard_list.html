@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="card-deck pb-5">
-  <div class="card shadow-sm p-0">
+  <div class="card p-0">
 
     <div class="card-body">
       <div id="AddHazard" class="collapse">
@@ -44,7 +44,7 @@
 
               </td>
               <td class="col-1 text-center">
-                <span class="{{hazard.risk_level.color}}">
+                <span class="ui {{hazard.risk_level.color}} label">
                   {% if hazard.risk_level %}{{ hazard.risk_level }}{% else %}TBD{% endif %}
 
                 </span>
@@ -57,7 +57,7 @@
                 {% if hazard.details %}{{ hazard.details }}{% else %}TBD{% endif %}
               </td>
               <td class="col-1 text-center">
-                <span class="{{hazard.color}}">
+                <span class="ui {{hazard.color}} label">
                   {% if hazard.res_level %}{{ hazard.res_level }}{% else %}TBD{% endif %}
 
                 </span>
@@ -70,7 +70,7 @@
                   method="POST">
                   {% csrf_token %}
                   <input type="hidden" name="_method" value="delete">
-                  <button class="ui clear button"> <i class="times circle outline red icon" type="submit"
+                  <button class="ui clear button"> <i class="red close icon" type="submit"
                       value="submit">
                     </i> </button>
                 </form>

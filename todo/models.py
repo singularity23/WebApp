@@ -7,7 +7,7 @@ import textwrap
 from django.core.validators import RegexValidator
 
 from django.conf import settings
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, BaseUserManager, AbstractBaseUser
 from django.core import serializers
 from django.db import DEFAULT_DB_ALIAS, models
 
@@ -17,6 +17,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from model_utils import Choices
 from simple_history.models import HistoricalRecords
+from django.utils.translation import ugettext_lazy as _
 
 
 def get_attachment_upload_dir(instance, filename):
@@ -26,6 +27,67 @@ def get_attachment_upload_dir(instance, filename):
     newpath = os.path.join(str(instance.hazard.project.id), path, "attachments", filename)
     return newpath
 
+class MyUserManager(BaseUserManager):
+    def create_user(self, email, password=None):
+        """
+        Creates and saves a User with the given email, date of
+        birth and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None):
+        """
+        Creates and saves a superuser with the given email, date of
+        birth and password.
+        """
+        user = self.create_user(
+            email,
+            password=password,
+        )
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+
+class MyUser(AbstractBaseUser):
+    email = models.EmailField(
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+    )
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = MyUserManager()
+    username = None
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.email
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        # Simplest possible answer: All admins are staff
+        return self.is_staff
 
 class LockedAtomicTransaction(Atomic):
     """
@@ -420,58 +482,7 @@ class Engagement(models.Model):
     class Meta:
         ordering =['date']
 
-# class ResidualRisk(models.Model):
-#    res_level = models.CharField(max_length=60)
-#    risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE)
-#    control_measure = models.ForeignKey(ControlMeasure,
-#    on_delete=models.CASCADE)
 
-#    def get_residual(self):
-#        return self.res_level
-
-
-#    risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
-#    null=True)
-#    control_measure = models.ForeignKey(ControlMeasure,
-#    on_delete=models.CASCADE, null=True)
-
-#    note = models.TextField(blank=True, null=True)
-#    priority = models.PositiveIntegerField(blank=True, null=True)
-
-#    # Has due date for an instance of this object passed?
-#    def overdue_status(self):
-#        "Returns whether the Tasks's due date has passed or not."
-#        if self.due_date and datetime.date.today() > self.due_date:
-#            return True
-
-#    def __str__(self):
-#        return self.title
-
-#    def get_absolute_url(self):
-#        return reverse("todo:task_detail", kwargs={"task_id": self.id})
-
-#    # Auto-set the Task creation / completed date
-#    def save(self, **kwargs):
-#        # If Task is being marked complete, set the completed_date
-#        if self.completed:
-#            self.completed_date = datetime.datetime.now()
-#        super(Task, self).save()
-
-#    def merge_into(self, merge_target):
-#        if merge_target.pk == self.pk:
-#            raise ValueError("can't merge a task with self")
-
-#        # lock the comments to avoid concurrent additions of comments after
-#        the
-#        # update request.  these comments would be irremediably lost because
-#        of
-#        # the cascade clause
-#        with LockedAtomicTransaction(Comment):
-#            Comment.objects.filter(task=self).update(task=merge_target)
-#            self.delete()
-
-#    class Meta:
-#        ordering = ["priority", "created_date"]
 
 class Comment(models.Model):
     """

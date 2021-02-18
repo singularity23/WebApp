@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib import messages
+from django.contrib import messages, admin
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.forms import ModelForm
@@ -63,24 +65,7 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].queryset = Stage.objects.all()
         self.fields['current_stage'].required = False
 
-        #self.fields['location'].queryset = Location.objects.none()
-
-        #if 'location' in self.data:
-            #try:
-            #    region_id = int(self.data.get('region'))
-            #    self.fields['location'].queryset = Location.objects.filter(region_id=region_id).order_by('name')
-          #  except (ValueError, TypeError):
-         #       pass  # invalid input from the client; ignore and fallback to empty City queryset
-
-      #  elif self.instance.pk:
-     #       self.fields['location'].queryset = self.instance.region.locations.order_by('name')
-
-
         region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
-
-        #for obj in self.fields['region'].queryset:
-            #if region == obj:
-                #location = forms.ModelChoiceField(queryset=self.region.locations.all(), label=u'Location')
 
         location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
 
@@ -277,20 +262,72 @@ class SearchForm(forms.Form):
     q = forms.CharField(widget=forms.widgets.TextInput(attrs={"size": 35}))
 
 
-class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-
-    def clean_email(self):
-        data = self.cleaned_data['email']
-        if "@bchydro.com" not in data:
-            raise ValidationError("Only BCH Email is allowed")
-
-        # Always return a value to use as the new cleaned data, even if
-        # this method didn't change it.
-        return data
+class UserCreationForm(ModelForm):
+    """A form for creating new users. Includes all the required
+    fields, plus a repeated password."""
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+        fields = ('email', )
+
+    def clean_password2(self):
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
+class UserChangeForm(ModelForm):
+    """A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    """
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'password', 'is_active', 'is_staff')
+
+    def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
+        return self.initial["password"]
+
+
+class UserAdmin(BaseUserAdmin):
+    # The forms to add and change user instances
+    form = UserChangeForm
+    add_form = UserCreationForm
+
+    # The fields to be used in displaying the User model.
+    # These override the definitions on the base UserAdmin
+    # that reference specific fields on auth.User.
+    list_display = ('email', 'is_staff')
+    list_filter = ('is_staff',)
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Permissions', {'fields': ('is_staff',)}),
+    )
+    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
+    # overrides get_fieldsets to use this attribute when creating a user.
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2'),
+        }),
+    )
+    search_fields = ('email',)
+    ordering = ('email',)
+    filter_horizontal = ()
