@@ -195,18 +195,20 @@ class RiskLevel(models.Model):
             print("error")
             return ""
 
+
+    class Meta:
+        verbose_name_plural = "Risk Levels"
+
     color = property(color_text)
     print("color " + str(color))
 
-    def IDtoLabel(id):
+"""     def IDtoLabel(id):
         if id != None:
             lvl = RiskLevel.objects.filter(id=id)[0]
             return str(lvl)
         else:
-            return "None"
+            return "None" """
 
-    class Meta:
-        verbose_name_plural = "Risk Levels"
 
 
 class ControlMeasure(models.Model):
@@ -215,16 +217,17 @@ class ControlMeasure(models.Model):
     #details = models.TextField(blank=True, null=True)
     def __str__(self):
         return self.measure
+    class Meta:
+            verbose_name_plural = "Control Measures"
 
-    def IDtoLabel(id):
+"""     def IDtoLabel(id):
         if id != None:
             cm = ControlMeasure.objects.filter(id=id)[0]
             return str(cm)
         else:
-            return "None"
+            return "None" """
 
-    class Meta:
-        verbose_name_plural = "Control Measures"
+
 
 
 class Project(models.Model):
@@ -237,10 +240,10 @@ class Project(models.Model):
     number = models.CharField(max_length=60, )
     slug = models.SlugField(default="")
     SAP_id = models.CharField(max_length=60, blank=True, null=True, )
-    SPOT_link = models.CharField(max_length=240, blank=True, null=True)
-    PPM_link = models.CharField(max_length=240, blank=True, null=True)
-    EGBC_link = models.CharField(max_length=240, blank=True, null=True)
-    SBD_link = models.CharField(max_length=240, blank=True, null=True)
+    SPOT_link = models.URLField(max_length=240, blank=True, null=True)
+    PPM_link = models.URLField(max_length=240, blank=True, null=True)
+    EGBC_link = models.FilePathField(max_length=240, blank=True, null=True)
+    SBD_link = models.URLField(max_length=240, blank=True, null=True)
     title = models.CharField(max_length=140, blank=True, null=True)
     group = models.ForeignKey(
         Group, on_delete=models.SET_NULL, blank=False, null=True, )
@@ -295,43 +298,47 @@ class Project(models.Model):
         verbose_name_plural = "Projects"
 
     def EGBC_folder(self):
-        EGBC_base = r"\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
+        EGBC_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
         #EGBC_base = r"D:\documents"
         if self.region and self.location and self.number:
             EGBC_path = os.path.join(EGBC_base, str(self.region), str(self.location), self.number)
-            print(EGBC_path)
+            print(str(EGBC_path).replace('\\', '/'))
             try:
                 if not os.path.exists(EGBC_path):
                     os.makedirs(EGBC_path)
-                return 'file:\\'+EGBC_path
             except FileNotFoundError:
                 print("folder not created")
+            return 'file:///'+str(EGBC_path).replace('\\', '/').strip()
+
+
+    EGBC_path = property(EGBC_folder)
 
     def SPOT_folder(self):
 
-        SPOT_base = r"\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
+        SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
         #SPOT_base = r"D:\documents"
         if self.number:
             SPOT_path = os.path.join(SPOT_base, self.number)
             try:
                 if not os.path.exists(SPOT_path):
                     os.makedirs(SPOT_path)
-                return 'file:\\'+SPOT_path
             except FileNotFoundError:
                 print("folder not created")
+            return 'file:///'+str(SPOT_path).replace('\\', '/')
 
 
     def SBD_folder(self):
-        SBD_base = r"\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
+        SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
 
         if self.region and self.location and self.number:
             SBD_path = os.path.join(SBD_base, str(self.region), str(self.location), self.number, "Safety by Design")
             try:
                 if not os.path.exists(SBD_path):
                     os.makedirs(SBD_path)
-                return 'file:\\'+SBD_path
             except FileNotFoundError:
                 print("folder not created")
+            return 'file:///'+ str(SBD_path).replace('\\', '/')
+
 
     def PPM_folder(self):
         PPM_base = r"https://ppm.bchydro.bc.ca/projects/"
@@ -341,7 +348,8 @@ class Project(models.Model):
             return PPM_path
 
     SPOT_link = SPOT_folder
-    EGBC_link = EGBC_folder
+    EGBC_link = property(EGBC_folder)
+    print(EGBC_link)
     SBD_link = SBD_folder
     PPM_link = PPM_folder
 

@@ -182,6 +182,8 @@ class ProjectDetailView(SingleObjectMixin, View):
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Project.objects.all())
         print(self.object.counts)
+        print(self.object.EGBC_folder())
+        print("link"+str(self.object.EGBC_path))
         method = self.request.POST.get('_method', '').lower()
         if method == 'delete':
             return self.delete(request, *args, **kwargs)

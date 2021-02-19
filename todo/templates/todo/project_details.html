@@ -70,27 +70,27 @@
                     <a class="font-weight-bold">Planning
                         :</a>
                     <a class="link" href="{% if project.SPOT_link %} {{ project.SPOT_link }}
-            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+            {% endif %}" id="external_link" target="_self" data-toggle="tooltip" data-placement="top"
                         title="Click to copy link to clipboard">Link</a>
                 </div>
                 <div class="ui segment  d-flex justify-content-between">
                     <a class="font-weight-bold">EGBC:</a>
                     <a class="link" href="{% if project.EGBC_link %} {{ project.EGBC_link }}
-            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+            {% endif %}" id="external_link" target="_self" data-toggle="tooltip" data-placement="top"
                         title="Click to copy link to clipboard">Link</a>
                 </div>
                 <div class="ui segment  d-flex justify-content-between">
                     <a class="font-weight-bold">SBD:</a>
 
                     <a class="link" href="{% if project.SBD_link %} {{ project.SBD_link }}
-            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+            {% endif %}" id="external_link" target="_self" data-toggle="tooltip" data-placement="top"
                         title="Click to copy link to clipboard">Link</a>
                 </div>
                 <div class="ui segment  d-flex justify-content-between">
                     <a class="font-weight-bold">PPM:</a>
 
                     <a class="link" href="{% if project.PPM_link %} {{ project.PPM_link }}
-            {% endif %}" id="external_link" data-toggle="tooltip" data-placement="top"
+            {% endif %}" id="external_link" target="_self" data-toggle="tooltip" data-placement="top"
                         title="Click to copy link to clipboard">Link</a>
                 </div>
                 <input class="copytext" id="copytext" type="text" value="" tabindex="-1" aria-hidden='true'>
@@ -564,22 +564,18 @@
         e.preventDefault();
         var url = $(this).attr('href');
 
-        if (url.includes('http') == true) {
-            var win = window.open(url, '_blank');
-            win.focus();
+        var win = window.open(url, '_self');
 
-        } else {
-            var copytext = document.getElementById("copytext");
-            console.log(copytext);
-            console.log(url);
+        var copytext = document.getElementById("copytext");
+        console.log(copytext);
+        console.log(url);
 
-            copytext.value = url;
-            copytext.select();
-            copytext.setSelectionRange(0, copytext.value.length);
-            document.execCommand('copy');
-            $(this).focus();
+        copytext.value = url;
+        copytext.select();
+        copytext.setSelectionRange(0, copytext.value.length);
+        document.execCommand('copy');
+        $(this).focus();
 
-        }
 
 
         /* console.log(copytext.value)
@@ -588,6 +584,9 @@
 
 
     });
+
+
+
 
 </script>
 

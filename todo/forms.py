@@ -82,15 +82,14 @@ class ProjectForm(ModelForm):
     in_service_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), required=False)
 
-    SPOT_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False, )
-    PPM_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
-    EGBC_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
-    SBD_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
-
+    SPOT_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
+    PPM_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
+    EGBC_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
+    SBD_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
 
     def clean(self):
         cleaned_data = super(ProjectForm, self).clean()
@@ -121,14 +120,13 @@ class ProjectLinkForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(ProjectLinkForm, self).__init__(*args, **kwargs)
 
-    SPOT_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False, )
-    PPM_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
-    EGBC_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
-    SBD_link = forms.CharField(
-        widget=forms.widgets.TextInput(), required=False)
+    SPOT_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
+    PPM_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
+    EGBC_link = forms.URLField(widget=forms.widgets.URLInput(), required=False, )
+    SBD_link = forms.URLField(
+        widget=forms.widgets.URLInput(), required=False, )
 
 
     class Meta:
