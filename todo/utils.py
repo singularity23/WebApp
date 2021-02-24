@@ -11,7 +11,7 @@ from django.contrib.sites.models import Site
 from django.core import mail
 from django.template.loader import render_to_string
 from simple_history.models import HistoricalChanges, HistoricalRecords
-
+from todo.models import Comment, Hazard, Attachment, ControlMeasure, RiskLevel, Person
 from todo.defaults import defaults
 
 

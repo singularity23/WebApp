@@ -5,7 +5,6 @@ import os
 import shutil
 import textwrap
 
-from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group, User
 from django.core import serializers
@@ -297,12 +296,6 @@ class Project(models.Model):
         print("portion"+ str(portion))
         return portion
 
-    def default_links(self):
-
-        SPOT_link = models.CharField(max_length=240, blank=True, null=True, default=SPOT_default(self))
-        PPM_link = models.CharField(max_length=240, blank=True, null=True, default=PPM_default(self))
-        EGBC_link = models.CharField(max_length=240, blank=True, null=True, default=EGBC_default(self))
-        SBD_link = models.CharField(max_length=240, blank=True, null=True, default=SBD_default(self))
 
     class Meta:
         ordering = ["POR", "number"]
