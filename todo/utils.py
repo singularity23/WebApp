@@ -270,41 +270,40 @@ def get_history_change_reason(hazard):
 
 
 def EGBC_folder(project):
-    EGBC_base = r"bchydro.adroot.bchydro.bc.ca/data/Engineering/Distribution/0 EGBC Filing/4 Projects"
+    EGBC_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
     #EGBC_base = r"D:\documents"
     if project.region and project.location and project.number:
         EGBC_path = os.path.join(EGBC_base, str(project.region), str(project.location), project.number)
         try:
             if not os.path.exists(EGBC_path):
                 os.makedirs(EGBC_path)
+                print("folder created")
+
         except FileNotFoundError:
             print("folder not created")
-        return "\\\\"+EGBC_path.replace('\\','/')
+        return EGBC_path
 
 def SPOT_folder(project):
 
-    SPOT_base = r"bchydro.adroot.bchydro.bc.ca/data/Field Ops/SAM/Distribution Planning/System Improvement/SPOT Project Documentation"
+    SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field OpsSAM\Distribution Planning\System Improvement\SPOT Project Documentation"
     #SPOT_base = r"D:\documents"
     if project.number:
         SPOT_path = os.path.join(SPOT_base, project.number)
-        try:
-            if not os.path.exists(SPOT_path):
-                os.makedirs(SPOT_path)
-        except FileNotFoundError:
-            print("folder not created")
-        return "\\\\"+SPOT_path.replace('\\','/')
+
+        return SPOT_path
 
 def SBD_folder(project):
-    SBD_base = r"bchydro.adroot.bchydro.bc.ca/data/Engineering/Distribution/0 EGBC Filing/4 Projects"
+    SBD_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Engineering\Distribution\0 EGBC Filing\4 Projects"
 
     if project.region and project.location and project.number:
         SBD_path = os.path.join(SBD_base, str(project.region), str(project.location), project.number, "Safety by Design")
         try:
             if not os.path.exists(SBD_path):
                 os.makedirs(SBD_path)
+                print("folder created")
         except FileNotFoundError:
             print("folder not created")
-        return "\\\\"+SBD_path.replace('\\','/')
+        return SBD_path
 
 def PPM_folder(project):
     PPM_base = r"https://ppm.bchydro.bc.ca/projects/"
