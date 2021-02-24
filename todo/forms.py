@@ -60,7 +60,6 @@ class ProjectForm(ModelForm):
             "class": "custom-select mb-3",
             "name" : "location",
             }
-        self.fields['region'].queryset = Region.objects.all()
 
         self.fields["current_stage"].widget.attrs = {
             "id"   : "id_current_stage",
@@ -70,12 +69,13 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].queryset = Stage.objects.all()
         self.fields['current_stage'].required = False
 
-        project = get_object_or_404(Project, pk=self.project_id)
+        if self.project_id:
+            project = Project.objects.get(id=self.project_id)
 
-        self.initial['EGBC_link'] = unquote(EGBC_folder(project))
-        self.initial['SBD_link'] = unquote(SBD_folder(project))
-        self.initial['SPOT_link'] = unquote(SPOT_folder(project))
-        self.initial['PPM_link'] = unquote(PPM_folder(project))
+            self.initial['EGBC_link'] = unquote(EGBC_folder(project))
+            self.initial['SBD_link'] = unquote(SBD_folder(project))
+            self.initial['SPOT_link'] = unquote(SPOT_folder(project))
+            self.initial['PPM_link'] = unquote(PPM_folder(project))
 
     region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 

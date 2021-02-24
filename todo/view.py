@@ -83,26 +83,31 @@ def handle_upload_files(request, project, hazard):
 class ProjectUpdateView(MultipleObjectMixin, View):
     model = Project
     ordering = ["POR", "number"]
+    allow_empty = True
 
     template_name = "todo/project_list.html"
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         #messages.success(request, "testing")
-        if request.user.is_superuser:
+        if request.user.groups.filter(name="Team Lead").exists():
             self.object_list = self.get_queryset()
         else:
             self.object_list = self.get_queryset().filter(POR=request.user)
+        print(self.object_list)
+
         return super(ProjectUpdateView, self).dispatch(request, *args, **kwargs)
 
     def check_permissions(self, *args, **kwargs):
-        if not self.request.user.groups.filter(name="Engineer").exists() or not self.request.user.is_authenticated:
+        if not request.user.groups.filter(name="Engineer").exists() or not request.user.is_authenticated:
             raise PermissionDenied
             return redirect("todo:login")
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        print(request.resolver_match.view_name)
+        form2 = ProjectForm(request.user, initial={"Group" : Group.objects.get(name="Engineer")})
+        context['form2'] = form2
+        print(context)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
