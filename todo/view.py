@@ -21,6 +21,8 @@ from .forms import (EngagementForm, HazardForm, PersonForm, ProjectForm,
                     ProjectLinkForm)
 from .models import (Attachment, Comment, Engagement, Hazard, Location, Person, Project, RiskLevel)
 from .validators import validate_project_number, validate_sap_id
+from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
+
 
 log = logging.getLogger(__name__)
 
@@ -100,14 +102,6 @@ class ProjectUpdateView(MultipleObjectMixin, View):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        form2 = ProjectForm(request.user,
-                            initial={"Group" : Group.objects.get(name="Engineer")})
-
-        if form2.is_valid():
-            item = form2.save(commit=False)
-            item.save()
-
-        context["form2"] = form2
         print(request.resolver_match.view_name)
         return render(request, self.template_name, context)
 
@@ -182,8 +176,8 @@ class ProjectDetailView(SingleObjectMixin, View):
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Project.objects.all())
         print(self.object.counts)
-        print(self.object.EGBC_folder())
-        print("link"+str(self.object.EGBC_path))
+        print(self.object.SPOT_link)
+
         method = self.request.POST.get('_method', '').lower()
         if method == 'delete':
             return self.delete(request, *args, **kwargs)
@@ -195,9 +189,17 @@ class ProjectDetailView(SingleObjectMixin, View):
         context = self.get_context_data()
 
         form4 = EngagementForm(request.user, initial={"project": self.object})
-        print("stakeholders"+ str(form4.fields))
+        #print("stakeholders"+ str(form4.fields))
         form3 = ProjectLinkForm(request.user, instance=self.object)
+        links = form3.save(commit=False)
+        links.EGBC_link = EGBC_folder(self.object)
+        links.SPOT_link = SPOT_folder(self.object)
+        links.PPM_link = PPM_folder(self.object)
+        links.SBD_link = SBD_folder(self.object)
+        links.save()
 
+
+        print("link"+str(form3.fields))
         form2 = ProjectForm(request.user, instance=self.object)
 
         form1 = HazardForm(request.user, initial={"project": self.object})
@@ -217,13 +219,15 @@ class ProjectDetailView(SingleObjectMixin, View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         project = self.object
+        self.project_id = project.id
+        self.project_slug = project.slug
         persons = Person.objects.filter(project=project)
         engagements = Engagement.objects.filter(project=project)
 
         context_extra = {
             "engagements" : engagements,
-            "project_id"  : project.id,
-            "project_slug": project.slug,
+            "project_id"  : self.project_id,
+            "project_slug": self.project_slug,
             "project"     : self.object,
             "hazards"     : self.get_queryset(),
             "persons"     : persons,
@@ -242,8 +246,9 @@ class ProjectDetailView(SingleObjectMixin, View):
 
         # print(engagements)
         print(request.POST)
-        if request.POST.get("edit_link", "") == "submit":
+        if request.POST.get("edit_link", "").lower() == "submit":
             form3 = ProjectLinkForm(request.user, request.POST, instance=self.object)
+            print(form3)
             if form3.is_bound and form3.is_valid():
                 item = form3.save(commit=False)
                 item.project = self.object
@@ -316,12 +321,12 @@ class ProjectDetailView(SingleObjectMixin, View):
             if form4.is_valid():
                 stakeholder_queryset = form4.cleaned_data["stakeholders"]
                 stakeholder_list = list(stakeholder_queryset)
-                print(stakeholder_list)
+                #print(stakeholder_list)
                 stakeholder_text = []
                 for s in stakeholder_list:
                     stakeholder_text.append(str(s))
 
-                print(stakeholder_text)
+                #print(stakeholder_text)
                 item = form4.save(commit=False)
                 item.stakeholders_string = ', '.join(stakeholder_text)
                 item.project = self.object

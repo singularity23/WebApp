@@ -20427,8 +20427,8 @@
  }
 
  .ui.warning.message {
-     background-color: #fffaf3;
-     color: #573a08
+    background-color: #fde7de;
+    color: #F15C22;
  }
 
  .ui.attached.warning.message, .ui.warning.message {
@@ -20441,8 +20441,8 @@
  }
 
  .ui.error.message {
-     background-color: #fff6f6;
-     color: #9f3a38
+    background-color: #fde7de;
+    color: #F15C22;
  }
 
  .ui.attached.error.message, .ui.error.message {

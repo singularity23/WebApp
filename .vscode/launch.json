@@ -5,34 +5,22 @@
     "version": "0.2.0",
     "configurations": [
 
+
+
+        {"name":"Python: activate Env","type":"python","request":"launch","program":"${workspaceFolder}\\env\\Scripts\\activate.bat","console":"integratedTerminal"},
+
+        {"name":"Python: Django make migrations","type":"python","request":"launch","program":"${workspaceFolder}\\manage.py","args":["makemigrations"],"django":true},
+
+        {"name":"Python: Django migrate","type":"python","request":"launch","program":"${workspaceFolder}\\manage.py","args":["migrate"],"django":true},
+
+
+    {"name":"Python: Django","type":"python","request":"launch","program":"${workspaceFolder}\\manage.py","args":["runserver"],"django":true},
         {
-            "type": "extensionHost",
-            "request": "launch",
-            "name": "Launch Extension",
-            "runtimeExecutable": "${workspaceFolder}\\env\\Scripts\\activate.bat",
-            "preLaunchTask": "call"
-        },
-
-
-
-
-        {"name":"Python: activate","type":"python","request":"launch","program":"${workspaceFolder}\\env\\Scripts\\activate}"},
-
-        {"name":"Python: makemigrations","type":"python","request":"launch","program":"${workspaceFolder}\\manage.py","args":["makemigrations"],"django":true},
-
-        {"name":"Python: migrate","type":"python","request":"launch","program":"${workspaceFolder}\\manage.py","args":["migrate"],"django":true},
-
-        {
-            "name": "Python: Django",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}\\manage.py",
-            "args": [
-                "runserver"
-            ],
-            "django": true
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
-
     ]
-
 }

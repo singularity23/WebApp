@@ -111,7 +111,7 @@
         {% if messages %}
         {% for message in messages %}
         {% if message.tags %}
-        <div class="ui floating {{ message.tags }} {% endif %} message" id="message_container">
+        <div class="ui {{ message.tags }} {% endif %} floating message" id="message_container">
           {{ message }}
         </div>
         {% endfor %}

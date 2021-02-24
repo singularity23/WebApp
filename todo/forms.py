@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib import messages, admin
 
@@ -8,8 +9,12 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.forms import ModelForm
-from todo.validators import validate_project_number, validate_sap_id
 from todo.models import ControlMeasure, Hazard, Person, Project, RiskLevel, Engagement, Region, Location, Stage
+from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
+from django.shortcuts import get_object_or_404, redirect, render
+from todo.validators import validate_project_number, validate_sap_id
+from urllib.parse import unquote, urlsplit, quote
+
 
 class ProjectForm(ModelForm):
     """The picklist showing allowable groups to which a new list can be added
@@ -65,12 +70,16 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].queryset = Stage.objects.all()
         self.fields['current_stage'].required = False
 
+        project = get_object_or_404(Project, pk=self.project_id)
 
-        region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
+        self.initial['EGBC_link'] = unquote(EGBC_folder(project))
+        self.initial['SBD_link'] = unquote(SBD_folder(project))
+        self.initial['SPOT_link'] = unquote(SPOT_folder(project))
+        self.initial['PPM_link'] = unquote(PPM_folder(project))
 
-        location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
+    region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 
-
+    location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
         # print("group:" + str(self.fields["group"].initial))
 
     SAP_id = forms.CharField(widget=forms.widgets.TextInput(), required=False,)
@@ -82,14 +91,7 @@ class ProjectForm(ModelForm):
     in_service_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), required=False)
 
-    SPOT_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
-    PPM_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
-    EGBC_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
-    SBD_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
+
 
     def clean(self):
         cleaned_data = super(ProjectForm, self).clean()
@@ -119,14 +121,15 @@ class ProjectLinkForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(ProjectLinkForm, self).__init__(*args, **kwargs)
+        if kwargs.get("instance"):
+            self.project_id = kwargs.get("instance").id
 
-    SPOT_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
-    PPM_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
-    EGBC_link = forms.URLField(widget=forms.widgets.URLInput(), required=False, )
-    SBD_link = forms.URLField(
-        widget=forms.widgets.URLInput(), required=False, )
+        project = get_object_or_404(Project, pk=self.project_id)
+
+        self.initial['EGBC_link'] = EGBC_folder(project)
+        self.initial['SBD_link'] = SBD_folder(project)
+        self.initial['SPOT_link'] = SPOT_folder(project)
+        self.initial['PPM_link'] = PPM_folder(project)
 
 
     class Meta:
@@ -276,12 +279,19 @@ class UserCreationForm(ModelForm):
         model = User
         fields = ('email', 'first_name', 'last_name', 'password1', 'password2')
 
+    def validate_username(self):
+        username = self.cleaned_data.get("email")
+        if not (re.search("@bchydro.com", username)):
+            return None
+        else:
+            return username
+
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise ValidationError("Passwords don't match")
+            return None
         return password2
 
     def save(self, commit=True):
