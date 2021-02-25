@@ -9,8 +9,10 @@ from filemanager import signals
 from filemanager.settings import STORAGE#, #DIRECTORY
 from filemanager.utils import sizeof_fmt
 from django.core.files.storage import FileSystemStorage
+from pathlib import Path
 
-DIRECTORY = r'C:\Documents\media'
+HOME = Path.home()
+DIRECTORY = os.path.join(HOME, "webapp")
 STORAGE = FileSystemStorage(location=DIRECTORY, base_url="")
 
 class Filemanager(object):
