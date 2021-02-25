@@ -10,7 +10,7 @@ from filemanager.settings import STORAGE#, #DIRECTORY
 from filemanager.utils import sizeof_fmt
 from django.core.files.storage import FileSystemStorage
 
-DIRECTORY = r'D:\Documents\Visual Studio 2019\Projects\Git\New Safety\SBD\media'
+DIRECTORY = r'C:\Documents\media'
 STORAGE = FileSystemStorage(location=DIRECTORY, base_url="")
 
 class Filemanager(object):
@@ -18,6 +18,8 @@ class Filemanager(object):
     def __init__(self):
 
         self._directory = DIRECTORY
+        if not os.path.exists(self._directory):
+            os.makedirs(self._directory)
         self._path = ""
         self._storage = FileSystemStorage(location=self._directory, base_url="")
         self._abspath = os.path.join(self._directory, self._path)
@@ -29,6 +31,8 @@ class Filemanager(object):
         if directory is not None:
             assert isinstance(directory, str)
             self._directory = self.validate_path(directory)
+
+
         self._storage = FileSystemStorage(location=self._directory, base_url="")
         self.update_path("")
 
