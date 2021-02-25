@@ -278,7 +278,6 @@ def EGBC_folder(project):
             if not os.path.exists(EGBC_path):
                 os.makedirs(EGBC_path)
                 print("folder created")
-
         except FileNotFoundError:
             print("folder not created")
         return EGBC_path
