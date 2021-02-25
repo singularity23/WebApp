@@ -16,11 +16,10 @@
   </div>
 </div>
 
+{% regroup object_list by POR as section_list %}
+{% for POR in section_list %}
 <div class="ui segments" style="box-shadow: none">
   <div class="ui segment">
-    {% regroup object_list by POR as section_list %}
-    {% for POR in section_list %}
-
     <h3>Engineer: {{ POR.grouper.get_full_name }}</h3>
   </div>
   <div class="ui segments" style="box-shadow: 0 0 0 0;">
@@ -38,7 +37,7 @@
           </a>
         </div>
         <div class="column">
-          <a class="ui negative label">{{ project.counts }} </a>
+          <a class="ui negative label">{{ project.counts }} high risk items</a>
         </div>
       </div>
     </div>
@@ -48,10 +47,13 @@
         aria-valuenow="{{project.progress}}" aria-valuemin="0"
         aria-valuemax="100">
       </div>
+
     </div>
     {% endif %}
     {% endfor %}
   </div>
+
+</div>
   {% endfor %}
   {% endblock %}
 
