@@ -12,7 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from pathlib import Path
 
 HOME = Path.home()
-DIRECTORY = os.path.join(HOME, "webapp")
+DIRECTORY = os.path.join(HOME, "")
 STORAGE = FileSystemStorage(location=DIRECTORY, base_url="")
 
 class Filemanager(object):

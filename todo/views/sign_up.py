@@ -17,7 +17,7 @@ def sign_up(request):
             print(form.cleaned_data)
             item.first_name = form.cleaned_data.get('first_name')
             item.last_name = form.cleaned_data.get('last_name')
-            item.username = form.validate_username()
+            item.username = form.validate_username().lower()
             if item.username == None:
                 messages.warning(request, "Username/email not valid")
                 return redirect('signup')

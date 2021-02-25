@@ -15,7 +15,7 @@
           <p>
             <label for="id_username" class=" font-weight-bold">Username:</label>
             <input class="form-control" type="text" name="username" autofocus="" maxlength="254"
-              required="" id="id_username" placeholder="Username" autocomplete="username">
+              required="" id="id_username" placeholder="Username" autocomplete="username" style="">
           </p>
         </div>
         <div class="form-group">
@@ -46,3 +46,17 @@
 </form>
 
 {% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+$('#id_username').keyup(function(){
+    console.log(this.value)
+    this.value = this.value.toLowerCase();
+
+});
+
+</script>
+
+{% endblock extra_js %}

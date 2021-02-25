@@ -280,7 +280,7 @@ class UserCreationForm(ModelForm):
         fields = ('email', 'first_name', 'last_name', 'password1', 'password2')
 
     def validate_username(self):
-        username = self.cleaned_data.get("email")
+        username = self.cleaned_data.get("email").lower()
         if not (re.search("@bchydro.com", username)):
             return None
         else:
