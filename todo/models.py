@@ -59,6 +59,9 @@ class MyUserManager(BaseUserManager):
         return user
 
 class MyUser(AbstractBaseUser):
+    """
+    creating user
+    """
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -91,39 +94,10 @@ class MyUser(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_staff
 
-class LockedAtomicTransaction(Atomic):
-    """
-    modified from https://stackoverflow.com/a/41831049
-    this is needed for safely merging
-
-    Does a atomic transaction, but also locks the entire table for any transactions, for the duration of this
-    transaction. Although this is the only way to avoid concurrency issues in certain situations, it should be used with
-    caution, since it has impacts on performance, for obvious reasons...
-    """
-
-    def __init__(self, *models, using=None, savepoint=None):
-        if using is None:
-            using = DEFAULT_DB_ALIAS
-        super().__init__(using, savepoint)
-        self.models = models
-
-    def __enter__(self):
-        super(LockedAtomicTransaction, self).__enter__()
-
-        # Make sure not to lock, when sqlite is used, or you'll run into
-        # problems while running tests!!!
-        if settings.DATABASES[self.using]["ENGINE"] != "django.db.backends.sqlite3":
-            cursor = None
-            try:
-                cursor = get_connection(self.using).cursor()
-                for model in self.models:
-                    cursor.execute("LOCK TABLE {table_name}".format(
-                        table_name=model._meta.db_table))
-            finally:
-                if cursor and not cursor.closed:
-                    cursor.close()
-
 class Stage(models.Model):
+    """
+    model for project stages
+    """
     NAME = Choices(
         ('Definition'),
         ('Detailed Design'),
@@ -141,6 +115,9 @@ class Stage(models.Model):
 
 
 class Region(models.Model):
+    """
+    model for regions in DE
+    """
     NAME = Choices(
         ('VI'),
         ('Interior & NIA'),
@@ -160,6 +137,9 @@ class Region(models.Model):
         verbose_name_plural = "regions"
 
 class Location(models.Model):
+    """
+    model for locations under each region
+    """
     NAME = Choices(
         ('VI', ('Victoria & Saanich', 'Western Communities', 'Duncan & Gulf Islands', 'Central VI', 'Northern VI')),
         ('Interior & NIA', ('Northern Interior', 'Southern Interior')),
@@ -177,13 +157,18 @@ class Location(models.Model):
         verbose_name_plural = "locations"
 
 class RiskLevel(models.Model):
+    """
+    model for risk levels
+    """
     level = models.CharField(max_length=60)
 
     def __str__(self):
         return self.level
 
     def color_text(self):
-
+        """
+        Color code risk levels for highlighting
+        """
         if self.level == "High":
             return "negative"
         elif self.level == "Medium":
@@ -196,44 +181,24 @@ class RiskLevel(models.Model):
             print("error")
             return ""
 
-
     class Meta:
         verbose_name_plural = "Risk Levels"
 
     color = property(color_text)
     print("color " + str(color))
 
-"""     def IDtoLabel(id):
-        if id != None:
-            lvl = RiskLevel.objects.filter(id=id)[0]
-            return str(lvl)
-        else:
-            return "None" """
-
-
-
 class ControlMeasure(models.Model):
     measure = models.CharField(max_length=60)
-
+    """model for control measures"""
     #details = models.TextField(blank=True, null=True)
     def __str__(self):
         return self.measure
     class Meta:
             verbose_name_plural = "Control Measures"
 
-"""     def IDtoLabel(id):
-        if id != None:
-            cm = ControlMeasure.objects.filter(id=id)[0]
-            return str(cm)
-        else:
-            return "None" """
-
-
-
-
 class Project(models.Model):
     """
-    TODO: need to update the default links when using in Hydro enviorment
+    TODO: need to update the default links when using in Hydro sever
 
     """
     history = HistoricalRecords(cascade_delete_history=True)
@@ -274,11 +239,18 @@ class Project(models.Model):
         return self.number
 
     def get_absolute_url(self):
+        """
+        Get project specific url
+        """
         return reverse("todo:project_details", kwargs={"project_id": self.pk, "project_slug": self.slug})
 
     @property
     def counts(self):
+        """
+        Count high risk items
+        """
         return self.hazard_set.filter(res_risk_level=1).count() + self.hazard_set.filter(risk_level=1, control_measure=None).count()
+
 
 
     def slug_number(self):
@@ -288,6 +260,9 @@ class Project(models.Model):
 
     @property
     def progress(self):
+        """
+        Get project progress
+        """
         portion = 0
         stages = Stage.objects.all()
         length = len(stages)
@@ -295,15 +270,14 @@ class Project(models.Model):
             portion = self.current_stage.id * 100 / length
         print("portion"+ str(portion))
         return portion
-
-
     class Meta:
         ordering = ["POR", "number"]
         verbose_name_plural = "Projects"
 
-
-
 class Person(models.Model):
+    """
+    Model for team members and stakeholders
+    """
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, blank=True, null=True)
     first_name = models.CharField(max_length=60, blank=True, null=True)
@@ -324,6 +298,11 @@ class Person(models.Model):
         "Returns the person's full name."
         return '%s %s' % (self.first_name, self.last_name)
 
+    @classmethod
+    def create(cls, project, first_name, last_name, Email, is_team_member, is_stakeholder, role):
+        new_person = cls(project=project, first_name=first_name, last_name=last_name, Email=Email, is_team_member=is_team_member, is_stakeholder=is_stakeholder, role=role)
+        # do something with the book
+        return new_person
     class Meta:
         unique_together = ["project", "first_name", "last_name"]
 

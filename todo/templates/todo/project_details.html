@@ -18,6 +18,18 @@
       {% if project.project_scope %}
       <div class="card-text text-sm">{{ project.project_scope|safe|urlize|linebreaks }}
       </div>
+      {% else %}
+      <div class="ui fluid placeholder" style="vertical-align:bottom">
+        <div class="image header">
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </div>
       {% endif %}
     </div>
   </div>
@@ -69,22 +81,26 @@
         <div class="ui segment  d-flex justify-content-between">
           <a class="font-weight-bold">Planning
             :</a>
-          <a class="link" href="{% if project.SPOT_link %}{{ project.SPOT_link }}{% endif %}" id="external_link_1" target="_blank" data-toggle="tooltip" data-placement="top"
+          <a class="link" href="{% if project.SPOT_link %}{{ project.SPOT_link }}{% endif %}" id="external_link_1"
+            target="_blank" data-toggle="tooltip" data-placement="top"
             title="Click to copy link to clipboard">Link</a>
         </div>
         <div class="ui segment  d-flex justify-content-between">
           <a class="font-weight-bold">EGBC:</a>
-          <a class="link" href="{% if project.EGBC_link %}{{ project.EGBC_link }}{% endif %}" id="external_link_2" target="_blank" data-toggle="tooltip" data-placement="top"
+          <a class="link" href="{% if project.EGBC_link %}{{ project.EGBC_link }}{% endif %}" id="external_link_2"
+            target="_blank" data-toggle="tooltip" data-placement="top"
             title="Click to copy link to clipboard">Link</a>
         </div>
         <div class="ui segment  d-flex justify-content-between">
           <a class="font-weight-bold">SBD:</a>
-          <a class="link" href="{% if project.SBD_link %}{{ project.SBD_link }}{% endif %}" id="external_link_3" target="_blank" data-toggle="tooltip" data-placement="top"
+          <a class="link" href="{% if project.SBD_link %}{{ project.SBD_link }}{% endif %}" id="external_link_3"
+            target="_blank" data-toggle="tooltip" data-placement="top"
             title="Click to copy link to clipboard">Link</a>
         </div>
         <div class="ui segment  d-flex justify-content-between">
           <a class="font-weight-bold">PPM:</a>
-          <a class="link" href="{% if project.PPM_link %}{{ project.PPM_link }}{% endif %}" id="external_link_4" target="_blank" data-toggle="tooltip" data-placement="top"
+          <a class="link" href="{% if project.PPM_link %}{{ project.PPM_link }}{% endif %}" id="external_link_4"
+            target="_blank" data-toggle="tooltip" data-placement="top"
             title="Click to copy link to clipboard">Link</a>
         </div>
         <input class="copytext" id="copytext" type="text" value="" tabindex="-1" aria-hidden='true'>
@@ -123,6 +139,7 @@
     </tr>
   </thead>
   <tbody>
+    {% if hazards %}
     {% for hazard in hazards %}
     <tr>
       <td class="collapsing">
@@ -149,6 +166,10 @@
       </td>
     </tr>
     {% endfor %}
+    {% else %}
+    <td class="ui placeholder" colspan="6">
+    </td>
+    {% endif %}
   </tbody>
   <tfoot class="full-width">
     <tr>
@@ -199,7 +220,7 @@
       <h4 class="pt-0">Stakeholder Engagement</h4>
     </div>
     <div class="card-body">
-      {% if engagements %}
+      {% if engagements.count != 0 %}
 
       <div class="ui segments" style="box-shadow: 0 0 0 0;">
         {% for engagement in engagements %}
@@ -212,6 +233,11 @@
           <p>{{ engagement.body|safe|urlize|linebreaks }}</p>
         </div>
         {% endfor %}
+      </div>
+      {% else %}
+      <div class="ui fluid placeholder">
+        <div class="line"></div>
+
       </div>
       {% endif %}
 
@@ -422,7 +448,6 @@
 <script src="{% static 'js/jquery.tablednd_0_5.js' %}" type="text/javascript"></script>
 
 <script>
-
   $('#id_stakeholders').select2({
     placeholder: 'Select stakeholders',
     theme: 'classic'
@@ -563,14 +588,12 @@
     e.preventDefault();
     var url = $(this).attr('href');
 
-    var win = window.open(url, '_blank');
-    win.focus;
-
     var copytext = document.getElementById("copytext");
-    console.log(copytext);
     console.log(url);
 
     copytext.value = url;
+    console.log(copytext);
+
     copytext.select();
     copytext.setSelectionRange(0, copytext.value.length);
     document.execCommand('copy');

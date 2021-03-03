@@ -1,25 +1,23 @@
 import re
-from django import forms
-from django.contrib import messages, admin
+from urllib.parse import quote, unquote, urlsplit
 
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group, User
+from django import forms
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import (ReadOnlyPasswordHashField,
+                                       UserCreationForm)
+from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.forms import ModelForm
-from todo.models import ControlMeasure, Hazard, Person, Project, RiskLevel, Engagement, Region, Location, Stage
-from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
 from django.shortcuts import get_object_or_404, redirect, render
-from todo.validators import validate_project_number, validate_sap_id
-from urllib.parse import unquote, urlsplit, quote
+
+from todo.models import (ControlMeasure, Engagement, Hazard, Location, Person,
+                         Project, Region, RiskLevel, Stage)
+from todo.utils import (EGBC_folder, PPM_folder, SBD_folder, SPOT_folder,
+                        validate_project_number, validate_sap_id)
 
 
 class ProjectForm(ModelForm):
-    """The picklist showing allowable groups to which a new list can be added
-    determines which groups the user belongs to. This queries the form object
-    to derive that list. """
+    """project form for project table in database """
 
     project_id = None
 
@@ -71,11 +69,18 @@ class ProjectForm(ModelForm):
 
         if self.project_id:
             project = Project.objects.get(id=self.project_id)
-
+            print("project: " + str(project))
             self.initial['EGBC_link'] = unquote(EGBC_folder(project))
             self.initial['SBD_link'] = unquote(SBD_folder(project))
             self.initial['SPOT_link'] = unquote(SPOT_folder(project))
             self.initial['PPM_link'] = unquote(PPM_folder(project))
+
+            if project.person_set.count() == 0 and project.POR is not None:
+                new_person = Person.create(project=project, first_name=project.POR.first_name, last_name=project.POR.last_name, Email=project.POR.email, is_team_member=True, is_stakeholder=False, role="POR")
+                new_person.save()
+                print("person: " + str(new_person))
+
+            print(project.person_set.all())
 
     region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 
@@ -94,6 +99,7 @@ class ProjectForm(ModelForm):
 
 
     def clean(self):
+        """get clean data and validate data"""
         cleaned_data = super(ProjectForm, self).clean()
         print("cleaned data:" + str(cleaned_data))
         number_passed = cleaned_data.get("number")
@@ -118,6 +124,7 @@ class ProjectForm(ModelForm):
 
 
 class ProjectLinkForm(ModelForm):
+    """projectlink form for project links table in database. TODO: needs to be tested in Hydro server """
 
     def __init__(self, user, *args, **kwargs):
         super(ProjectLinkForm, self).__init__(*args, **kwargs)
@@ -138,8 +145,8 @@ class ProjectLinkForm(ModelForm):
 
 
 class HazardForm(ModelForm):
-    """The picklist showing the users to which a new task can be assigned
-    must find other members of the group this TaskList is attached to."""
+    """hazard form for hazard table in each project """
+
     project = None
     hazard = None
     def __init__(self, user, *args, **kwargs):
@@ -200,6 +207,7 @@ class HazardForm(ModelForm):
 
 
 class PersonForm(ModelForm):
+    """person form for team members and stakeholders in each project"""
     def __init__(self, user, *args, **kwargs):
         super(PersonForm, self).__init__(*args, **kwargs)
 
@@ -217,8 +225,9 @@ class PersonForm(ModelForm):
         model = Person
         exclude = []
 
-
 class EngagementForm(ModelForm):
+    """form for recording stakeholder engagement"""
+
     def __init__(self, user, *args, **kwargs):
         super(EngagementForm, self).__init__(*args, **kwargs)
 
@@ -259,7 +268,6 @@ class AddExternalTaskForm(ModelForm):
                    "completed_date",
                    "control_measure",
                    "risk_level",)
-
 
 class SearchForm(forms.Form):
     """Search."""

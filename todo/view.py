@@ -228,7 +228,7 @@ class ProjectDetailView(SingleObjectMixin, View):
         self.project_slug = project.slug
         persons = Person.objects.filter(project=project)
         engagements = Engagement.objects.filter(project=project)
-
+        print(engagements.count)
         context_extra = {
             "engagements" : engagements,
             "project_id"  : self.project_id,

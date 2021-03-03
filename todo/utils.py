@@ -3,7 +3,7 @@ import logging
 import os
 import re
 import time
-from re import search
+from re import search, match
 
 from django.conf import settings
 from django.contrib import messages
@@ -13,7 +13,8 @@ from django.template.loader import render_to_string
 from simple_history.models import HistoricalChanges, HistoricalRecords
 from todo.models import Comment, Hazard, Attachment, ControlMeasure, RiskLevel, Person
 from todo.defaults import defaults
-
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 log = logging.getLogger(__name__)
 
@@ -284,7 +285,7 @@ def EGBC_folder(project):
 
 def SPOT_folder(project):
 
-    SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field OpsSAM\Distribution Planning\System Improvement\SPOT Project Documentation"
+    SPOT_base = r"\\bchydro.adroot.bchydro.bc.ca\data\Field Ops\SAM\Distribution Planning\System Improvement\SPOT Project Documentation"
     #SPOT_base = r"D:\documents"
     if project.number:
         SPOT_path = os.path.join(SPOT_base, project.number)
@@ -310,3 +311,11 @@ def PPM_folder(project):
         PPM_path = os.path.join(PPM_base, project.SAP_id)
 
         return PPM_path
+
+def validate_sap_id(value):
+    if match(r'^[A-Z]{2}-\d{4}$', value):
+        return True
+
+def validate_project_number(value):
+    if match(r'^[A-Z]{2}-[A-Z]{2,3}-\d{3}$', value):
+        return True

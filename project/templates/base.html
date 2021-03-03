@@ -171,20 +171,17 @@
           setInterval(function () {
             const w = new Date();
             document.getElementById("datetime").innerHTML = w.toLocaleString("en-CA", options);
-            console.log(w.getSeconds());
           }, 60000);
         };
 
         const n = new Date();
         const sec = n.getSeconds() * 1000;
         document.getElementById("datetime").innerHTML = n.toLocaleString("en-CA", options);
-        console.log(n.getSeconds());
 
         setTimeout(function () {
           const e = new Date();
           document.getElementById("datetime").innerHTML = e.toLocaleString("en-CA", options);
           next();
-          console.log(e.getSeconds());
         }, (60000 - sec));
 
       </script>

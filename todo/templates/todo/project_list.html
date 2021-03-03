@@ -18,28 +18,22 @@
 
 {% regroup object_list by POR as section_list %}
 {% for POR in section_list %}
-<div class="ui segments" style="box-shadow: none">
+<div class="ui segments pb-4 mb-3" style="box-shadow: none">
   <div class="ui segment">
     <h3>Engineer: {{ POR.grouper.get_full_name }}</h3>
   </div>
   <div class="ui segments" style="box-shadow: 0 0 0 0;">
     {% for project in object_list %}
     {% if project.POR == POR.grouper %}
-    <div class="ui segment" style="border-bottom: none">
-      <div class="ui equal width grid">
-        <div class="fifteen wide column">
-          <a href="{% url 'todo:project_details' project.id project.slug %}"
-            class="">
-            <span>{{ project.number }}
-              {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}:
-              {% if project.title %} {{ project.title }} {% endif %}
-            </span>
-          </a>
-        </div>
-        <div class="column">
-          <a class="ui negative label">{{ project.counts }} high risk items</a>
-        </div>
-      </div>
+    <div class="ui segment d-flex justify-content-between">
+      <a href="{% url 'todo:project_details' project.id project.slug %}"
+        class="">
+        <span>{{ project.number }}
+          {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}:
+          {% if project.title %} {{ project.title }} {% endif %}
+        </span>
+      </a>
+      <a class="ui negative label">{{ project.counts }} high risk items</a>
     </div>
     <div class="progress">
       <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"
@@ -52,14 +46,13 @@
     {% endif %}
     {% endfor %}
   </div>
-
 </div>
-  {% endfor %}
-  {% endblock %}
+{% endfor %}
+{% endblock %}
 
-  {% block extra_js %}
-  <script>
-    $('#project_progress_*').progress();
+{% block extra_js %}
+<script>
+  $('#project_progress_*').progress();
 
-  </script>
-  {% endblock extra_js %}
+</script>
+{% endblock extra_js %}
