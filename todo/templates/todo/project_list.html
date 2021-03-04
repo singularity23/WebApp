@@ -27,22 +27,25 @@
     {% if project.POR == POR.grouper %}
     <div class="ui segment d-flex justify-content-between">
       <a href="{% url 'todo:project_details' project.id project.slug %}"
-        class="">
+        class="text-left">
         <span>{{ project.number }}
           {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}:
           {% if project.title %} {{ project.title }} {% endif %}
         </span>
       </a>
-      <a class="ui negative label">{{ project.counts }} high risk items</a>
+      <div class="text-right">
+        <a class="ui label text-right">{{ project.current_stage}}</a>
+        <a class="ui negative label text-right">{{ project.counts }} high risks</a>
+      </div>
     </div>
-    <div class="progress">
+    {% comment %} <div class="progress">
       <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"
         style="width:{{project.progress}}%;"
         aria-valuenow="{{project.progress}}" aria-valuemin="0"
         aria-valuemax="100">
       </div>
 
-    </div>
+    </div> {% endcomment %}
     {% endif %}
     {% endfor %}
   </div>

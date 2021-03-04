@@ -7,10 +7,11 @@ from todo.operations.csv_importer import CSVImporter
 from todo.utils import staff_check
 from django.urls import reverse
 
+#TODO: not yet implemented
 
 @login_required
 @user_passes_test(staff_check)
-def import_csv(request) -> HttpResponse:
+def import_csv(request):
     """Import a specifically formatted CSV into stored tasks.
     """
 

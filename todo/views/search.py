@@ -6,10 +6,11 @@ from django.shortcuts import render
 from todo.models import Hazard
 from todo.utils import staff_check
 
+#TODO: not yet implemented
 
 @login_required
 @user_passes_test(staff_check)
-def search(request) -> HttpResponse:
+def search(request):
     """Search for tasks user has permission to see.
     """
 

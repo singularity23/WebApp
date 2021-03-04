@@ -100,7 +100,7 @@ class Stage(models.Model):
     """
     NAME = Choices(
         ('Definition'),
-        ('Detailed Design'),
+        ('Design'),
         ('Construction'),
         ('Close Out'),
    )
@@ -489,6 +489,7 @@ class Attachment(models.Model):
         return f"{self.file.name}"
 
     def save_to_local(self, project, hazard):
+        """save files at server side directory"""
         p = project.SBD_path
         h = hazard.path
         f = self.filename()
@@ -502,6 +503,7 @@ class Attachment(models.Model):
 
 
 class Data(models.Model):
+    """model for files uploaded"""
     file_id = models.AutoField(primary_key=True)
     file = models.FileField(null=True, max_length=255)
     date_created = models.DateTimeField(default = timezone.now)

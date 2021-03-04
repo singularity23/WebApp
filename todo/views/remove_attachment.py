@@ -10,7 +10,8 @@ from todo.utils import remove_attachment_file
 
 
 @login_required
-def remove_attachment(request, project_id, project_slug, hazard_id, attachment_id: int) -> HttpResponse:
+def remove_attachment(request, project_id, project_slug, hazard_id, attachment_id: int):
+
     """Delete a previously posted attachment object and its corresponding file
     from the filesystem, permissions allowing.
     """

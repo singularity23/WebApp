@@ -20,11 +20,10 @@
  *
  */
 
- input.copytext{
-    position: absolute;
-    top: -9999px;
-    left: -9999px
-
+ input.copytext {
+     position: absolute;
+     top: -9999px;
+     left: -9999px
  }
 
  .shadow-sm {
@@ -167,7 +166,7 @@
  }
 
  .ui.table tr.negative, .ui.table td.negative, .ui.negative.label {
-     background: #FDE5DC !important;
+     background: #f2cac9 !important;
      color: #F15C22 !important;
      font-weight: 600;
      box-shadow: 0px 0px 0.1px #FDDBC5 inset;
@@ -175,23 +174,23 @@
  }
 
  .ui.table tr.warning, .ui.table td.warning, .ui.warning.label {
-     background: #FFF8EC !important;
-     color: #CFC2B4 !important;
+     background: #fbecde !important;
+     color: #f97d1c !important;
      font-weight: 600;
      box-shadow: 0px 0px 0.1px #F4F2EE inset;
      font-family: Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
  }
 
  .ui.table tr.positive-warning, .ui.table td.positive-warning, .ui.positive-warning.label {
-     background: #F1FAFD !important;
-     color: #004C6C !important;
+     background: #eef7f2 !important;
+     color: #3b818c !important;
      font-weight: 600;
-     box-shadow: 0px 0px 0.1px #B3C9D9 inset;
+     box-shadow: 0px 0px 0.1px #a4cab6 inset;
      font-family: Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
  }
 
  .ui.table tr.positive, .ui.table td.positive, .ui.positive.label {
-     background: #F0F7EA!important;
+     background: #c6dfc8!important;
      color: #00863E !important;
      font-weight: 600;
      box-shadow: 0px 0px 0.1px #C7DECA inset;
@@ -212,13 +211,13 @@
 
  body, html {
      height: 100%;
-     font-size: 13px;
+     font-size: 11px;
      font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-     line-height: 1.618;
+     line-height: 1.18;
      -webkit-box-sizing: border-box;
      box-sizing: border-box;
-     -ms-text-size-adjust: 100%;
-     -webkit-text-size-adjust: 100%;
+     -ms-text-size-adjust: 85%;
+     -webkit-text-size-adjust: 85%;
      background-color: rgba(188, 209, 155, 0.8);
      background-image: url("/static/assets/img/brand/bg_bch.png");
      background-size: auto 100%;
@@ -20427,8 +20426,8 @@
  }
 
  .ui.warning.message {
-    background-color: #fde7de;
-    color: #F15C22;
+     background-color: #fde7de;
+     color: #F15C22;
  }
 
  .ui.attached.warning.message, .ui.warning.message {
@@ -20441,8 +20440,8 @@
  }
 
  .ui.error.message {
-    background-color: #fde7de;
-    color: #F15C22;
+     background-color: #fde7de;
+     color: #F15C22;
  }
 
  .ui.attached.error.message, .ui.error.message {
@@ -20907,8 +20906,8 @@
  }
 
  .ui.table td.warning, .ui.table tr.warning {
-     background: #fffaf3!important;
-     color: #573a08!important
+     background: #fbecde!important;
+     color: #f97d1c!important
  }
 
  .ui.table td.active, .ui.table tr.active {

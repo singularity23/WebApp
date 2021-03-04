@@ -14,6 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
+from django.db import IntegrityError
 
 from todo.defaults import defaults
 from todo.utils import (get_history_change_reason)
@@ -143,7 +144,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-def _import_hazard(obj, project):
+def _import_hazard(request, obj, project):
     dctn = obj.get("fields")
     risk_level_id = dctn['risk_level']
 
@@ -158,16 +159,18 @@ def _import_hazard(obj, project):
         project=project,
         assigned_to=dctn['assigned_to'], )
 
-    hazard.save()
+    try:
+        hazard.save()
+    except IntegrityError:
+        messages.warning(request, "Hazards already exist")
 
-
-def handle(project):
+def handle(request, project):
     filename = os.path.join(settings.BASE_DIR, "hazard.json")
 
     with open(filename, 'r') as json_file:
         objects = json.loads(json_file.read())
     for obj in objects:
-        _import_hazard(obj, project)
+        _import_hazard(request, obj, project)
 
 
 class ProjectDetailView(SingleObjectMixin, View):
@@ -345,7 +348,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 print("form4 errors")
 
         elif request.POST.get("action", "") == "load_defaults":
-            handle(self.object)
+            handle(request, self.object)
         else:
             print("errors")
         print(context)

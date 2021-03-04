@@ -11,7 +11,7 @@ from todo.utils import staff_check
 
 @login_required
 @user_passes_test(staff_check)
-def delete_person(request, project_id, project_slug, person_id: int) -> HttpResponse:
+def delete_person(request, project_id, project_slug, person_id: int):
     """Delete specified task.
     Redirect to the list from which the task came.
     """
@@ -26,7 +26,6 @@ def delete_person(request, project_id, project_slug, person_id: int) -> HttpResp
                     }
         )
 
-        # Permissions
         if not (request.user.is_superuser):
             raise PermissionDenied
 

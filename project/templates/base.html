@@ -107,15 +107,17 @@
 
       <!-- Site content !-->
       <div class="element">
-
-        {% if messages %}
-        {% for message in messages %}
-        {% if message.tags %}
-        <div class="ui {{ message.tags }} {% endif %} floating message" id="message_container">
-          {{ message }}
+        <div class="messages" id="message_list">
+          {% if messages %}
+          {% for message in messages %}
+          {% if message.tags %}
+          <div class="ui {{ message.tags }} {% endif %} floating message" id="message_container">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
         </div>
-        {% endfor %}
-        {% endif %}
+
 
         <p>{{ form.non_field_errors }}</p>
 
@@ -144,6 +146,12 @@
 
       <script>
         // hide messages after 3s
+        const message_list = document.getElementById('message_list')
+        console.log(message_list)
+        setTimeout(function () {
+          message_list.style.display = "none";
+        }, 3500); // <-- time in milliseconds
+
         const message_ele = document.getElementById("message_container");
         if (message_ele != null) {
           setTimeout(function () {

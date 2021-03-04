@@ -10,11 +10,12 @@
     <div class="card-header">
       <h3>{{ project.number }} {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}</h3>
     </div>
-    <div class="card-body">
-      <div class="card-title font-weight-bold">
+    <div class="card-body pt-1">
+      <div class="card-title font-weight-bold p-1">
+      {% if project.title %}{{ project.title }}{% endif %}
       </div>
       <div class="card-subtitle mb-1 text-muted">
-        {% if project.title %}{{ project.title }}{% endif %}</div>
+        </div>
       {% if project.project_scope %}
       <div class="card-text text-sm">{{ project.project_scope|safe|urlize|linebreaks }}
       </div>
@@ -48,7 +49,7 @@
           {% if project.current_stage %} {{ project.current_stage }} {% else %} TBD {% endif %}
         </div>
         <div class="ui segment d-flex justify-content-between">
-          <strong>Region/Location:</strong>
+          <strong>Location:</strong>
           {% if project.region %} {{ project.region }}{% endif %}/{% if project.location %}
           {{ project.location }} {% else %} TBD
           {% endif %}

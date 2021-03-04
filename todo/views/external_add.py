@@ -12,10 +12,11 @@ from todo.defaults import defaults
 from todo.models import Project
 from todo.utils import staff_check
 
+#TODO: not yet implemented
 
 @login_required
 @user_passes_test(staff_check)
-def external_add(request) -> HttpResponse:
+def external_add(request):
     """Allow authenticated users who don't have access to the rest of the ticket system to file a ticket
     in the list specified in settings (e.g. django-todo can be used a ticket filing system for a school, where
     students can file tickets without access to the rest of the todo system).
