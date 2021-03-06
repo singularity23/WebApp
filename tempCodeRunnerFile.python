@@ -1,4 +1,0 @@
-import os.path
-
-data_folder = os.path.join("source_data", "text_files")
-

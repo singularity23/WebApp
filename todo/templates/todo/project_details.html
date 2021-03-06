@@ -366,7 +366,15 @@
   </div>
 </div>
 
-
+		<div class="form-group">
+			<label for="id_role" name="role">Role/Stakeholder</label>
+			{% if from.role.value %}
+			<input type="text" class="form-control" id="id_role" name="role"
+			value="{{ form.role }}">
+			{% else %}
+			{{ form.role }}
+			{% endif %}
+		</div>
 
 <div class="modal" id="EditPerson" tabindex="-1" role="dialog" aria-labelledby="editperson"
   aria-hidden="true">
@@ -398,12 +406,12 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{{ project_id }}</h5>
+        <h4 class="modal-title" id="exampleModalLongTitle">{{ project_id }}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body p=4">
+      <div class="modal-body">
         <div class="collapse show">
           {% include 'todo/include/project_delete.html' %}
         </div>
@@ -449,6 +457,7 @@
 <script src="{% static 'js/jquery.tablednd_0_5.js' %}" type="text/javascript"></script>
 
 <script>
+
   $('#id_stakeholders').select2({
     placeholder: 'Select stakeholders',
     theme: 'classic'
@@ -465,16 +474,22 @@
     var email = target.data("email");
     var team = target.data("team");
     var stakeholder = target.data("stakeholder");
-    console.log(target)
-    console.log(fname)
     var modal = $(this);
+
+    //modal.find("#id_role").select2({
+    //tags: true,
+    //placeholder: '',
+    //theme: 'classic'
+    //})
+
+    //modal.find("#select2-id_role-container").text(role);
+
+
     modal.find(".modal-title").text(fname + " " + lname);
-    modal.find("#id_role").val(role);
     modal.find("#id_first_name").val(fname);
     modal.find("#id_last_name").val(lname);
     modal.find("#id_Email").val(email);
     modal.find("#id_person_id").val(id);
-    console.log(url)
 
     if (stakeholder == "False") {
       modal.find("#id_is_stakeholder").prop("checked", false);
@@ -482,99 +497,14 @@
     } else {
       modal.find("#id_is_stakeholder").prop("checked", true);
       modal.find("#id_is_team_member").prop("checked", false);
-    }
+    };
 
     if (fname == undefined) {
       modal.find(".modal-title").text("Add a new team member or shakeholder");
       document.getElementById("DeletePersonButton").style.visibility = "hidden";
-      console.log(document.getElementById("DeletePersonButton"))
 
-    }
+    };
 
-
-    $.ajax({
-        type: "GET",
-        url: url,
-      })
-      .done(function (data, textStatus, jqXHR) {
-        //console.log(data)
-        //modal.find(".modal-body").html(data);
-        //modal.modal("show");
-        formAjaxSubmit(modal, url, null, null);
-      })
-      .fail(function (jqXHR, testStatus, errorThrown) {
-        alert("SERVER ERROR: " + errorThrown);
-      });
-
-    function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
-      var form = modal.find("#person_form");
-      var header = $(modal).find(".modal-header");
-      // use footer save button, if available
-      var btn_save = modal.find("#UpdatePerson");
-      if (btn_save) {
-        modal.find(".modal-body form .form-submit-row").hide();
-        btn_save.off().on("click", function (event) {
-          modal.find("#person_form").submit();
-        });
-      }
-      if (cbAfterLoad) {
-        cbAfterLoad(modal);
-      }
-      setTimeout(function () {
-        modal.find("form input:visible").first().focus();
-      }, 1000);
-      // bind to the form’s submit event
-      $(form).on("submit", function (event) {
-        // prevent the form from performing its default submit action
-        event.preventDefault();
-        header.addClass("loading");
-        //var url = $(this).attr("action") || action;
-        // serialize the form’s content and sent via an AJAX call
-        // using the form’s defined action and method
-        console.log(url)
-
-        $.ajax({
-          type: $(this).attr("method"),
-          url: url,
-          data: $(this).serialize(),
-          success: function (xhr, ajaxOptions, thrownError) {
-            // If the server sends back a successful response,
-            // we need to further check the HTML received
-            // update the modal body with the new form
-            $(modal).find(".modal-body").html(xhr);
-            // If xhr contains any field errors,
-            // the form did not validate successfully,
-            // so we keep it open for further editing
-            if ($(xhr).find(".has-error").length > 0) {
-              formAjaxSubmit(modal, url, cbAfterLoad,
-                cbAfterSuccess);
-            } else {
-              // otherwise, we've done and can close the modal
-              $(modal).modal("hide");
-              location.reload();
-              if (cbAfterSuccess) {
-                cbAfterSuccess(modal);
-              }
-            }
-          },
-          error: function (xhr, ajaxOptions, thrownError) {},
-          complete: function () {
-            header.removeClass("loading");
-          },
-        });
-      });
-    }
-
-    function afterModalLoad(modal) {
-      console.log("modal %o loaded", modal);
-    }
-
-    function afterModalSuccess(modal) {
-      console.log("modal %o succeeded", modal);
-    }
-
-    var afterLoad = afterModalLoad(modal)
-    var afterSub = afterModalSuccess(modal)
 
 
   });

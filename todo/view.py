@@ -311,11 +311,14 @@ class ProjectDetailView(SingleObjectMixin, View):
                     form = PersonForm(request.user, request.POST, instance=person)
             else:
                 form = PersonForm(request.user, request.POST)
-
+            print("form" + str(form))
             if form.is_bound and form.is_valid():
                 item = form.save(commit=False)
                 item.project = self.object
-                item.save()
+                try:
+                    item.save()
+                except:
+                    messages.warning(request, "This person already exists")
 
             else:
                 print("form errors")
@@ -422,7 +425,7 @@ class HazardDetailView(SingleObjectMixin, View):
             handle_upload_files(request, self.project, hazard)
             return redirect(
                 "todo:hazard_details", self.project_id, self.project_slug, hazard_id)
-        elif request.POST.get("add_comment") == "submit":
+        elif request.POST.get("add_comment") == "Submit":
             handle_add_comment(request, hazard)
             return redirect(
                 "todo:hazard_details", self.project_id, self.project_slug, hazard_id)

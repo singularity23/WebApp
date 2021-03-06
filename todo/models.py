@@ -278,6 +278,26 @@ class Person(models.Model):
     """
     Model for team members and stakeholders
     """
+
+    ROLE = ('Project Manager',
+        'Designer',
+        'Civil Engineer',
+        'Electrical Engineer',
+        'Civil Inspector',
+        'Power Line Technician',
+        'Cable Specialist',
+        'Interconnection Manager',
+        'Planning',
+        'Station',
+        'CPC',
+        'Vegetation',
+        'Healthy & Safety',
+        'Environmental',
+        'Community Relations',
+        'Indigenous Relations',
+        'Regional Relations',)
+
+
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, blank=True, null=True)
     first_name = models.CharField(max_length=60, blank=True, null=True)
@@ -285,7 +305,7 @@ class Person(models.Model):
     Email = models.EmailField(blank=True, null=True)
     is_team_member = models.BooleanField(default=False)
     is_stakeholder = models.BooleanField(default=False)
-    role = models.CharField(max_length=60, null=True)
+    role = models.CharField(max_length=60, null=True, )
 
     def get_absolute_url(self):
         return reverse("todo:team_edit", kwargs={"project_id": self.project.pk, "project_slug": self.project.slug, "person_id": self.pk})
@@ -490,15 +510,19 @@ class Attachment(models.Model):
 
     def save_to_local(self, project, hazard):
         """save files at server side directory"""
-        p = project.SBD_path
+        p = project.SBD_link
         h = hazard.path
         f = self.filename()
         dst = os.path.join(p, h)
         if not os.path.exists(dst):
-            os.makedirs(dst)
+            try:
+                os.makedirs(dst)
+                src = os.path.join(getattr(settings, 'MEDIA_ROOT', None), get_attachment_upload_dir(self, f))
+                shutil.copy(src,dst)
+            except:
+                print("error")
 
-        src = os.path.join(getattr(settings, 'MEDIA_ROOT', None), get_attachment_upload_dir(self, f))
-        shutil.copy(src,dst)
+
         print (self.file.url)
 
 

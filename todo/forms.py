@@ -1,15 +1,14 @@
 import re
 from urllib.parse import quote, unquote, urlsplit
 
-from django import forms
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import (ReadOnlyPasswordHashField,
                                        UserCreationForm)
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django import forms
+from django.forms import ModelForm
 from todo.models import (ControlMeasure, Engagement, Hazard, Location, Person,
                          Project, Region, RiskLevel, Stage)
 from todo.utils import (EGBC_folder, PPM_folder, SBD_folder, SPOT_folder,
@@ -205,11 +204,33 @@ class HazardForm(ModelForm):
         model = Hazard
         exclude = []
 
+class ListTextWidget(forms.TextInput):
+    def __init__(self, data_list, name, *args, **kwargs):
+        super(ListTextWidget, self).__init__(*args, **kwargs)
+        self._name = name
+        self._list = data_list
+        self.attrs.update({'list':'list__%s' % self._name, "class":"form-control"})
+
+    def render(self, name, value, attrs=None, renderer=None):
+        text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
+        data_list = '<datalist id="list__%s">' % self._name
+        for item in self._list:
+            data_list += '<option value="%s">' % item
+        data_list += '</datalist>'
+
+        return (text_html + data_list)
 
 class PersonForm(ModelForm):
     """person form for team members and stakeholders in each project"""
     def __init__(self, user, *args, **kwargs):
+        role_list = Person.ROLE
         super(PersonForm, self).__init__(*args, **kwargs)
+
+        role = forms.CharField()
+
+        self.fields["role"].required = False
+        self.fields["role"].widget = ListTextWidget(data_list=role_list, name="roles-list")
+
 
     first_name = forms.CharField(widget=forms.widgets.TextInput())
     last_name = forms.CharField(widget=forms.widgets.TextInput())
@@ -219,7 +240,6 @@ class PersonForm(ModelForm):
         widget=forms.widgets.CheckboxInput(), required=False)
     is_stakeholder = forms.BooleanField(
         widget=forms.widgets.CheckboxInput(), required=False)
-    role = forms.CharField(widget=forms.widgets.TextInput())
 
     class Meta:
         model = Person
