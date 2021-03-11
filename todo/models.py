@@ -336,7 +336,7 @@ class Hazard(models.Model):
     control_measure = models.ForeignKey(
         ControlMeasure, on_delete=models.CASCADE, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
+    details = models.CharField(max_length=360, blank=True, null=True)
 
     # residual = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
     # blank=True, null=True,
@@ -353,6 +353,8 @@ class Hazard(models.Model):
                                     related_name="todo_assigned_to",
                                     on_delete=models.CASCADE,
                                     )
+    recommendations = ('A', 'B', 'C')
+
 
     def __str__(self):
         return self.description

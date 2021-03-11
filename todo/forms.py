@@ -152,7 +152,7 @@ class HazardForm(ModelForm):
         super(HazardForm, self).__init__(*args, **kwargs)
         print(kwargs)
         # project_id = kwargs.get("project_id")
-
+        reco_list = Hazard.recommendations
         if 'instance' in kwargs:
             self.hazard = kwargs.get("instance")
             self.project = self.hazard.project
@@ -191,12 +191,18 @@ class HazardForm(ModelForm):
         self.fields["control_measure"].required = False
         self.fields["assigned_to"].requried = False
         self.fields["res_risk_level"].required = False
+
+        details = forms.CharField()
+
+        self.fields["details"].required = False
+        self.fields["details"].widget = ListTextWidget(data_list=reco_list, name="recommendations")
+        self.fields["details"].widget.attrs.update({"style":"height:3rem"})
+
         # self.fields["res_risk_level"].initial = RiskLevel.objects.none
 
     description = forms.CharField(widget=forms.widgets.TextInput())
 
     note = forms.CharField(widget=forms.Textarea(), required=False)
-    details = forms.CharField(widget=forms.Textarea(), required=False)
 
     # number = len(Hazard.objects.filter(project=project))
 

@@ -3,7 +3,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.urls import reverse
-from todo.models import Hazard, Project
+from todo.models import Hazard, Project, MyUser, MyUserManager
 
 """
 First the "smoketests" - do they respond at all for a logged in admin user?

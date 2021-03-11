@@ -520,14 +520,24 @@
     var url = $(this).attr('href');
 
     var copytext = document.getElementById("copytext");
+    var t = document.createElement("textarea");
+
     console.log(url);
 
     copytext.value = url;
-    console.log(copytext);
+
 
     copytext.select();
     copytext.setSelectionRange(0, copytext.value.length);
     document.execCommand('copy');
+
+    t.value = url;
+
+    document.body.appendChild(t);
+    t.select();
+    document.execCommand("copy");
+    document.body.removeChild(t);
+    console.log(copytext);
     $(this).focus();
 
 

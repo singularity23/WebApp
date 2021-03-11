@@ -29,8 +29,8 @@ def import_setup(todo_setup):
 @pytest.mark.django_db
 def test_setup(todo_setup):
     """Confirm what we should have from conftest, prior to importing CSV."""
-    assert Project.objects.all().count() == 2
-    assert Hazard.objects.all().count() == 6
+    assert Project.objects.all().count() ==
+    assert Hazard.objects.all().count() ==
 
 
 @pytest.mark.django_db
