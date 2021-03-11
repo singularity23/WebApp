@@ -63,7 +63,6 @@ INSTALLED_APPS = (
     "django_extensions",
     "filemanager",
     "simple_history",
-    "pytest",
 
 )
 # Static files and uploads
