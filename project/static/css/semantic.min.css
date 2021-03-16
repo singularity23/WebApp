@@ -9,7 +9,7 @@
  *
  */
 
- @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin);
+ @import url(https://fonts.googleapis.com/css?family="Open Sans":400,700,400italic,700italic&subset=latin);
  /*!
  * # Semantic UI 2.4.2 - Reset
  * http://github.com/semantic-org/semantic-ui/
@@ -20,10 +20,45 @@
  *
  */
 
+ input::-webkit-textfield-decoration-container {
+     -webkit-user-modify: read-write;
+     writing-mode: read-write!important;
+     font-style: italic;
+ }
+
+ input::-webkit-input-placeholder {
+     text-overflow: ellipsis;
+     line-height: initial;
+     white-space: pre;
+     overflow-wrap: anywhere;
+     -webkit-user-modify: read-write !important;
+     overflow: hidden;
+ }
+
+ [list] {
+     background-color: #fff;
+     border: 1px solid #ced4da;
+     padding: 8px;
+ }
+
+ datalist.list__recommendations, #list__recommendations {
+     background-color: #a4cab6;
+     box-shadow: none;
+ }
+
+ .form-control::placeholder {
+     color: #495057;
+     opacity: 1;
+     font-style: italic;
+ }
+
  .modal-header, .modal-footer {
+     min-height: calc(2rem + 1.75rem + 2px);
      padding: .75rem 1.25rem;
      background-color: rgba(0, 0, 0, .03);
      font-family: Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     vertical-align: middle;
+     font-size: 1.28571429rem;
  }
 
  input.copytext {
@@ -142,7 +177,7 @@
      right: 1px;
      left: 0;
      z-index: 1;
-     height: calc(1.5em + .75rem + 10px);
+     height: calc(1.5em + .75rem + 9.09px);
      padding: .78571429em 1.5em .78571429em;
      font-weight: 700;
      line-height: 1.618;
@@ -161,7 +196,7 @@
      bottom: 0;
      z-index: 3;
      display: block;
-     height: calc(1.5em + .75rem + 8px);
+     height: calc(1.5em + .75rem + 7.09px);
      padding: .78571429em 1.5em .78571429em;
      line-height: 1.618;
      color: #495057;
@@ -196,7 +231,7 @@
  }
 
  .ui.table tr.positive, .ui.table td.positive, .ui.positive.label {
-     background: #c6dfc8!important;
+     background: #cef4d4!important;
      color: #00863E !important;
      font-weight: 600;
      box-shadow: 0px 0px 0.1px #C7DECA inset;
@@ -218,8 +253,9 @@
  body, html, .modal-content {
      height: 100%;
      font-size: 13px;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      line-height: 1.6;
+     letter-spacing: -.01rem;
      -webkit-box-sizing: border-box;
      box-sizing: border-box;
      -ms-text-size-adjust: 100%;
@@ -4084,7 +4120,7 @@
  }
 
  .ui.text.container {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      max-width: 700px!important;
      line-height: 1.5
  }
@@ -4152,7 +4188,7 @@
 
  .ui.horizontal.divider {
      display: table;
-     white-space: nowrap;
+     white-space: break-spaces;
      height: auto;
      margin: '';
      line-height: 1.618;
@@ -4214,7 +4250,7 @@
  @media only screen and (max-width:767px) {
      .ui.grid .stackable.row .ui.vertical.divider, .ui.stackable.grid .ui.vertical.divider {
          display: table;
-         white-space: nowrap;
+         white-space: white-space;
          height: auto;
          margin: '';
          overflow: hidden;
@@ -5324,7 +5360,7 @@
      border: none;
      margin: calc(2rem - .14285714em) 0 1rem;
      padding: 0 0;
-     font-family: 'Open Sans', Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: 'Open Sans', "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-weight: 700;
      line-height: 1.28571429em;
      text-transform: none;
@@ -6911,7 +6947,7 @@
      content: "\f20d"
  }
 
- i.icon.calculator:before {
+ i.icon.calcu"Open Sans"r:before {
      content: "\f1ec"
  }
 
@@ -13408,7 +13444,7 @@
  .ui.list .list>.item .header, .ui.list>.item .header {
      display: block;
      margin: 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-weight: 700;
      color: rgba(0, 0, 0, .87)
  }
@@ -14734,13 +14770,13 @@
  .ui.slide.reveal {
      position: relative!important;
      overflow: hidden!important;
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.slide.reveal>.content {
      display: block;
      width: 100%;
-     white-space: normal;
+     white-space: white-space;
      float: left;
      margin: 0;
      -webkit-transition: -webkit-transform .5s ease .1s;
@@ -14830,13 +14866,13 @@
  .ui.move.reveal {
      position: relative!important;
      overflow: hidden!important;
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.move.reveal>.content {
      display: block;
      float: left;
-     white-space: normal;
+     white-space: white-space;
      margin: 0;
      -webkit-transition: -webkit-transform .5s cubic-bezier(.175, .885, .32, 1) .1s;
      transition: transform .5s cubic-bezier(.175, .885, .32, 1) .1s;
@@ -15789,7 +15825,7 @@
  }
 
  .ui.steps .step .title {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1.14285714em;
      font-weight: 700
  }
@@ -16321,8 +16357,8 @@
      display: block;
      margin: 0 0 .28571429rem 0;
      color: rgba(0, 0, 0, .87);
-     font-size: .92857143em;
-     font-weight: 700;
+     font-size: 1rem;
+     font-weight: 600;
      text-transform: none
  }
 
@@ -16336,14 +16372,15 @@
  }
 
  .ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url] {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      margin: 0;
      outline: 0;
+     min-height: calc(1.5em + .75rem + 2px);
      -webkit-appearance: none;
      tap-highlight-color: rgba(255, 255, 255, 0);
      line-height: 1.21428571em;
-     padding: .67857143em 1em;
-     font-size: 1em;
+     padding: .375rem 0.375rem .375rem .75rem;
+     font-size: 1rem;
      background: #fff;
      border: 1px solid rgba(34, 36, 38, .15);
      color: rgba(0, 0, 0, .87);
@@ -16447,7 +16484,7 @@
  }
 
  .ui.form .field .prompt.label {
-     white-space: normal;
+     white-space: white-space;
      background: #fff!important;
      border: 1px solid #e0b4b4!important;
      color: #9f3a38!important
@@ -18399,7 +18436,7 @@
      display: -ms-flexbox;
      display: flex;
      margin: 1rem 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      background: #fff;
      font-weight: 400;
      border: 1px solid rgba(34, 36, 38, .15);
@@ -20196,7 +20233,7 @@
 
  .ui.message .header {
      display: block;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-weight: 700;
      margin: -.14285714em 0 0 0
  }
@@ -20653,7 +20690,7 @@
      color: rgba(0, 0, 0, .87);
      border-collapse: separate;
      border-spacing: 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-seri;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-seri;
  }
 
  .ui.table:first-child {
@@ -20990,7 +21027,7 @@
 
  .ui.table td.collapsing, .ui.table th.collapsing {
      width: 1px;
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.fixed.table {
@@ -21103,11 +21140,11 @@
  }
 
  .ui.table [class*="single line"], .ui.table[class*="single line"] {
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.table [class*="single line"], .ui.table[class*="single line"] {
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.red.table {
@@ -21357,7 +21394,7 @@
 
  .ui.sortable.table thead th {
      cursor: pointer;
-     white-space: nowrap;
+     white-space: white-space;
      border-left: 1px solid rgba(34, 36, 38, .15);
      color: rgba(0, 0, 0, .87)
  }
@@ -21904,7 +21941,7 @@
  .ui.card>.content>.header, .ui.cards>.card>.content>.header {
      display: block;
      margin: '';
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      color: rgba(0, 0, 0, .85)
  }
 
@@ -23130,7 +23167,7 @@
  .ui.items>.item>.content>.header {
      display: inline-block;
      margin: -.21425em 0 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-weight: 700;
      color: rgba(0, 0, 0, .85)
  }
@@ -23477,7 +23514,7 @@
  }
 
  .ui.statistic>.value, .ui.statistics .statistic>.value {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 4rem;
      font-weight: 400;
      line-height: 1em;
@@ -23487,7 +23524,7 @@
  }
 
  .ui.statistic>.label, .ui.statistics .statistic>.label {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1em;
      font-weight: 700;
      color: rgba(0, 0, 0, .87);
@@ -23880,7 +23917,7 @@
 
  .ui.accordion .title:not(.ui) {
      padding: .5em 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1em;
      color: rgba(0, 0, 0, .87)
  }
@@ -24715,7 +24752,7 @@
  }
 
  .ui.dropdown .menu>* {
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.dropdown>input:not(.search):first-child, .ui.dropdown>select {
@@ -24901,7 +24938,7 @@
      cursor: pointer;
      word-wrap: break-word;
      line-height: 1em;
-     white-space: normal;
+     white-space: white-space;
      outline: 0;
      -webkit-transform: rotateZ(0);
      transform: rotateZ(0);
@@ -25003,7 +25040,7 @@
  .ui.selection.dropdown .menu>.item {
      border-top: 1px solid #fafafa;
      padding: .78571429rem 1.14285714rem!important;
-     white-space: normal;
+     white-space: white-space;
      word-wrap: normal
  }
 
@@ -25119,7 +25156,7 @@
      line-height: 1.21428571em;
      padding: .67857143em 2.1em .67857143em 1em;
      display: none;
-     white-space: pre
+     white-space: white-space
  }
 
  .ui.search.dropdown.active>input.search, .ui.search.dropdown.visible>input.search {
@@ -25189,7 +25226,7 @@
      user-select: none;
      display: inline-block;
      vertical-align: top;
-     white-space: normal;
+     white-space: white-space;
      font-size: 1em;
      padding: .35714286em .78571429em;
      margin: .14285714rem .28571429rem .14285714rem 0;
@@ -26092,7 +26129,7 @@
 
  .ui.modal>.header {
      display: block;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      background: #fff;
      margin: 0;
      padding: 1.25rem 1.5rem;
@@ -26714,7 +26751,7 @@
 
  .ui.popup>.header {
      padding: 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1.14285714em;
      line-height: 1.2;
      font-weight: 700
@@ -26762,7 +26799,7 @@
      position: absolute;
      text-transform: none;
      text-align: left;
-     white-space: nowrap;
+     white-space: white-space;
      font-size: 1rem;
      border: 1px solid #d4d4d5;
      line-height: 1.4285em;
@@ -27393,7 +27430,7 @@
  }
 
  .ui.progress .bar>.progress {
-     white-space: nowrap;
+     white-space: white-space;
      position: absolute;
      width: auto;
      font-size: .92857143em;
@@ -27802,7 +27839,7 @@
      display: -webkit-inline-box;
      display: -ms-inline-flexbox;
      display: inline-flex;
-     white-space: nowrap;
+     white-space: white-space;
      vertical-align: baseline
  }
 
@@ -28019,7 +28056,7 @@
      left: 0;
      -webkit-transform-origin: center top;
      transform-origin: center top;
-     white-space: normal;
+     white-space: white-space;
      text-align: left;
      text-transform: none;
      background: #fff;
@@ -28076,7 +28113,7 @@
 
  .ui.search>.results .result .title {
      margin: -.14285714em 0 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-weight: 700;
      font-size: 1em;
      color: rgba(0, 0, 0, .85)
@@ -28098,7 +28135,7 @@
  }
 
  .ui.search>.results>.message .header {
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1rem;
      font-weight: 700;
      color: rgba(0, 0, 0, .87)
@@ -28260,9 +28297,9 @@
      display: table-cell;
      text-overflow: ellipsis;
      width: 100px;
-     white-space: nowrap;
+     white-space: white-space;
      background: 0 0;
-     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     font-family: "Open Sans", 'Helvetica Neue', Arial, Helvetica, sans-serif;
      font-size: 1em;
      padding: .4em 1em;
      font-weight: 700;
@@ -28406,11 +28443,11 @@
  }
 
  .ui.text.shape .side {
-     white-space: nowrap
+     white-space: white-space
  }
 
  .ui.text.shape .side>* {
-     white-space: normal
+     white-space: white-space
  }
 
  .ui.loading.shape {

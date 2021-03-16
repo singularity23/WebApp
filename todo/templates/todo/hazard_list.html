@@ -16,6 +16,8 @@
 
       </div>
       <div class="card-text text-sm">
+        {% if hazards %}
+
         <table class="table" id="hazardtable">
           <thead>
             <tr class="d-flex">
@@ -30,7 +32,6 @@
             </tr>
           </thead>
           <tbody>
-            {% if hazards %}
             {% for hazard in hazards %}
             <tr class="d-flex">
               <td class="col-2">

@@ -136,11 +136,16 @@
     <div class="card-footer">
       <form method="POST">
         {% csrf_token %}
-        <div class="form-group">
-          <textarea class="form-control" name="comment-body" rows="3" id="comment" required></textarea>
+        <div class="row">
+          <div class="form-group col-11 mb-0">
+            <textarea class="form-control" name="comment-body" rows="3" id="comment" required></textarea>
+          </div>
+
+          <div class="col-1 d-flex justify-content-between pl-0">
+            <input class="left floated fluid ui button pl-2 pr-2" type="submit" name="add_comment"
+              value="Submit">
+          </div>
         </div>
-        <input class="ui right floated button" type="submit" name="add_comment"
-          value="Submit">
       </form>
     </div>
   </div>

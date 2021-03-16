@@ -43,6 +43,10 @@ class MyUserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        group = Group.objects.get(name="Engineer")
+        group.user_set.add(user)
+
         return user
 
     def create_superuser(self, email, password=None):
@@ -93,6 +97,7 @@ class MyUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_staff
+
 
 class Stage(models.Model):
     """
@@ -279,7 +284,7 @@ class Person(models.Model):
     Model for team members and stakeholders
     """
 
-    ROLE = ('Project Manager',
+    ROLE = ['Project Manager',
         'Designer',
         'Civil Engineer',
         'Electrical Engineer',
@@ -295,7 +300,7 @@ class Person(models.Model):
         'Environmental',
         'Community Relations',
         'Indigenous Relations',
-        'Regional Relations',)
+        'Regional Relations',]
 
 
     project = models.ForeignKey(
@@ -353,7 +358,13 @@ class Hazard(models.Model):
                                     related_name="todo_assigned_to",
                                     on_delete=models.CASCADE,
                                     )
-    recommendations = ('A', 'B', 'C')
+
+    CHOICES = []
+
+    recommendations = models.CharField(
+        max_length=480,
+        choices=CHOICES, null=True, blank=True
+        )
 
 
     def __str__(self):
@@ -424,6 +435,11 @@ class Hazard(models.Model):
         hazards = Hazard.objects.filter(project=self.project)
         print(hazards)
         return (hazards.count())
+
+    @classmethod
+    def create(cls, description, risk_level, project):
+        new_hazard = cls(description, risk_level, project)
+        return new_hazard
 
     number = property(counts)
 

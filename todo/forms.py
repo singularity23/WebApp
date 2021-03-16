@@ -86,9 +86,9 @@ class ProjectForm(ModelForm):
     location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
         # print("group:" + str(self.fields["group"].initial))
 
-    SAP_id = forms.CharField(widget=forms.widgets.TextInput(), required=False,)
+    SAP_id = forms.CharField(widget=forms.widgets.TextInput(), required=True,)
 
-    number = forms.CharField(widget=forms.widgets.TextInput(), required=False,)
+    number = forms.CharField(widget=forms.widgets.TextInput(), required=True,)
 
     title = forms.CharField(widget=forms.widgets.TextInput(), required=False)
     project_scope = forms.CharField(widget=forms.Textarea(), required=False)
@@ -148,15 +148,17 @@ class HazardForm(ModelForm):
 
     project = None
     hazard = None
+    choice_list = []
     def __init__(self, user, *args, **kwargs):
         super(HazardForm, self).__init__(*args, **kwargs)
         print(kwargs)
         # project_id = kwargs.get("project_id")
-        reco_list = Hazard.recommendations
         if 'instance' in kwargs:
             self.hazard = kwargs.get("instance")
+            if self.hazard.recommendations:
+                self.choice_list=eval(self.hazard.recommendations)
             self.project = self.hazard.project
-
+            print(self.choice_list)
             # print("instance: " + str(project))
         elif 'initial' in kwargs:
             self.project = kwargs.get("initial").get("project")
@@ -193,10 +195,16 @@ class HazardForm(ModelForm):
         self.fields["res_risk_level"].required = False
 
         details = forms.CharField()
+        choices = self.choice_list
 
+        self.fields["details"].choices = [(list(choice.keys()), list(choice.values())) for choice in choices]
         self.fields["details"].required = False
-        self.fields["details"].widget = ListTextWidget(data_list=reco_list, name="recommendations")
-        self.fields["details"].widget.attrs.update({"style":"height:3rem"})
+        self.fields["details"].widget = ListTextWidget(data_list=[(list(choice.keys()), list(choice.values())) for choice in choices], name="recommendations")
+        self.fields["details"].widget.attrs.update({
+                                                    "class":"field", "placeholder":"Pick a recommended mitigation or manually enter a mitigation",
+                                                    "onchange":"showChoice()"
+                                                    })
+
 
         # self.fields["res_risk_level"].initial = RiskLevel.objects.none
 
@@ -208,20 +216,30 @@ class HazardForm(ModelForm):
 
     class Meta:
         model = Hazard
-        exclude = []
+        exclude = ['recommendations']
 
 class ListTextWidget(forms.TextInput):
     def __init__(self, data_list, name, *args, **kwargs):
         super(ListTextWidget, self).__init__(*args, **kwargs)
         self._name = name
         self._list = data_list
-        self.attrs.update({'list':'list__%s' % self._name, "class":"form-control"})
+        self.attrs.update({'list':'list__%s' % self._name})
 
     def render(self, name, value, attrs=None, renderer=None):
         text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
         data_list = '<datalist id="list__%s">' % self._name
-        for item in self._list:
-            data_list += '<option value="%s">' % item
+        data_list += '<select class="ui dropdown" id="selection-list">'
+        print(self._name)
+
+        if self._name == "recommendations":
+            for key,value in self._list:
+                print(key[0], value[0])
+                data_list += ('<option value="%s" data-index="%s">' % (value[0], key[0]))
+        else:
+            for item in self._list:
+                data_list += ('<option value="%s">' % str(item))
+        data_list += '</select>'
+
         data_list += '</datalist>'
 
         return (text_html + data_list)
@@ -236,7 +254,10 @@ class PersonForm(ModelForm):
 
         self.fields["role"].required = False
         self.fields["role"].widget = ListTextWidget(data_list=role_list, name="roles-list")
-
+        self.fields["role"].widget.attrs.update({
+                                                 "class":"field",
+                                                 "placeholder":"Pick from the list, or add it manually",
+                                                })
 
     first_name = forms.CharField(widget=forms.widgets.TextInput())
     last_name = forms.CharField(widget=forms.widgets.TextInput())

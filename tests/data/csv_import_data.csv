@@ -1,4 +1,7 @@
-description,risk_level,project,assigned_to,,,,,details,Priority
-u1,High,project_1,u2@bchydro.com,,,,,dsad,3
-u1,Low,project_1,u2@bchydro.com,,,,,klklklkl,
-u1,Medium,project_1,u2@bchydro.com,,,,,,
+description,risk_level,project
+u1,High,project_1
+u1,Low,project_1
+u1,Medium,project_1
+u2,High,project_2
+u2,Low,project_2
+u2,Medium,project_2

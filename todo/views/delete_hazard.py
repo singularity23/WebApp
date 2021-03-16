@@ -36,7 +36,7 @@ def delete_hazard(request, project_id, project_slug, hazard_id: int):
 
         hazard.delete()
 
-        messages.success(request, "Task '{}' has been deleted".format(hazard.description))
+        messages.success(request, "Hazard '{}' has been deleted".format(hazard.description))
         return redirect(redir_url)
 
     else:

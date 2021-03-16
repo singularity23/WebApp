@@ -20,7 +20,7 @@ from todo.defaults import defaults
 from todo.utils import (get_history_change_reason)
 from .forms import (EngagementForm, HazardForm, PersonForm, ProjectForm,
                     ProjectLinkForm)
-from .models import (Attachment, Comment, Engagement, Hazard, Location, Person, Project, RiskLevel)
+from .models import (Attachment, Comment, Engagement, Hazard, Location, Person, Project, RiskLevel, ControlMeasure)
 from .validators import validate_project_number, validate_sap_id
 from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
 
@@ -157,7 +157,9 @@ def _import_hazard(request, obj, project):
         details=dctn['details'],
         res_risk_level=dctn['res_risk_level'],
         project=project,
-        assigned_to=dctn['assigned_to'], )
+        assigned_to=dctn['assigned_to'],
+        recommendations=dctn['CHOICES']
+        )
 
     try:
         hazard.save()
@@ -352,6 +354,7 @@ class ProjectDetailView(SingleObjectMixin, View):
 
         elif request.POST.get("action", "") == "load_defaults":
             handle(request, self.object)
+            return redirect("todo:project_details", self.object.id, self.object.slug)
         else:
             print("errors")
         print(context)
@@ -415,6 +418,7 @@ class HazardDetailView(SingleObjectMixin, View):
             item = form1.save(commit=False)
             item.project = self.project
             item.res_risk_level = RiskLevel.objects.filter(pk=self.object.res_idex)[0]
+
             print(item.res_risk_level)
             item.save()
             # print(form1)
@@ -454,7 +458,7 @@ class HazardDetailView(SingleObjectMixin, View):
     def delete(self, request, *args, **kwargs):
 
         self.object.delete()
-        messages.success(request, "Hazard #{obj} has been deleted.".format(obj=self.object.id))
+        messages.success(request, "Hazard '{obj}' has been deleted.".format(obj=self.object.id))
 
         return redirect("todo:project_details", self.project_id, self.project_slug)
 

@@ -1,38 +1,33 @@
 import pytest
 
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
-from todo.models import Hazard, Project
+from todo.models import Hazard, Project, MyUserManager
 
 @pytest.fixture
 def todo_setup(django_user_model):
     # Two groups with different users, two sets of tasks.
 
-    g1 = Group.objects.filter(name="Engineer")
-    u1 = django_user_model.objects.create_user(
-        username="u1", password="password", email="u1@example.com", is_staff=True
-    )
-    u1.groups.add(g1)
-    project_1 = Project.objects.create(group=g1, name="Zip", slug="zip")
-    Hazard.objects.create(description="u1", risk_level="High", project=project_1)
-    Hazard.objects.create(description="u1", risk_level="Low", project=project_1)
-    Hazard.objects.create(description="u1", risk_level="Medium", project=project_1)
+    g1 = Group.objects.create(name="g1")
+    u1 = User.objects.create(username="u1@bchydro.com", email="u1@bchydro.com", password="password")
+    g1.user_set.add(u1)
+    project_1 = Project.objects.create(number="LM-VAN-111", SAP_id="TY-1111", title="ZIP", POR = u1)
+    h1 = Hazard.create(description="u1", risk_level="High", project=project_1)
+    h2 = Hazard.create(description="u1", risk_level="Low", project=project_1)
+    h3 = Hazard.create(description="u1", risk_level="Medium", project=project_1)
 
-    g2 = Group.objects.filter(name="Engineer")
-    u2 = django_user_model.objects.create_user(
-        username="u2", password="password", email="u2@bchydro.com", is_staff=True
-    )
-    u2.groups.add(g2)
-    project_2 = Project.objects.create(group=g2, name="Zap", slug="zap")
-    Hazard.objects.create(description="u2", risk_level="High", project=project_2)
-    Hazard.objects.create(description="u2", risk_level="Low", project=project_2)
-    Hazard.objects.create(description="u2", risk_level="Medium", project=project_2)
+    g2 = Group.objects.create(name="g2")
+    u2 = User.objects.create(username="u1@bchydro.com", email="u2@bchydro.com", password="password")
+
+    g2.user_set.add(u2)
+    project_2 = Project.objects.create(number="LM-VAN-211", SAP_id="TY-2111", title="ZIP2", POR = u2)
+    h4 = Hazard.create(description="u2", risk_level="High", project=project_2)
+    h5 = Hazard.create(description="u2", risk_level="Low", project=project_2)
+    h6 = Hazard.create(description="u2", risk_level="Medium", project=project_2)
 
     # Add a third user for a test that needs two users in the same group.
-    extra_g2_user = django_user_model.objects.create_user(
-        username="extra_g2_user", password="password", email="extra_g2_user@bchydro.com", is_staff=True
-    )
-    extra_g2_user.groups.add(g2)
+    extra_g2_user = MyUserManager.create_user(email="extra_g2_user@bchydro.com", password="password")
+    g2.user_set.add(extra_g2_user)
 
 
 @pytest.fixture

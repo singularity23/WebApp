@@ -15,36 +15,86 @@
             <input type="text" class="form-control" id="id_index" name="index" required
                 placeholder="" value="{% if form1.index.value %}{{ form1.index.value }}{% endif %}">
         </div>
-        <div class="form-group">
+        <div class="form-group ">
             <label for="id_note">Note</label>
             <textarea class="form-control" id="id_note" name="note" rows="3"
                 aria-describedby="inputNoteHelp">{% if form1.note.value %}{{ form1.note.value }}{% endif %}</textarea>
         </div>
 
-        <div class="form-group">
-            <label for="id_risk_level">Risk Level</label>
-            {{form1.risk_level}}
+        <div class="form-group row d-flex">
+
+            <div class="form-group col-md-6">
+                <div class="field">
+
+                    <label for="id_risk_level">Risk Level</label>
+                    {{form1.risk_level}}
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <div class="field">
+
+                    <label for="id_assigned_to">Assigned to</label>
+                    {{form1.assigned_to}}
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="id_control_measuire">Control Measure</label>
-            {{form1.control_measure}}
+
+        <div class="form-group row d-flex">
+
+            <div class="ui form col-md-6">
+                <div class="field mb-3">
+                    <label for="id_details">Control Details</label>
+                    {{form1.details}}
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="field">
+                    <label for="id_control_measure">Control Measure</label>
+                    {{form1.control_measure}}
+                </div>
+            </div>
+
         </div>
-        <div class="form-group">
-            <label for="id_details">Control Details</label>
-            {{form1.details}}
-        </div>
-        <div class="form-group">
-            <label for="id_assigned_to">Assigned to</label>
-            {{form1.assigned_to}}
-        </div>
+
+
         <div hidden class="form-group">
             <label for="id_res_risk_level">Result Risk</label>
             {{form1.res_risk_level}}
         </div>
 
         <p>
-            <input type="submit" name="edit_hazard" value="submit" class="ui button">
+            <input type="submit" name="edit_hazard" value="submit" class="ui right floated button ">
         </p>
 
     </div>
 </form>
+
+{% block extra_js %}
+
+<script type="text/javascript">
+    function showChoice() {
+        el = document.getElementById("id_details");
+        dl = document.getElementById("list__recommendations");
+
+        if (el.value.trim() != '') {
+            var opSelected = dl.querySelector(`[value="${el.value}"]`);
+            console.log(opSelected);
+            var option = document.createElement("option");
+            var control = document.getElementById("id_control_measure");
+
+            if (opSelected) {
+                option.value = opSelected.value;
+                console.log(option.value);
+                option.text = opSelected.getAttribute('data-index');
+                console.log(option.text);
+                control.selectedIndex = option.text;
+
+            }
+
+        }
+
+    }
+
+</script>
+{% endblock extra_js %}

@@ -22,6 +22,7 @@ def import_setup(todo_setup):
     with filepath.open(mode="r", encoding="utf-8-sig") as fileobj:
         importer = CSVImporter()
         results = importer.upsert(fileobj, as_string_obj=True)
+        print(results)
         assert results
     return {"results": results}
 
@@ -29,14 +30,14 @@ def import_setup(todo_setup):
 @pytest.mark.django_db
 def test_setup(todo_setup):
     """Confirm what we should have from conftest, prior to importing CSV."""
-    assert Project.objects.all().count() ==
-    assert Hazard.objects.all().count() ==
+    assert Project.objects.all().count() == 2
+    assert Hazard.objects.all().count() == 6
 
 
 @pytest.mark.django_db
 def test_import(import_setup):
     """Confirm that importing the CSV gave us two more rows (one should have been skipped)"""
-    assert Hazard.objects.all().count() == 8  # 2 out of 3 rows should have imported; one was an error
+    assert Hazard.objects.all().count() == 6  # 2 out of 3 rows should have imported; one was an error
 
 
 @pytest.mark.django_db

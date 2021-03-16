@@ -366,23 +366,15 @@
   </div>
 </div>
 
-		<div class="form-group">
-			<label for="id_role" name="role">Role/Stakeholder</label>
-			{% if from.role.value %}
-			<input type="text" class="form-control" id="id_role" name="role"
-			value="{{ form.role }}">
-			{% else %}
-			{{ form.role }}
-			{% endif %}
-		</div>
+
 
 <div class="modal" id="EditPerson" tabindex="-1" role="dialog" aria-labelledby="editperson"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{{ project.number }}
-        </h5>
+        <h4 class="modal-title" id="exampleModalLongTitle">{{ project.number }}
+        </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -484,20 +476,59 @@
 
     //modal.find("#select2-id_role-container").text(role);
 
-
+    modal.find("#id_role").val(role);
     modal.find(".modal-title").text(fname + " " + lname);
     modal.find("#id_first_name").val(fname);
     modal.find("#id_last_name").val(lname);
     modal.find("#id_Email").val(email);
     modal.find("#id_person_id").val(id);
 
-    if (stakeholder == "False") {
-      modal.find("#id_is_stakeholder").prop("checked", false);
-      modal.find("#id_is_team_member").prop("checked", true);
-    } else {
-      modal.find("#id_is_stakeholder").prop("checked", true);
-      modal.find("#id_is_team_member").prop("checked", false);
-    };
+    //console.log(modal.find("#id_is_stakeholder").is(':checked'));
+   //console.log(modal.find("#id_is_team_member").is(':checked'));
+      console.log(team)
+      console.log(stakeholder)
+
+      if (team == "True") {
+        modal.find("#id_is_team_member").prop("checked", true);
+        modal.find("#id_is_stakeholder").prop("checked", false);
+      } else {
+        modal.find("#id_is_team_member").prop("checked", false);
+        modal.find("#id_is_stakeholder").prop("checked", true);
+      };
+
+
+      $('#id_is_stakeholder').change(function()
+      {
+        if (this.checked != true) {
+          modal.find("#id_is_team_member").prop("checked", true);
+        } else {
+          modal.find("#id_is_team_member").prop("checked", false);
+        }
+      });
+      $('#id_is_team_member').change(function()
+      {
+        if (this.checked != true) {
+          modal.find("#id_is_stakeholder").prop("checked", true);
+        } else {
+          modal.find("#id_is_stakeholder").prop("checked", false);
+        }
+      });
+
+
+      if (modal.find("#id_is_stakeholder").is(':checked')) {
+        modal.find("#id_is_team_member").prop("checked", false);
+      } else if (modal.find("#id_is_team_member").is(':checked')) {
+        modal.find("#id_is_stakeholder").prop("checked", false);
+
+      };
+        //console.log(modal.find("#id_is_stakeholder").is(':checked'));
+        //if (modal.find("#id_is_stakeholder").is(':checked')) {
+          //modal.find("#id_is_team_member").prop("checked", false);
+        //}
+
+
+
+
 
     if (fname == undefined) {
       modal.find(".modal-title").text("Add a new team member or shakeholder");
@@ -537,6 +568,7 @@
     t.select();
     document.execCommand("copy");
     document.body.removeChild(t);
+    document.removeElement(t)
     console.log(copytext);
     $(this).focus();
 

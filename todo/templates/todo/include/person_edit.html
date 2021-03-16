@@ -21,42 +21,52 @@
 				aria-describedby="inputGroup-sizing-default" id="id_project_id" name="project_id"
 				value="{% if project_id != None %}{{ project_id }}{% endif %}">
 		</div>
+		<div class="inline field">
 
-		<div class="form-group">
-			{{form.is_team_member}}
-			<label class="form-check-label" style="padding-left:10px" for="id_is_team_member"> Team
-				Member </label>
+			<div class="ui slider checkbox">
+				{{form.is_team_member}}
+				<label for="id_is_team_member"> Team
+					Member </label>
+			</div>
 		</div>
-		<div class="form-group">
-			{{form.is_stakeholder}}
-			<label class="form-check-label" style="padding-left:10px" for="id_is_stakeholder">
-				Stakeholder </label>
+		<div class="inline field pt-3">
+
+			<div class="ui slider checkbox">
+				{{form.is_stakeholder}}
+				<label for="id_is_stakeholder">
+					Stakeholder </label>
+			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="id_role" name="role">Role/Stakeholder</label>
-			{% if from.role.value %}
-			<input type="text" class="form-control" id="id_role" name="role"
-			value="{{ form.role }}">
-			{% else %}
-			{{form.role}}
-			{% endif %}
+		<div class="form-group pt-5">
+
+			<div class="ui form">
+				<div class="field">
+					<label for="id_role" name="role">Role/Stakeholder</label>
+					{% if form.role.value %}
+					<input type="text" class="form-control" id="id_role" name="role"
+						value="{{ form.role }}">
+					{% else %}
+					{{form.role}}
+					{% endif %}
+				</div>
+			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="id_first_name" name="first_name">First Name</label>
 			<input type="text" class="form-control" id="id_first_name" name="first_name"
-			value="{% if form.first_name.value %}{{ form.first_name }}{% endif %}">
+				value="{% if form.first_name.value %}{{ form.first_name }}{% endif %}">
 		</div>
 		<div class="form-group">
 			<label for="id_last_name" name="last_name">Last Name</label>
 			<input type="text" class="form-control" id="id_last_name" name="last_name"
-			value="{% if form.last_name.value %}{{ form.last_name }}{% endif %}">
+				value="{% if form.last_name.value %}{{ form.last_name }}{% endif %}">
 		</div>
 		<div class="form-group">
 			<label for="id_Email" name="Email">Email</label>
 			<input type="text" class="form-control" id="id_Email" name="Email"
-			value="{% if form.Email.value %}{{ form.Email }}{% endif %}">
+				value="{% if form.Email.value %}{{ form.Email }}{% endif %}">
 		</div>
 
 		<div id="EditPerson">

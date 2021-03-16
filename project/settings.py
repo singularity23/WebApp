@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     "filemanager",
     "simple_history",
 
+
 )
 # Static files and uploads
 

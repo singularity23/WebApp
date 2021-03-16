@@ -9,8 +9,19 @@
             "note": "including poor condition, inadequate clearances, etc.",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Replacement with new standard structure"
+                },
+                {
+                    "2": "Replacement with new non-standard structure to minimize risks"
+                },
+                {
+                    "3": "Replacement with new non-standard structure to contain risks"
+                }
+            ]
         }
     },
     {
@@ -23,8 +34,19 @@
             "note": "For example, heavy traffic, avalanche path, flood plain, water crossings, rail crossings, uneven/rocky terrain, heavy vegetation, unstable slope, very soft soil, salt spray, air contamination etc.",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Relocation of site to minimize risks"
+                },
+                {
+                    "2": "Consider OH vs UG construction and pick the one more suitable to the site conditions"
+                },
+                {
+                    "3": "Site management to suppress or contain hazards"
+                }
+            ]
         }
     },
     {
@@ -37,8 +59,19 @@
             "note": "Poses hazards to public and during construction",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Reroute to eliminate the hazard "
+                },
+                {
+                    "2": "Change from over head to under ground"
+                },
+                {
+                    "3": "Design with greater separations"
+                }
+            ]
         }
     },
     {
@@ -51,8 +84,19 @@
             "note": "Safety hazards during construction, potential damage to equipment",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Relocate line to low traffic corridor"
+                },
+                {
+                    "2": "Relocate OH equipment to low traffic area"
+                },
+                {
+                    "4": "Installation of protective barriers "
+                }
+            ]
         }
     },
     {
@@ -65,8 +109,19 @@
             "note": "Case specific hazards analysis, requires Stake Holder engagement, Peer Review and POR signed and sealed Designs",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Design a different route to eliminate crossing or lose proximity"
+                },
+                {
+                    "2": "Increase separation to more than 7.5 meters from centre line wherever possible."
+                },
+                {
+                    "3": "Use ground penetrating radar and daylighting to confirm location of other utilities and work with the utility owner to come up with mutually agreeable solution, with mechanical protection., signage, detailed records etc "
+                }
+            ]
         }
     },
     {
@@ -79,8 +134,16 @@
             "note": "including petrochemical spills, methane gas accumulation, needles",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Consider OH vs UG construction and pick the one more suitable to the soil conditions"
+                },
+                {
+                    "3": "Engage geotechnical Engineer to assess risk to equipment installation and follow recommended mitigations"
+                }
+            ]
         }
     },
     {
@@ -93,8 +156,19 @@
             "note": "including building foundations, bridge abutments",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Implement a standard solution"
+                },
+                {
+                    "2": "Implement a non-standard solution with safe work methods implementation"
+                },
+                {
+                    "3": "Implement a non-standard solution using non-standard materials OR that requires modified work methods (eg extra deep excavations)"
+                }
+            ]
         }
     },
     {
@@ -107,8 +181,16 @@
             "note": "To identify hazards with",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Add additional infrastructure and relocate equipment to create more work space"
+                },
+                {
+                    "3": "Rearrange existing equipment to make more work space available for new installations"
+                }
+            ]
         }
     },
     {
@@ -121,8 +203,16 @@
             "note": "Caused due to the close proximity of substations, transmission lines, or other distribution lines.",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Install above ground / pad mounted equipment"
+                },
+                {
+                    "2": "Install subsurface equipment that can be operated from above ground"
+                }
+            ]
         }
     },
     {
@@ -135,8 +225,19 @@
             "note": "Hazards during construction and potential damage to equipment",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Choose a location with good grounding properties"
+                },
+                {
+                    "3": "Installation of grounding system based on grounding study"
+                },
+                {
+                    "4": "Develop and implement a safe work procedure"
+                }
+            ]
         }
     },
     {
@@ -149,8 +250,19 @@
             "note": "Hazards to workers",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Reroute to eliminate the hazard"
+                },
+                {
+                    "2": "Underground the line to increase separation"
+                },
+                {
+                    "3": "Increase horizontal separation between new line and mental structures"
+                }
+            ]
         }
     },
     {
@@ -163,8 +275,16 @@
             "note": "Safety hazards to workers in confined space",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Reroute to avoid sensitive area"
+                },
+                {
+                    "0": "Engage related stakeholders and experts to evaluate risks and mitigations"
+                }
+            ]
         }
     },
     {
@@ -177,8 +297,16 @@
             "note": "Lead to electrical hazards",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Re-design to a different area where animal incidents are low"
+                },
+                {
+                    "3": "Animal mitigation guards"
+                }
+            ]
         }
     },
     {
@@ -191,8 +319,19 @@
             "note": "Electrical hazards to public. metal structures including but not limited to other distribution lines, rails, pipe lines, metallic buildings, fences etc.",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Relocate to avoid contamination"
+                },
+                {
+                    "2": "Consider OH design instead of UG."
+                },
+                {
+                    "3": "Remove the contamination "
+                }
+            ]
         }
     },
     {
@@ -205,8 +344,19 @@
             "note": "Engage stakeholders",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "1": "Change design to avoid close proximity"
+                },
+                {
+                    "2": "Maximize the separations and engage geptechnical engineer to determine best method of excavating to reduce risk of disturbing the soil that provides support to the structure"
+                },
+                {
+                    "3": "Engage structural engineer to provide temporary support while excavation is occurring"
+                }
+            ]
         }
     },
     {
@@ -219,8 +369,13 @@
             "note": "Hazards to equipment",
             "details": "",
             "res_risk_level": null,
-            "project": 26,
-            "assigned_to": null
+            "project": null,
+            "assigned_to": null,
+            "CHOICES": [
+                {
+                    "0": "Engage with Station Manager / Engineer for consultation"
+                }
+            ]
         }
     }
 ]
