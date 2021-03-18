@@ -9,21 +9,22 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-from django.db import IntegrityError
 
 from todo.defaults import defaults
-from todo.utils import (get_history_change_reason)
+from todo.utils import (EGBC_folder, PPM_folder, SBD_folder, SPOT_folder,
+                        get_history_change_reason)
+
 from .forms import (EngagementForm, HazardForm, PersonForm, ProjectForm,
                     ProjectLinkForm)
-from .models import (Attachment, Comment, Engagement, Hazard, Location, Person, Project, RiskLevel, ControlMeasure)
+from .models import (Attachment, Comment, ControlMeasure, Engagement, Hazard,
+                     Location, Person, Project, RiskLevel)
 from .validators import validate_project_number, validate_sap_id
-from todo.utils import EGBC_folder, SPOT_folder, SBD_folder, PPM_folder
-
 
 log = logging.getLogger(__name__)
 
@@ -91,7 +92,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         #messages.success(request, "testing")
-        if request.user.groups.filter(name="Team Lead").exists():
+        if request.user.groups.filter(name="Team Lead").exists() or request.user.is_staff:
             self.object_list = self.get_queryset()
         else:
             self.object_list = self.get_queryset().filter(POR=request.user)
@@ -297,7 +298,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 print("form1 errors")
 
         elif request.POST.get("action", "") == "edit_person":
-            method = request.POST.get("_method", "").lower()
+            method = request.POST.get("delete_person", "").lower()
             person_id = request.POST.get("person_id")
             person = None
             form = None
@@ -309,6 +310,8 @@ class ProjectDetailView(SingleObjectMixin, View):
                 if method == 'delete':
                     print("deleted")
                     person.delete()
+                    return redirect("todo:project_details", self.object.id, self.object.slug)
+
                 else:
                     form = PersonForm(request.user, request.POST, instance=person)
             else:

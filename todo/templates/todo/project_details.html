@@ -5,7 +5,7 @@
 
 {% block content %}
 {% if project != None %}
-<div class="card-deck pb-4">
+<div class="card-deck">
   <div class="card col-sm-7 p-0">
     <div class="card-header">
       <h3>{{ project.number }} {% if project.SAP_id %}({{ project.SAP_id }}){% endif %}</h3>
@@ -56,8 +56,12 @@
         </div>
         <div class="ui segment  d-flex justify-content-between">
           <strong>In Service Date:</strong>
-          {% if project.in_service_date %} {{ project.in_service_date }}
+          {% if project.in_service_date %}
+          {% if project.is_delayed%}<span class="ui warning label">{%endif%}
+          {{ project.in_service_date }}
+          {% if project.is_delayed%}</span>{%endif%}
           {% else %} TBD {% endif %}
+
         </div>
       </div>
       <div class="ui right floated buttons" role="group" aria-label="ProjectButtons">
@@ -214,7 +218,7 @@
 </div>
 
 
-<div class="card-deck pt-4 pb-5">
+<div class="card-deck">
 
   <div class="card col-sm-9 p-0">
     <div class="card-header">

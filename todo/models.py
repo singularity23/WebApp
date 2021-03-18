@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-import datetime
+from datetime import datetime, date
 import os
 import shutil
 import textwrap
@@ -43,9 +43,6 @@ class MyUserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
-
-        group = Group.objects.get(name="Engineer")
-        group.user_set.add(user)
 
         return user
 
@@ -275,6 +272,12 @@ class Project(models.Model):
             portion = self.current_stage.id * 100 / length
         print("portion"+ str(portion))
         return portion
+
+    def is_delayed(self):
+        if self.in_service_date < date.today():
+            return True
+        else:
+            return False
     class Meta:
         ordering = ["POR", "number"]
         verbose_name_plural = "Projects"
@@ -453,7 +456,7 @@ class Engagement(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
     stakeholders = models.ManyToManyField(Person, db_table="todo_engagement_stakeholders")
-    date = models.DateTimeField(default=datetime.datetime.now)
+    date = models.DateTimeField(default=datetime.now)
     body = models.TextField(blank=True)
     stakeholders_string = models.TextField(blank=True)
 
@@ -472,7 +475,7 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     hazard = models.ForeignKey(
         Hazard, on_delete=models.CASCADE, blank=True, null=True)
-    date = models.DateTimeField(default=datetime.datetime.now)
+    date = models.DateTimeField(default=datetime.now)
     email_from = models.CharField(max_length=320, blank=True, null=True)
     email_message_id = models.CharField(max_length=255, blank=True, null=True)
 
@@ -512,7 +515,7 @@ class Attachment(models.Model):
         Hazard, on_delete=models.CASCADE, blank=True, null=True)
     added_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(default=datetime.datetime.now)
+    timestamp = models.DateTimeField(default=datetime.now)
     file = models.FileField(
         upload_to=get_attachment_upload_dir, max_length=255,)
 

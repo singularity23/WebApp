@@ -4,9 +4,11 @@ from django.contrib import messages
 
 
 from todo.forms import UserCreationForm
+from todo.models import Group
 
 def sign_up(request):
     print(request.POST)
+    group = Group.objects.get(name="Engineer")
     #messages.warning(request, "test")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -32,6 +34,8 @@ def sign_up(request):
             item.user = authenticate(username=item.email, password=item.raw_password)
             item.save()
             print(item)
+            group.user_set.add(item)
+
             messages.success(request, "Account registerred! Please login with your account")
             return redirect('home')
     else:
