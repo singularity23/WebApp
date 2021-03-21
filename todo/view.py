@@ -66,7 +66,7 @@ def handle_upload_files(request, project, hazard):
         extension = extension.lower()
         # print(extension)
 
-        if not Attachment.objects.filter(file=file).exists():
+        if not Attachment.objects.select_related("hazard").filter(file=file).exists():
             if extension not in defaults("TODO_LIMIT_FILE_ATTACHMENTS"):
                 messages.error(request, f"This site does not allow upload of {extension} files.")
                 return redirect("todo:hazard_details", project_id, project_slug, hazard_id)
@@ -93,9 +93,9 @@ class ProjectUpdateView(MultipleObjectMixin, View):
     def dispatch(self, request, *args, **kwargs):
         #messages.success(request, "testing")
         if request.user.groups.filter(name="Team Lead").exists() or request.user.is_staff:
-            self.object_list = self.get_queryset()
+            self.object_list = self.get_queryset().select_related("POR")
         else:
-            self.object_list = self.get_queryset().filter(POR=request.user)
+            self.object_list = self.get_queryset().select_related("POR").filter(POR=request.user)
         print(self.object_list)
 
         return super(ProjectUpdateView, self).dispatch(request, *args, **kwargs)
@@ -120,18 +120,22 @@ class ProjectUpdateView(MultipleObjectMixin, View):
         if self.object_list.filter(number=request.POST['number']).exists():
             print("project number exists")
             messages.error(request, "project number exists")
+            return redirect("todo:project_list")
 
         if self.object_list.filter(SAP_id=request.POST['SAP_id']).exists():
             print("SAP number exists")
             messages.error(request, "SAP number exists")
+            return redirect("todo:project_list")
 
         if not validate_project_number(request.POST['number']):
             print("project number invalid")
             messages.error(request, "Project number is invalid")
+            return redirect("todo:project_list")
 
         if not validate_sap_id(request.POST['SAP_id']):
             print("SAP id invalid")
             messages.error(request, "SAP number is invalid")
+            return redirect("todo:project_list")
 
         #print(request.POST)
         #print(form2)
@@ -185,7 +189,7 @@ class ProjectDetailView(SingleObjectMixin, View):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=Project.objects.all())
+        self.object = self.get_object(queryset=Project.objects.select_related("POR"))
         print(self.object.counts)
         print(self.object.SPOT_link)
 
@@ -232,8 +236,8 @@ class ProjectDetailView(SingleObjectMixin, View):
         project = self.object
         self.project_id = project.id
         self.project_slug = project.slug
-        persons = Person.objects.filter(project=project)
-        engagements = Engagement.objects.filter(project=project)
+        persons = Person.objects.select_related("project").filter(project=project)
+        engagements = Engagement.objects.select_related("project").filter(project=project)
         print(engagements.count)
         context_extra = {
             "engagements" : engagements,
@@ -249,7 +253,7 @@ class ProjectDetailView(SingleObjectMixin, View):
         return context
 
     def get_queryset(self):
-        return self.object.hazard_set.all()
+        return self.object.hazard_set.select_related("project")
 
     def post(self, request, *args, **kwargs):
 
@@ -372,7 +376,7 @@ class ProjectDetailView(SingleObjectMixin, View):
 
 def load_locations(request):
     region_id = request.GET.get('region_id')
-    locations = Location.objects.filter(region_id=region_id).all()
+    locations = Location.objects.select_related("region").filter(region_id=region_id).all()
     return render(request, 'todo/include/locations_dropdown_list.html', {'locations': locations})
 
 class HazardDetailView(SingleObjectMixin, View):
@@ -386,13 +390,13 @@ class HazardDetailView(SingleObjectMixin, View):
         if method == 'delete':
             return self.delete(request, *args, **kwargs)
 
-        self.object = self.get_object(queryset=Hazard.objects.all())
+        self.object = self.get_object(queryset=Hazard.objects.select_related("project").all())
         self.hazard_id = self.kwargs.get("hazard_id")
         self.project_id = self.kwargs.get("project_id")
         self.project_slug = self.kwargs.get("project_slug")
         self.project = get_object_or_404(Project, id=self.project_id)
-        self.comment_list = Comment.objects.filter(hazard=self.object).order_by("-date")
-        self.attachments = Attachment.objects.filter(hazard=self.object)
+        self.comment_list = Comment.objects.select_related("hazard").filter(hazard=self.object).order_by("-date")
+        self.attachments = Attachment.objects.select_related("hazard").filter(hazard=self.object)
 
         return super(HazardDetailView, self).dispatch(request, *args, **kwargs)
 

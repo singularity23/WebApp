@@ -57,7 +57,7 @@
         <div class="ui segment  d-flex justify-content-between">
           <strong>In Service Date:</strong>
           {% if project.in_service_date %}
-          {% if project.is_delayed%}<span class="ui warning label">{%endif%}
+          {% if project.is_delayed%}<span class="ui negative label">{%endif%}
           {{ project.in_service_date }}
           {% if project.is_delayed%}</span>{%endif%}
           {% else %} TBD {% endif %}
@@ -531,7 +531,7 @@
         //}
 
     if (fname == undefined) {
-      modal.find(".modal-title").text("Add a new team member or shakeholder");
+      modal.find(".modal-title").text("Add a new team member or stakeholder");
       document.getElementById("DeletePersonButton").style.visibility = "hidden";
 
     };

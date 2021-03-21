@@ -340,7 +340,7 @@ class Hazard(models.Model):
     description = models.CharField(max_length=140)
     risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
                                    blank=True, null=True,
-                                   related_name="risk_level")
+                                   related_name="hazards_risk")
     control_measure = models.ForeignKey(
         ControlMeasure, on_delete=models.CASCADE, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
@@ -351,14 +351,14 @@ class Hazard(models.Model):
     # related_name = "residual")
     res_risk_level = models.ForeignKey(RiskLevel, on_delete=models.CASCADE,
                                        blank=True, null=True,
-                                       related_name="res_risk_level", )
+                                       related_name="hazards_residual", )
     project = models.ForeignKey(
         Project, blank=True, null=True, on_delete=models.CASCADE,)
 
     assigned_to = models.ForeignKey(Person,
                                     blank=True,
                                     null=True,
-                                    related_name="todo_assigned_to",
+                                    related_name="hazards_assigned",
                                     on_delete=models.CASCADE,
                                     )
 

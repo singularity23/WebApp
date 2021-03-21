@@ -11,20 +11,22 @@
     </strong>
   </div>
   <div class="card-body">
-    <p>
-      You have to log in to use the functions.
-    </p>
+
 
     <p>
       {% if user.is_authenticated %}
       You are already logged in.
       {% else %}
+      <p>
+        You have to log in to use the functions.
+      </p>
       <a class="ui button" type="button" href="login/" id="loginlink">Log
         in</a>
-      {% endif %}
-
       <p>If you have not registered yet</p>
       <a class="ui button" type="button" href="sign_up/" id="signup">Sign up</a>
+      {% endif %}
+
+
 
     </p>
   </div>

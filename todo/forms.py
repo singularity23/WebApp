@@ -67,7 +67,7 @@ class ProjectForm(ModelForm):
         self.fields['current_stage'].required = False
 
         if self.project_id:
-            project = Project.objects.get(id=self.project_id)
+            project = Project.objects.select_related("POR").get(id=self.project_id)
             print("project: " + str(project))
             self.initial['EGBC_link'] = unquote(EGBC_folder(project))
             self.initial['SBD_link'] = unquote(SBD_folder(project))
@@ -83,7 +83,7 @@ class ProjectForm(ModelForm):
 
     region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 
-    location = forms.ModelChoiceField(queryset=Location.objects.all(), label=u'Location')
+    location = forms.ModelChoiceField(queryset=Location.objects.select_related("region").all(), label=u'Location')
         # print("group:" + str(self.fields["group"].initial))
 
     SAP_id = forms.CharField(widget=forms.widgets.TextInput(), required=True,)
@@ -104,18 +104,10 @@ class ProjectForm(ModelForm):
         number_passed = cleaned_data.get("number")
         SAP_passed = cleaned_data.get("SAP_id")
         print(self.project_id)
-        qs = Project.objects.all()
+        qs = Project.objects.select_related("POR").all()
         if self.project_id is None:
             if qs.filter(number=number_passed).exists() or qs.filter(SAP_id=SAP_passed).exists():
                 raise ValidationError("project number or SAP number exists")
-
-        print(validate_project_number(number_passed))
-        if not validate_project_number(number_passed):
-            self.add_error('number', 'invalid project number')
-
-        if not validate_sap_id(SAP_passed):
-            self.add_error('SAP_id', 'invalid SAP number')
-
 
     class Meta:
         model = Project
@@ -163,11 +155,11 @@ class HazardForm(ModelForm):
         elif 'initial' in kwargs:
             self.project = kwargs.get("initial").get("project")
             # print("initial: " + str(project))
-            hazards = Hazard.objects.filter(project=self.project)
+            hazards = Hazard.objects.select_related("project").filter(project=self.project)
             number = hazards.count()
             self.initial['index'] = number + 1
 
-        p1 = Person.objects.filter(project=self.project)
+        p1 = Person.objects.select_related("project").filter(project=self.project)
         print(p1)
         self.fields["assigned_to"].queryset = p1.filter(is_team_member=True)
 
@@ -280,7 +272,7 @@ class EngagementForm(ModelForm):
         super(EngagementForm, self).__init__(*args, **kwargs)
 
         project = kwargs.get("initial").get("project")
-        p1 = Person.objects.filter(project=project)
+        p1 = Person.objects.select_related("project").filter(project=project)
         stakeholders = forms.ChoiceField(widget=forms.widgets.ChoiceWidget(choices=p1.filter(is_stakeholder=True)))
         self.fields["stakeholders"].queryset = p1.filter(is_stakeholder=True)
         self.fields["stakeholders"].widget.attrs = {
