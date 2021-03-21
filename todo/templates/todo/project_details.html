@@ -530,16 +530,18 @@
           //modal.find("#id_is_team_member").prop("checked", false);
         //}
 
-
-
-
-
     if (fname == undefined) {
       modal.find(".modal-title").text("Add a new team member or shakeholder");
       document.getElementById("DeletePersonButton").style.visibility = "hidden";
 
     };
 
+    window.addEventListener('submit', function(e){
+    if (fname == undefined || role == undefined) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    });
 
 
   });

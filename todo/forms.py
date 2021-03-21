@@ -47,14 +47,14 @@ class ProjectForm(ModelForm):
 
         self.fields["region"].widget.attrs = {
             "id"   : "id_region",
-            "class": "custom-select mb-3",
+            "class": "custom-select is-invalid mb-3",
             "name" : "region",
             "onchange": "change_list()"
             }
 
         self.fields["location"].widget.attrs = {
             "id"   : "id_location",
-            "class": "custom-select mb-3",
+            "class": "custom-select is-invalid mb-3",
             "name" : "location",
             }
 
@@ -177,10 +177,11 @@ class HazardForm(ModelForm):
             "name" : "assigned_to",
             }
 
+        self.fields["risk_level"].required = True
         self.fields["risk_level"].queryset = RiskLevel.objects.all()
         self.fields["risk_level"].widget.attrs = {
             "id"   : "id_risk_level",
-            "class": "custom-select mb-3",
+            "class": "custom-select is-invalid mb-3",
             "name" : "risk_level",
             }
 
@@ -252,15 +253,15 @@ class PersonForm(ModelForm):
 
         role = forms.CharField()
 
-        self.fields["role"].required = False
+        self.fields["role"].required = True
         self.fields["role"].widget = ListTextWidget(data_list=role_list, name="roles-list")
         self.fields["role"].widget.attrs.update({
                                                  "class":"field",
                                                  "placeholder":"Pick from the list, or add it manually",
                                                 })
 
-    first_name = forms.CharField(widget=forms.widgets.TextInput())
-    last_name = forms.CharField(widget=forms.widgets.TextInput())
+    first_name = forms.CharField(widget=forms.widgets.TextInput(), required=True)
+    last_name = forms.CharField(widget=forms.widgets.TextInput(), required=False)
     Email = forms.EmailField(widget=forms.widgets.TextInput(), required=False)
 
     is_team_member = forms.BooleanField(

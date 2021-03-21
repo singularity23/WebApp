@@ -4,9 +4,9 @@
     {% csrf_token %}
     <input type="hidden" name='action' value='edit_hazard'>
     <div class="container-fluid mb-3">
-        <div class="form-group">
-            <label for="id_description" name="description">Hazard</label>
-            <input type="text" class="form-control" id="id_description" name="description" required
+        <div class="form-group was-validated">
+            <label for="id_description" name="description">Hazard Description</label><span class="required">*</span>
+            <input type="text" class="form-control is-invalid" id="id_description" name="description" required
                 placeholder=""
                 value="{% if form1.description.value %}{{ form1.description.value }}{% endif %}">
         </div>
@@ -23,10 +23,9 @@
 
         <div class="form-group row d-flex">
 
-            <div class="form-group col-md-6">
+            <div class="form-group was-validated col-md-6">
                 <div class="field">
-
-                    <label for="id_risk_level">Risk Level</label>
+                    <label for="id_risk_level">Risk Level</label><span class="required">*</span>
                     {{form1.risk_level}}
                 </div>
             </div>
