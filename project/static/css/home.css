@@ -8,7 +8,7 @@ body, html, .modal-content {
     box-sizing: border-box;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    background-color: rgba(188, 209, 155, 0.8);
+    background-color: rgba(255, 255, 255, 0);
     background-image: url("/static/assets/img/brand/bg_bch.png");
     background-size: auto 100%;
     background-position: bottom right;
