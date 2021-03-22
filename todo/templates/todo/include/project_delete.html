@@ -1,8 +1,10 @@
 {# form used by both Add Task and Edit Task views #}
 
-<form action="" name="delete_project" method="post">
+<form2 action="" name="delete_project" method="post">
     {% csrf_token %}
+    <label for="delete_project">Are you sure you want to delete this project {{form2.number.value}}?</label>
+    <p></p>
     <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete" class="ui button">
+    <input type="submit" value="Delete" class="ui small red button">
 
-</form>
+</form2>

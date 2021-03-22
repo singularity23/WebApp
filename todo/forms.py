@@ -26,7 +26,7 @@ class ProjectForm(ModelForm):
             self.project_id = kwargs.get("instance").id
 
         self.initial['group'] = Group.objects.get(name="Engineer")
-        print(self.initial['group'])
+        #print(self.initial['group'])
 
         self.fields["group"].widget.attrs = {
             "id"   : "id_group",
@@ -68,7 +68,7 @@ class ProjectForm(ModelForm):
 
         if self.project_id:
             project = Project.objects.select_related("POR").get(id=self.project_id)
-            print("project: " + str(project))
+            #print("project: " + str(project))
             self.initial['EGBC_link'] = unquote(EGBC_folder(project))
             self.initial['SBD_link'] = unquote(SBD_folder(project))
             self.initial['SPOT_link'] = unquote(SPOT_folder(project))
@@ -77,14 +77,14 @@ class ProjectForm(ModelForm):
             if project.person_set.count() == 0 and project.POR is not None:
                 new_person = Person.create(project=project, first_name=project.POR.first_name, last_name=project.POR.last_name, Email=project.POR.email, is_team_member=True, is_stakeholder=False, role="POR")
                 new_person.save()
-                print("person: " + str(new_person))
+                #print("person: " + str(new_person))
 
-            print(project.person_set.all())
+            #print(project.person_set.all())
 
     region = forms.ModelChoiceField(queryset=Region.objects.all(), label=u'Region')
 
     location = forms.ModelChoiceField(queryset=Location.objects.select_related("region").all(), label=u'Location')
-        # print("group:" + str(self.fields["group"].initial))
+        # #print("group:" + str(self.fields["group"].initial))
 
     SAP_id = forms.CharField(widget=forms.widgets.TextInput(), required=True,)
 
@@ -100,10 +100,10 @@ class ProjectForm(ModelForm):
     def clean(self):
         """get clean data and validate data"""
         cleaned_data = super(ProjectForm, self).clean()
-        print("cleaned data:" + str(cleaned_data))
+        ##print("cleaned data:" + str(cleaned_data))
         number_passed = cleaned_data.get("number")
         SAP_passed = cleaned_data.get("SAP_id")
-        print(self.project_id)
+        #print(self.project_id)
         qs = Project.objects.select_related("POR").all()
         if self.project_id is None:
             if qs.filter(number=number_passed).exists() or qs.filter(SAP_id=SAP_passed).exists():
@@ -143,24 +143,24 @@ class HazardForm(ModelForm):
     choice_list = []
     def __init__(self, user, *args, **kwargs):
         super(HazardForm, self).__init__(*args, **kwargs)
-        print(kwargs)
+        #print(kwargs)
         # project_id = kwargs.get("project_id")
         if 'instance' in kwargs:
             self.hazard = kwargs.get("instance")
             if self.hazard.recommendations:
                 self.choice_list=eval(self.hazard.recommendations)
             self.project = self.hazard.project
-            print(self.choice_list)
-            # print("instance: " + str(project))
+            #print(self.choice_list)
+            # #print("instance: " + str(project))
         elif 'initial' in kwargs:
             self.project = kwargs.get("initial").get("project")
-            # print("initial: " + str(project))
+            # #print("initial: " + str(project))
             hazards = Hazard.objects.select_related("project").filter(project=self.project)
             number = hazards.count()
             self.initial['index'] = number + 1
 
         p1 = Person.objects.select_related("project").filter(project=self.project)
-        print(p1)
+        #print(p1)
         self.fields["assigned_to"].queryset = p1.filter(is_team_member=True)
 
         self.fields["assigned_to"].widget.attrs = {
@@ -222,11 +222,11 @@ class ListTextWidget(forms.TextInput):
         text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
         data_list = '<datalist id="list__%s">' % self._name
         data_list += '<select class="ui dropdown" id="selection-list">'
-        print(self._name)
+        #print(self._name)
 
         if self._name == "recommendations":
             for key,value in self._list:
-                print(key[0], value[0])
+                #print(key[0], value[0])
                 data_list += ('<option value="%s" data-index="%s">' % (value[0], key[0]))
         else:
             for item in self._list:

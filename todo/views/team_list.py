@@ -21,22 +21,22 @@ def team_list(request, project_id=None, project_slug=None, person_id=None) -> Ht
 	person=None
 	if person_id:
 		person = get_object_or_404(Person, pk=person_id)
-	
+
 	project = get_object_or_404(Project, pk=project_id)
-	
+
 	if request.method == 'POST':
 		form = PersonForm(request.user, request.POST, instance=person)
 		if form.is_valid():
 			item=form.save(commit=False)
 			item.project=project
 			item.save()
-			print(form)
+			#print(form)
 			return redirect("todo:project_details", project_id, project_slug)
 	else:
 		form = PersonForm(request.user, instance=person)
 
 	#if request.POST.getlist("add_edit_person"):
-	#	print("new form2")
+	#	#print("new form2")
 	#	form2 = PersonForm(request.user,
 	#		request.POST,
 	#		initial={"project": project})
@@ -45,7 +45,7 @@ def team_list(request, project_id=None, project_slug=None, person_id=None) -> Ht
 	#		new_person = form2.save(commit=False)
 	#		new_person.project = project
 	#		new_person.save()
-	#		print("saved")
+	#		#print("saved")
 	#		messages.success(request, 'New person "{t}" has been added.'.format(t=new_person.first_name))
 	#		return redirect("todo:team_list", project_id, project_slug)
 	#else:
@@ -54,9 +54,9 @@ def team_list(request, project_id=None, project_slug=None, person_id=None) -> Ht
 
 
 	#if not request.POST.get("add_edit_person"):
-		
+
 	#	form2 = PersonForm(request.user, instance=person)
-	#	print(person)
+	#	#print(person)
 
 	#else:
 	#	form2 = PersonForm(request.user, request.POST, instance=person)
@@ -72,10 +72,10 @@ def team_list(request, project_id=None, project_slug=None, person_id=None) -> Ht
 	#		new_person.last_name = person.last_name
 
 	#		new_person.save()
-	#		print("saved")
-	#		print(form2)
+	#		#print("saved")
+	#		#print(form2)
 	#		messages.success(request, 'New person "{t}" has been added.'.format(t=new_person.first_name))
-				
+
 
 	context = {
 		"project": project,

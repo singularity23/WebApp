@@ -64,7 +64,7 @@ def handle_upload_files(request, project, hazard):
         name, extension = os.path.splitext(file.name)
         name = name.lower()
         extension = extension.lower()
-        # print(extension)
+        # #print(extension)
 
         if not Attachment.objects.select_related("hazard").filter(file=file).exists():
             if extension not in defaults("TODO_LIMIT_FILE_ATTACHMENTS"):
@@ -79,7 +79,7 @@ def handle_upload_files(request, project, hazard):
             messages.success(request, f"File attached successfully")
             return redirect("todo:hazard_details", project_id, project_slug, hazard_id)
     else:
-        print("nothing uploaded")
+        messages.warning(request, "File not uploaded")
 
 
 class ProjectUpdateView(MultipleObjectMixin, View):
@@ -96,7 +96,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
             self.object_list = self.get_queryset().select_related("POR")
         else:
             self.object_list = self.get_queryset().select_related("POR").filter(POR=request.user)
-        print(self.object_list)
+        #print(self.object_list)
 
         return super(ProjectUpdateView, self).dispatch(request, *args, **kwargs)
 
@@ -109,7 +109,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
         context = self.get_context_data()
         form2 = ProjectForm(request.user, initial={"Group" : Group.objects.get(name="Engineer")})
         context['form2'] = form2
-        print(context)
+        #print(context)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -118,27 +118,27 @@ class ProjectUpdateView(MultipleObjectMixin, View):
         form2 = ProjectForm(request.user, request.POST, initial={"Group" : Group.objects.get(name="Engineer")})
 
         if self.object_list.filter(number=request.POST['number']).exists():
-            print("project number exists")
+            #print("project number exists")
             messages.error(request, "project number exists")
             return redirect("todo:project_list")
 
         if self.object_list.filter(SAP_id=request.POST['SAP_id']).exists():
-            print("SAP number exists")
+            #print("SAP number exists")
             messages.error(request, "SAP number exists")
             return redirect("todo:project_list")
 
         if not validate_project_number(request.POST['number']):
-            print("project number invalid")
+            #print("project number invalid")
             messages.error(request, "Project number is invalid")
             return redirect("todo:project_list")
 
         if not validate_sap_id(request.POST['SAP_id']):
-            print("SAP id invalid")
+            #print("SAP id invalid")
             messages.error(request, "SAP number is invalid")
             return redirect("todo:project_list")
 
-        #print(request.POST)
-        #print(form2)
+        ##print(request.POST)
+        ##print(form2)
         if form2.is_valid():
             item = form2.save(commit=False)
             item.save()
@@ -152,7 +152,7 @@ class ProjectUpdateView(MultipleObjectMixin, View):
 def _import_hazard(request, obj, project):
     dctn = obj.get("fields")
     risk_level_id = dctn['risk_level']
-
+    flag = 0
     hazard = Hazard(
         index=obj.get("pk"),
         description=dctn['description'],
@@ -169,16 +169,21 @@ def _import_hazard(request, obj, project):
     try:
         hazard.save()
     except IntegrityError:
-        messages.warning(request, "Hazards already exist")
+        flag = 1
+
+    return flag
+
 
 def handle(request, project):
     filename = os.path.join(settings.BASE_DIR, "hazard.json")
-
+    flag = 0
     with open(filename, 'r') as json_file:
         objects = json.loads(json_file.read())
     for obj in objects:
-        _import_hazard(request, obj, project)
+            flag = flag + _import_hazard(request, obj, project)
 
+    if flag > 0:
+        messages.warning(request, "Defaults already loaded")
 
 class ProjectDetailView(SingleObjectMixin, View):
     model = Project
@@ -190,8 +195,8 @@ class ProjectDetailView(SingleObjectMixin, View):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Project.objects.select_related("POR"))
-        print(self.object.counts)
-        print(self.object.SPOT_link)
+        #print(self.object.counts)
+        #print(self.object.SPOT_link)
 
         method = self.request.POST.get('_method', '').lower()
         if method == 'delete':
@@ -200,11 +205,11 @@ class ProjectDetailView(SingleObjectMixin, View):
         return super(ProjectDetailView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # print("2")
+        # #print("2")
         context = self.get_context_data()
 
         form4 = EngagementForm(request.user, initial={"project": self.object})
-        #print("stakeholders"+ str(form4.fields))
+        ##print("stakeholders"+ str(form4.fields))
         form3 = ProjectLinkForm(request.user, instance=self.object)
         links = form3.save(commit=False)
         links.EGBC_link = EGBC_folder(self.object)
@@ -214,7 +219,7 @@ class ProjectDetailView(SingleObjectMixin, View):
         links.save()
 
 
-        print("link"+str(form3.fields))
+        #print("link"+str(form3.fields))
         form2 = ProjectForm(request.user, instance=self.object)
 
         form1 = HazardForm(request.user, initial={"project": self.object})
@@ -238,7 +243,7 @@ class ProjectDetailView(SingleObjectMixin, View):
         self.project_slug = project.slug
         persons = Person.objects.select_related("project").filter(project=project)
         engagements = Engagement.objects.select_related("project").filter(project=project)
-        print(engagements.count)
+        #print(engagements.count)
         context_extra = {
             "engagements" : engagements,
             "project_id"  : self.project_id,
@@ -259,11 +264,11 @@ class ProjectDetailView(SingleObjectMixin, View):
 
         context = self.get_context_data()
 
-        # print(engagements)
-        print(request.POST)
+        # #print(engagements)
+        #print(request.POST)
         if request.POST.get("edit_link", "").lower() == "submit":
             form3 = ProjectLinkForm(request.user, request.POST, instance=self.object)
-            print(form3)
+            #print(form3)
             if form3.is_bound and form3.is_valid():
                 item = form3.save(commit=False)
                 item.project = self.object
@@ -272,7 +277,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 return redirect("todo:project_details", self.project_id, self.project_slug)
 
             else:
-                print("form3 errors")
+                messages.warning(request, "Some errors.")
 
         elif request.POST.get("edit_project", "").lower() == "submit":
             form2 = ProjectForm(request.user, request.POST, instance=self.object)
@@ -286,7 +291,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 return redirect("todo:project_details", self.project_id, self.project_slug)
 
             else:
-                print("form2 errors")
+                messages.warning(request, "Some errors.")
 
         elif request.POST.get("edit_hazard", "") == "submit":
             form1 = HazardForm(request.user, request.POST, initial={"project": self.object})
@@ -299,7 +304,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 return redirect("todo:project_details", self.project_id, self.project_slug)
 
             else:
-                print("form1 errors")
+                messages.warning(request, "Some errors.")
 
         elif request.POST.get("action", "") == "edit_person":
             method = request.POST.get("delete_person", "").lower()
@@ -312,7 +317,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                 context["person_id"] = person_id
 
                 if method == 'delete':
-                    print("deleted")
+                    #print("deleted")
                     person.delete()
                     return redirect("todo:project_details", self.object.id, self.object.slug)
 
@@ -320,7 +325,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                     form = PersonForm(request.user, request.POST, instance=person)
             else:
                 form = PersonForm(request.user, request.POST)
-            print("form" + str(form))
+            #print("form" + str(form))
             if form.is_bound and form.is_valid():
                 item = form.save(commit=False)
                 item.project = self.object
@@ -330,7 +335,7 @@ class ProjectDetailView(SingleObjectMixin, View):
                     messages.warning(request, "This person already exists")
 
             else:
-                print("form errors")
+                messages.warning(request, "Some errors.")
 
             context["form"] = form
 
@@ -355,16 +360,15 @@ class ProjectDetailView(SingleObjectMixin, View):
                 item.save()
                 context["form4"] = form4
                 return redirect("todo:project_details", self.object.id, self.object.slug)
-
             else:
-                print("form4 errors")
+                messages.warning(request, "Some errors.")
 
         elif request.POST.get("action", "") == "load_defaults":
             handle(request, self.object)
             return redirect("todo:project_details", self.object.id, self.object.slug)
         else:
-            print("errors")
-        print(context)
+            messages.warning(request, "Some errors.")
+        #print(context)
 
         return render(request, self.template_name, context)
 
@@ -401,7 +405,7 @@ class HazardDetailView(SingleObjectMixin, View):
         return super(HazardDetailView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # print("2")
+        # #print("2")
         context = self.get_context_data()
         form1 = HazardForm(request.user, instance=self.object)
         context['records'] = get_history_change_reason(self.object)
@@ -411,24 +415,24 @@ class HazardDetailView(SingleObjectMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        # print("3")
+        # #print("3")
         context = self.get_context_data()
         hazard = self.object
         hazard_id = self.object.id
         hazard_res_id = hazard.res_idex
         hazard_res_level = hazard.res_level
-        print(hazard_res_id)
-        print(hazard_res_level)
-        print(request.POST)
+        #print(hazard_res_id)
+        #print(hazard_res_level)
+        #print(request.POST)
         form1 = HazardForm(request.user, request.POST, instance=hazard)
         if request.POST.get("edit_hazard") == 'submit' and form1.is_valid():
             item = form1.save(commit=False)
             item.project = self.project
             item.res_risk_level = RiskLevel.objects.filter(pk=self.object.res_idex)[0]
 
-            print(item.res_risk_level)
+            #print(item.res_risk_level)
             item.save()
-            # print(form1)
+            # #print(form1)
             messages.success(request, "The hazard has been edited.")
             return redirect(
                 "todo:hazard_details", self.project_id, self.project_slug, hazard_id)

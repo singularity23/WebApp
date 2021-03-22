@@ -62,7 +62,7 @@ def todo_get_mailer(user, hazard):
 
 def todo_send_mail(user, hazard, subject, body, recip_list):
     """Send an email attached to hazard, triggered by user"""
-    references = Comment.objects.filter(hazard=hazard).only("email_message_id")
+    references = Comment.objects.select_related("hazard").filter(hazard=hazard).only("email_message_id")
     references = (ref.email_message_id for ref in references)
     references = " ".join(filter(bool, references))
 
@@ -152,7 +152,7 @@ def send_email_to_thread_participants(hazard, msg_body, user, subject=None):
 def toggle_hazard_completed(hazard_id: int) -> bool:
     """Toggle the `completed` bool on hazard from True to False or vice versa."""
     try:
-        hazard = Hazard.objects.get(id=hazard_id)
+        hazard = Hazard.objects.select_related("project").get(id=hazard_id)
         hazard.completed = not hazard.completed
         hazard.save()
         return True
@@ -165,7 +165,7 @@ def toggle_hazard_completed(hazard_id: int) -> bool:
 def remove_attachment_file(attachment_id: int) -> bool:
     """Delete an Attachment object and its corresponding file from the filesystem."""
     try:
-        attachment = Attachment.objects.get(id=attachment_id)
+        attachment = Attachment.objects.select_related("hazard").get(id=attachment_id)
         if attachment.file:
             if os.path.isfile(attachment.file.path):
                 os.remove(attachment.file.path)
@@ -184,7 +184,7 @@ def validate_project_number(request, project):
 
     project_number = project.cleaned_data['number']
     SAP_number = project.cleaned_data['SAP_id']
-    print(project_number)
+    #print(project_number)
     if not re.match(r'^[A-Z]{2}-[A-Z]{2,3}-\d{3}$', project_number):
         messages.warning(request, "Project Number should follow format as SI-OKA-190, LM-MV-208, etc.")
         return False
@@ -212,6 +212,9 @@ def get_history_change_reason(hazard):
                 change_reason =[]
                 delta = record.diff_against(prev)
                 for change in (change for change in delta.changes if change.old != change.new and change_field != "Project" and change_field != "Index"):
+                    Persons = Person.objects.select_related("project")
+                    Controls = ControlMeasure.objects.all()
+                    Risks = RiskLevel.objects.all()
 
                     if change.field not in attrs:
                         change_field = "\"" + change.field.capitalize() + "\""
@@ -222,16 +225,16 @@ def get_history_change_reason(hazard):
                         for x, y in zip(attrs, labels):
                             if x == change.field:
                                 change_field = y
-                                print(change_field)
+                                #print(change_field)
                                 if change.field == 'assigned_to' :
                                     if change.old is None:
                                         change_old = "None"
                                     else:
-                                        change_old = "\"" + Person.objects.get(pk=change.old).full_name + "\""
+                                        change_old = "\"" + Persons.get(pk=change.old).full_name + "\""
                                     if change.new is None:
                                         change_new = "None"
                                     else:
-                                        change_new = "\"" + Person.objects.get(pk=change.new).full_name + "\""
+                                        change_new = "\"" + Persons.get(pk=change.new).full_name + "\""
 
                                     msg = "%s changed from %s to %s" % (change_field, change_old, change_new)
 
@@ -240,23 +243,23 @@ def get_history_change_reason(hazard):
                                     if change.old is None:
                                         change_old = "None"
                                     else:
-                                        print(ControlMeasure.objects.values_list('measure', flat=True).get(pk=change.old))
-                                        change_old = "\"" + ControlMeasure.objects.values_list('measure', flat=True).get(pk=change.old) + "\""
+                                        #print(ControlMeasure.objects.values_list('measure', flat=True).get(pk=change.old))
+                                        change_old = "\"" + Controls.values_list('measure', flat=True).get(pk=change.old) + "\""
                                     if change.new is None:
                                         change_new = "None"
                                     else:
-                                        change_new = "\"" + ControlMeasure.objects.values_list('measure', flat=True).get(pk=change.new) + "\""
+                                        change_new = "\"" + Controls.values_list('measure', flat=True).get(pk=change.new) + "\""
                                     msg = "%s changed from %s to %s" % (change_field, change_old, change_new)
 
                                 elif search('risk_level', change.field):
                                     if change.old is None:
                                         change_old = "None"
                                     else:
-                                        change_old = "\"" + RiskLevel.objects.values_list('level', flat=True).get(pk=change.old) + "\""
+                                        change_old = "\"" + Risks.values_list('level', flat=True).get(pk=change.old) + "\""
                                     if change.new is None:
                                         change_new = "None"
                                     else:
-                                        change_new = "\"" + RiskLevel.objects.values_list('level', flat=True).get(pk=change.new) + "\""
+                                        change_new = "\"" + Risks.values_list('level', flat=True).get(pk=change.new) + "\""
                                     msg = "%s changed from %s to %s" % (change_field, change_old, change_new)
 
                         change_reason.append(msg)
@@ -264,7 +267,7 @@ def get_history_change_reason(hazard):
                 if change_reason != []:
 
                     record.history_change_reason = "; ".join(change_reason)
-                    print(record.history_change_reason)
+                    #print(record.history_change_reason)
                     record.save()
 
     return records
@@ -278,7 +281,7 @@ def EGBC_folder(project):
         try:
             if not os.path.exists(EGBC_path):
                 os.makedirs(EGBC_path)
-                print("folder created")
+                #print("folder created")
         except FileNotFoundError:
             print("folder not created")
         return EGBC_path
@@ -300,7 +303,7 @@ def SBD_folder(project):
         try:
             if not os.path.exists(SBD_path):
                 os.makedirs(SBD_path)
-                print("folder created")
+                #print("folder created")
         except FileNotFoundError:
             print("folder not created")
         return SBD_path

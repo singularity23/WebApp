@@ -180,14 +180,14 @@ class RiskLevel(models.Model):
         elif self.level == "None":
             return "positive"
         else:
-            print("error")
+            #print("error")
             return ""
 
     class Meta:
         verbose_name_plural = "Risk Levels"
 
     color = property(color_text)
-    print("color " + str(color))
+    #print("color " + str(color))
 
 class ControlMeasure(models.Model):
     measure = models.CharField(max_length=60)
@@ -270,7 +270,7 @@ class Project(models.Model):
         length = len(stages)
         if self.current_stage:
             portion = self.current_stage.id * 100 / length
-        print("portion"+ str(portion))
+        ##print("portion"+ str(portion))
         return portion
 
     def is_delayed(self):
@@ -392,14 +392,14 @@ class Hazard(models.Model):
                 return self.risk_level.id
 
     res_idex = property(res_risk)
-    print("res_idex" + str(res_idex))
+    #print("res_idex" + str(res_idex))
 
     def get_res_risk(self):
         if self != None:
             return RiskLevel.objects.values_list('level', flat=True).get(id=self.res_idex)
 
     res_level = property(get_res_risk)
-    print("res_level" + str(res_level))
+    #print("res_level" + str(res_level))
 
     def color_text(self):
 
@@ -413,7 +413,7 @@ class Hazard(models.Model):
             return "positive"
         else:
             return ""
-            print("error")
+            #print("error")
 
     color = property(color_text)
 
@@ -427,16 +427,16 @@ class Hazard(models.Model):
         objects = Hazard.objects.filter(project = self.project)
 
         filename = os.path.join(settings.BASE_DIR, "hazard.json")
-        print(filename)
+        #print(filename)
         file = open(filename, "w")
         serialized = serializers.serialize("json", objects)
-        print(serialized)
+        #print(serialized)
         file.write(serialized)
         file.close()
 
     def counts(self):
         hazards = Hazard.objects.filter(project=self.project)
-        print(hazards)
+        #print(hazards)
         return (hazards.count())
 
     @classmethod
@@ -541,10 +541,10 @@ class Attachment(models.Model):
                 src = os.path.join(getattr(settings, 'MEDIA_ROOT', None), get_attachment_upload_dir(self, f))
                 shutil.copy(src,dst)
             except:
-                print("error")
+                #print("error")
+                pass
 
-
-        print (self.file.url)
+        #print (self.file.url)
 
 
 class Data(models.Model):

@@ -205,10 +205,10 @@
   </tfoot>
 </table>
 
-<div class="collapse pb-4" id="AddHazard">
-  <div class="card-deck mb-4">
+<div class="collapse" id="AddHazard">
+  <div class="card-deck">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body shadow-sm">
         <div class="card-text text-sm">
           {% include 'todo/include/hazard_edit.html' %}
         </div>
@@ -402,12 +402,12 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLongTitle">{{ project_id }}</h4>
+        <h4 class="modal-title" id="exampleModalLongTitle">{{ project.number }}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height:10rem">
         <div class="collapse show">
           {% include 'todo/include/project_delete.html' %}
         </div>

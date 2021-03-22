@@ -7,16 +7,16 @@ from todo.forms import UserCreationForm
 from todo.models import Group
 
 def sign_up(request):
-    print(request.POST)
+    #print(request.POST)
     group = Group.objects.get(name="Engineer")
     #messages.warning(request, "test")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        print(form)
+        #print(form)
         if form.is_valid():
-            print("clean data")
+            #print("clean data")
             item = form.save(commit=False)
-            print(form.cleaned_data)
+            #print(form.cleaned_data)
             item.first_name = form.cleaned_data.get('first_name')
             item.last_name = form.cleaned_data.get('last_name')
             if form.validate_username() != None:
@@ -25,7 +25,7 @@ def sign_up(request):
                 messages.warning(request, "Username/email not valid")
                 return redirect('signup')
 
-            print(item.last_name)
+            ##print(item.last_name)
             item.email = form.cleaned_data.get('email')
             item.raw_password = form.clean_password2()
             if item.raw_password == None:
@@ -34,7 +34,7 @@ def sign_up(request):
 
             item.user = authenticate(username=item.email, password=item.raw_password)
             item.save()
-            print(item)
+            #print(item)
             group.user_set.add(item)
 
             messages.success(request, "Account registerred! Please login with your account")
