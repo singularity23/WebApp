@@ -1,2 +1,0 @@
-type("what")
-print(type("what"))

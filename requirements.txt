@@ -1,4 +1,4 @@
-asgiref==3.3.1
+asgiref==3.3.4
 atomicwrites==1.4.0
 attrs==20.3.0
 autopep8==1.5.5
@@ -7,8 +7,9 @@ bleach==3.3.0
 colorama==0.4.4
 dal-admin-filters==1.0.2
 decorator==4.4.2
-Django==3.1.5
+Django==3.2
 django-autocomplete-light==3.8.1
+django-debug-toolbar==3.2
 django-extensions==3.1.1
 django-floppyforms==1.9.0
 django-model-utils==4.1.1
@@ -29,6 +30,8 @@ pluggy==0.13.1
 project==1.0
 prompt-toolkit==3.0.16
 py==1.10.0
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
 pycodestyle==2.6.0
 Pygments==2.8.1
 pyparsing==2.4.7
@@ -44,7 +47,7 @@ sqlparse==0.4.1
 toml==0.10.2
 tornado==6.1
 traitlets==5.0.5
-urllib3==1.26.3
+urllib3==1.26.4
 utils==1.0.1
 wcwidth==0.2.5
 webencodings==0.5.1
